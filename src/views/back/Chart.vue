@@ -2,8 +2,8 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <section class="containter">
-      <div class="row my-3 ">
-        <div class="col-lg-4 ">
+      <div class="row my-3">
+        <div class="col-lg-4 mb-2">
           <div class="card text-center py-2 h-100">
             <div class="card-body d-flex justify-content-around align-items-center">
               <i class="fas fa-wallet text-primary fa-3x"></i>
@@ -14,7 +14,7 @@
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4 mb-2">
           <div class="card text-center py-2 h-100">
             <div class="card-body d-flex justify-content-around align-items-center">
               <i class="fas fa-clipboard-list text-primary fa-3x"></i>
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 mb-2">
           <div class="card text-center py-2 h-100">
             <div class="card-body d-flex justify-content-around align-items-center">
               <i class="fas fa-file-invoice-dollar text-primary fa-3x"></i>
@@ -38,8 +38,8 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-6">
+      <div class="row mb-5">
+        <div class="col-lg-6 mb-2">
           <div class="card">
             <div class="card-header">
               產品類別售出占比
@@ -140,11 +140,11 @@ export default {
         bindto: '#chart',
         data: {
           // 目標資料: [['台灣好米',數量],['國產蜂蜜',數量]]
-          type: 'donut',
-          columns: this.chartCategoryAry,
-          color: {
-            pattern: ['#301E5F', '#5434A7', '#9D7FEA', '#DACBFF']
-          }
+          type: 'bar',
+          columns: this.chartCategoryAry
+        },
+        color: {
+          pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f']
         }
       });
     },
@@ -168,16 +168,24 @@ export default {
       vm.chartProductAry.sort((a, b) => {
         return b[1] - a[1];
       });
-      // *todo 處理第三筆過後歸納於其他
+      if (vm.chartProductAry.length > 3) {
+        let otherTotal = 0;
+        vm.chartProductAry.forEach((item, index, ary) => {
+          if (index > 2) {
+            otherTotal += ary[index][1];
+          }
+        });
+        vm.chartProductAry.splice(3, vm.chartProductAry.length);
+        vm.chartProductAry.push(['其他', otherTotal]);
+      }
       let chartProduct = c3.generate({
         bindto: '#chartProduct',
         data: {
-          // 目標資料: [['產品名稱',數量],['產品名稱',數量]]，排名sort
-          columns: vm.chartProductAry,
-          type: 'donut',
-          color: {
-            pattern: ['#301E5F', '#5434A7', '#9D7FEA', '#DACBFF']
-          }
+          type: 'pie',
+          columns: vm.chartProductAry
+        },
+        color: {
+          pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f']
         }
       });
     }

@@ -40,6 +40,36 @@
           </div>
         </div>
       </div>
+
+      <div class="h4 mt-5">你可能也喜歡...</div>
+      <hr />
+      <div class="row same-category">
+        <div class="col-md-4" v-for="item in categoryFilter" :key="item.id">
+          <div class="card h-100 ">
+            <a class="detail-href">
+              <div class="detail-bg">
+                <a
+                  href="#"
+                  class="btn btn-primary"
+                  :class="{ disabled: !item.is_enabled }"
+                  @click.prevent="moreDetail(item.id)"
+                  >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
+                >
+              </div>
+              <img :src="item.imageUrl" alt="" class="card-img-top" />
+            </a>
+            <div class="card-body ">
+              <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
+              <div class="d-flex justify-content-end mt-3">
+                <del class="mr-auto">{{ item.origin_price | currency }}</del>
+                <span class="text-warning"
+                  >特價<strong class="h6">{{ item.price | currency }}</strong></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -50,10 +80,20 @@ export default {
   data() {
     return {
       isLoading: false,
-      productDetail: {}
+      productDetail: {},
+      products: []
     };
   },
   mixins: [cartHandler], //get cart & add cart
+  computed: {
+    categoryFilter() {
+      return this.products.filter((item) => {
+        if (item.title !== this.productDetail.title) {
+          return item.category === this.productDetail.category;
+        }
+      });
+    }
+  },
   methods: {
     getProductDetail(id) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
@@ -67,12 +107,54 @@ export default {
     },
     addCart(id, num) {
       this.addToCart(id, num);
+    },
+    getAllProduct() {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
+      const vm = this;
+      vm.isLoading = true;
+      this.$http.get(api).then((res) => {
+        vm.products = res.data.products;
+        vm.isLoading = false;
+      });
+    },
+    moreDetail(id) {
+      this.$router.push(`/productInfo/${id}`);
+      this.getProductDetail(id); //點擊同類型產品能馬上切換頁面
     }
   },
   mounted() {
     let productId = this.$route.params.productId;
     this.getProductDetail(productId);
     this.getCartList();
+    this.getAllProduct();
   }
 };
 </script>
+<style lang="scss" scoped>
+.same-category {
+  width: 100%;
+  overflow-x: scroll;
+  flex-wrap: nowrap;
+}
+.detail-href {
+  position: relative;
+  transition: all 0.3s;
+  .detail-bg {
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s;
+    .btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  &:hover .detail-bg {
+    opacity: 1;
+  }
+}
+</style>

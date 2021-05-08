@@ -7,25 +7,25 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'Products' }">
+            <router-link class="nav-link text-countryLight" :to="{ name: 'Products' }">
               <i class="fas fa-boxes"></i>
               產品列表
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'OrderList' }">
+            <router-link class="nav-link text-countryLight" :to="{ name: 'OrderList' }">
               <i class="fas fa-clipboard-list"></i>
               訂單列表
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'Chart' }">
+            <router-link class="nav-link text-countryLight" :to="{ name: 'Chart' }">
               <i class="fas fa-chart-line"></i>
               銷售圖表分析
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'Coupons' }">
+            <router-link class="nav-link text-countryLight" :to="{ name: 'Coupons' }">
               <i class="fas fa-tags"></i>
               優惠券
             </router-link>
@@ -35,3 +35,10 @@
     </nav>
   </div>
 </template>
+<style scoped>
+/* @media (max-width: 768px) {
+  .sidebar {
+    top: 0;
+  }
+} */
+</style>

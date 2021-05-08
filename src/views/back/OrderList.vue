@@ -4,7 +4,7 @@
     <!-- 渲染訂單列表 -->
     <h2 class="text-center mt-3">訂單列表</h2>
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info" type="button" data-toggle="modal" data-target="#placeOrderModal">
+      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#placeOrderModal">
         <i class="fas fa-shopping-cart mr-2"></i>快速下單
       </button>
     </div>

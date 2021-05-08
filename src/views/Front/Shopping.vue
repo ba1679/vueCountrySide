@@ -207,6 +207,7 @@ export default {
   mounted() {
     this.carts.carts = JSON.parse(localStorage.getItem('cartList')) || [];
     this.getProductList();
+    this.getCartList();
     $(window).scroll(function() {
       if ($(this).scrollTop() > 300) {
         $('.back-to-top').addClass('d-block');
@@ -228,6 +229,18 @@ export default {
   position: fixed;
   right: 25px;
   bottom: 25px;
+}
+.cart-icon::after {
+  content: '';
+  display: block;
+  width: 70px;
+  height: 70px;
+  background-color: #0077b6;
+  position: relative;
+  top: -55px;
+  right: 9px;
+  z-index: -100;
+  border-radius: 50%;
 }
 .coupon {
   background-color: rgba(0, 0, 0, 0.33);
@@ -282,7 +295,7 @@ export default {
 }
 .back-to-top {
   position: fixed;
-  bottom: 100px;
+  bottom: 170px;
   right: 15px;
 }
 @media (min-width: 992px) {

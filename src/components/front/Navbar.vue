@@ -26,7 +26,7 @@
             <li class="nav-item">
               <router-link class="nav-link" to="/login">後台登入</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-itemr">
               <Cart class="d-lg-block d-none" />
             </li>
           </ul>
@@ -86,7 +86,9 @@ export default {
     border-color: #e3f2fd;
   }
 }
-
+.cart-color {
+  color: #e3f2fd;
+}
 // ruoter-link被點擊後，會自動產生此class name，可使用此class 設定 active後的顏色
 .nav-item > .router-link-exact-active {
   color: rgba(0, 0, 0, 0.9) !important;
