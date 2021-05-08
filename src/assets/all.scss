@@ -1,0 +1,6 @@
+// 順序不可更動，bootstrap規定，需先載入functions 才可使用其樣式
+@import '~bootstrap/scss/functions';
+@import './helpers/_variables';
+@import '~bootstrap/scss/bootstrap';
+// dashboard樣式
+@import './dashboard';

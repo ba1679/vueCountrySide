@@ -1,18 +1,34 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="sticky-footer">
+    <Navbar class="sticky-top"></Navbar>
+    <router-view> </router-view>
+    <Footer class="sticky-bottom"></Footer>
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import $ from 'jquery';
+import Navbar from '../components/front/Navbar';
+import Footer from '../components/front/Footer';
 
 export default {
-  name: 'Home',
   components: {
-    HelloWorld
+    Navbar,
+    Footer
+  },
+  watch: {
+    $route() {
+      $('html,body').scrollTop(0);
+    }
   }
-}
+};
 </script>
+<style>
+.sticky-footer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.sticky-bottom {
+  margin-top: auto;
+}
+</style>
