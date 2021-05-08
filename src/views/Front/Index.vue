@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <h3 class="animate__animated animate__pulse animate__infinite text-center">限時特惠: 全站
-      88折</h3> -->
     <div id="countrySideCarousel" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#countrySideCarousel" data-slide-to="0" class="active"></li>
