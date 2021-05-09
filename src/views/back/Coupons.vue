@@ -1,4 +1,3 @@
-// *todo 優惠券過期不得使用
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
@@ -47,13 +46,13 @@
       id="couponModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="couponModal"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0">
-          <div class="modal-header bg-dark text-white">
-            <h5 class="modal-title" id="exampleModalLabel">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="couponModal">
               <span>新增優惠券</span>
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -145,14 +144,14 @@
       id="deleteModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
+      aria-labelledby="deleteModal"
       aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
         <div class="modal-content border-0">
           <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <span>刪除產品</span>
+            <h5 class="modal-title" id="deleteModal">
+              <span>刪除優惠券</span>
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -161,7 +160,7 @@
           <div class="modal-body">
             是否刪除
             <strong class="text-danger"></strong>
-            商品(刪除後將無法恢復)。
+            優惠券? (刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
@@ -286,7 +285,7 @@ export default {
       });
     }
   },
-  created() {
+  mounted() {
     this.getCouponList();
     this.todayDate = Date.parse(new Date().toDateString());
   }

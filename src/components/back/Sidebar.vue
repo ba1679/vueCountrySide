@@ -35,10 +35,3 @@
     </nav>
   </div>
 </template>
-<style scoped>
-/* @media (max-width: 768px) {
-  .sidebar {
-    top: 0;
-  }
-} */
-</style>

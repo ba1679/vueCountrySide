@@ -40,30 +40,49 @@
               <div class="form-group">
                 <validation-provider rules="required" v-slot="{ errors, classes }">
                   <label for="name">姓名 <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control" :class="classes" id="name" />
+                  <input type="text" class="form-control" :class="classes" id="name" name="姓名" v-model="form.name" />
                   <span class="invalid-feedback">{{ errors[0] }}</span>
                 </validation-provider>
               </div>
               <div class="form-group">
                 <validation-provider rules="required" v-slot="{ errors, classes }">
                   <label for="tel">電話 <span class="text-danger">*</span></label>
-                  <input type="tel" class="form-control" :class="classes" id="tel" />
+                  <input type="tel" class="form-control" :class="classes" id="tel" name="電話" v-model="form.tel" />
                   <span class="invalid-feedback">{{ errors[0] }}</span>
                 </validation-provider>
               </div>
               <div class="form-group">
-                <label for="email">Email </label>
-                <input type="email" class="form-control" id="email" />
+                <validation-provider rules="email" v-slot="{ errors, classes }">
+                  <label for="email">Email </label>
+                  <input type="email" class="form-control" :class="classes" id="email" v-model="form.email" />
+                  <span class="invalid-feedback">{{ errors[0] }}</span>
+                </validation-provider>
               </div>
               <label>哪種聯絡方式較方便? <span class="text-danger">*</span></label>
               <div class="custom-control custom-radio">
-                <input type="radio" id="tel" name="tel" class="custom-control-input" checked />
-                <label class="custom-control-label" for="tel">電話</label>
+                <input
+                  type="radio"
+                  id="contactTel"
+                  name="contactTel"
+                  value="tel"
+                  class="custom-control-input"
+                  checked
+                  v-model="form.contact"
+                />
+                <label class="custom-control-label" for="contactTel">電話</label>
               </div>
               <div class="custom-control custom-radio">
-                <input type="radio" id="email" name="email" class="custom-control-input" />
-                <label class="custom-control-label" for="email">Email</label>
+                <input
+                  type="radio"
+                  id="contactEmail"
+                  name="contactEmail"
+                  class="custom-control-input"
+                  value="Email"
+                  v-model="form.contact"
+                />
+                <label class="custom-control-label" for="contactEmail">Email</label>
               </div>
+
               <div class="text-right">
                 <button type="button" class="btn btn-secondary mr-2">取消</button>
                 <button type="submit" class="btn btn-primary" :disabled="invalid" @click="sendInfo">送出</button>
@@ -78,6 +97,16 @@
 <script>
 export default {
   name: 'Contact',
+  data() {
+    return {
+      form: {
+        name: '',
+        tel: '',
+        email: '',
+        contact: ''
+      }
+    };
+  },
   methods: {
     sendInfo() {
       this.$swal('成功送出');

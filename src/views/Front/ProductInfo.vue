@@ -5,7 +5,7 @@
       <ol class="breadcrumb bg-transparent pl-0">
         <li class="breadcrumb-item"><router-link to="/">首頁</router-link></li>
         <li class="breadcrumb-item"><router-link to="/shopping">線上商城</router-link></li>
-        <li class="breadcrumb-item active">商品名稱</li>
+        <li class="breadcrumb-item active">{{ productDetail.title }}</li>
       </ol>
       <div class="row">
         <div class="col-lg-7">

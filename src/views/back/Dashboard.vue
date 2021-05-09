@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 固定顯示的部分使用元件&標籤載入 -->
     <Navbar />
     <Alert />
     <div class="container-fluid">

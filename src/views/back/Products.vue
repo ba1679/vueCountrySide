@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- https://www.npmjs.com/package/vue-loading-overlay loading套件 -->
     <loading :active.sync="isLoading"></loading>
     <!-- 渲染產品列表 -->
     <div class="text-right mt-4">
@@ -351,8 +350,8 @@ export default {
       });
     }
   },
-  created() {
-    this.getProductList(); //記得加this
+  mounted() {
+    this.getProductList();
   }
 };
 </script>

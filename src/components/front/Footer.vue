@@ -27,7 +27,7 @@
           <a href="#" class="text-countryLight"><i class="fab fa-line fa-2x"></i></a>
         </li>
       </ul>
-      <p class="text-center text-gray">&copy; copyright 2021 HSINHUI practice</p>
+      <p class="text-center text-gray">&copy; copyright 2021 HSINHUI practice 非商業用途</p>
     </footer>
   </div>
 </template>

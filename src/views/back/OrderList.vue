@@ -320,7 +320,7 @@ export default {
         });
     }
   },
-  created() {
+  mounted() {
     this.getOrderList();
     this.getAllProducts();
   }

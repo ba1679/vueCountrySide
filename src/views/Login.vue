@@ -1,41 +1,40 @@
 <template>
   <div>
-    <!-- bootstrap的範例登入html -->
     <form class="form-signin" @submit.prevent="signin">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
+      <h1 class="h3 mb-3 font-weight-normal">請輸入帳號及密碼登入</h1>
+      <label for="inputEmail" class="sr-only">帳號</label>
       <input
         type="email"
         id="inputEmail"
         class="form-control"
-        placeholder="Email address"
+        placeholder="帳號"
         v-model="user.username"
         required
         autofocus
       />
-      <label for="inputPassword" class="sr-only">Password</label>
+      <label for="inputPassword" class="sr-only">密碼</label>
       <input
         type="password"
         id="inputPassword"
         class="form-control"
-        placeholder="Password"
+        placeholder="密碼"
         v-model="user.password"
         required
       />
       <div class="checkbox mb-3">
-        <label> <input type="checkbox" value="remember-me" /> Remember me </label>
+        <label> <input type="checkbox" value="remember-me" /> 記住我 </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
-        Sign in
+        登入
       </button>
-      <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+      <p class="mt-5 mb-3 text-muted">&copy; 2021 上田園農產後台管理系統</p>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Login',
   data() {
     return {
       user: {
@@ -65,8 +64,6 @@ export default {
 </script>
 
 <style scoped>
-/* bootstrap 的範例登入css */
-
 html,
 body {
   height: 100%;
@@ -84,7 +81,7 @@ body {
 
 .form-signin {
   width: 100%;
-  max-width: 330px;
+  max-width: 390px;
   padding: 15px;
   margin: auto;
 }

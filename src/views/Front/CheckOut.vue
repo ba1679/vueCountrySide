@@ -26,8 +26,8 @@
         </div>
       </div>
       <div class="row justify-content-center mt-3">
-        <div class="col-8">
-          <div class="card">
+        <div class="col-8 ">
+          <div class="card mb-3">
             <div class="card-header" id="cartDetail">
               <div class="d-flex justify-content-around align-items-center">
                 <a
@@ -60,17 +60,17 @@
                 </tr>
                 <tr>
                   <td class="text-right" colspan="5">運費</td>
-                  <td class="text-right">80</td>
+                  <td class="text-right">{{ 80 | currency }}</td>
                 </tr>
 
                 <tr>
                   <td class="text-right" colspan="5">總計</td>
-                  <td class="text-right">{{ carts.total + 80 }}</td>
+                  <td class="text-right">{{ (carts.total + 80) | currency }}</td>
                 </tr>
                 <tr>
                   <td class="text-right text-success" colspan="5" v-if="carts.total !== carts.final_total">折扣價</td>
                   <td class="text-right text-success" v-if="carts.total !== carts.final_total">
-                    {{ carts.final_total + 80 }}
+                    {{ (carts.final_total + 80) | currency }}
                   </td>
                 </tr>
               </table>
@@ -140,15 +140,16 @@
 
                 <div class="form-group col-md-6">
                   <label for="shipping" class="mr-3">
-                    寄送方式 :
+                    取貨方式 :
                   </label>
-                  <div class="form-check form-check-inline">
+
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" id="selfTake" name="shippingOption" checked />
+                    <label class="form-check-label" for="selfTake">到店自取</label>
+                  </div>
+                  <div class="form-check">
                     <input class="form-check-input" type="radio" id="shipping" name="shippingOption" />
                     <label class="form-check-label" for="shipping">宅配寄送</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="selfTake" name="shippingOption" />
-                    <label class="form-check-label" for="selfTake">到店自取</label>
                   </div>
                 </div>
               </div>

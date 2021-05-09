@@ -29,7 +29,7 @@
         <div class="carousel-item header-carousel-item bg-cover carousel-tea"></div>
       </div>
     </div>
-    <section class=" py-5" data-aos="fade-up" data-aos-duration="2000">
+    <section class="py-5" data-aos="fade-up" data-aos-duration="2000">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -141,10 +141,10 @@
     </section>
 
     <section
-      class="container-fluid text-white bg-cover "
+      class="container-fluid text-white bg-cover"
       style="
-            background-image: url(https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
-          "
+        background-image: url(https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
+      "
     >
       <div class="p-4">
         <div class="bg-filter p-3">
