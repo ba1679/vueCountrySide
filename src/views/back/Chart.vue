@@ -42,7 +42,7 @@
         <div class="col-lg-6 mb-2">
           <div class="card">
             <div class="card-header">
-              產品類別售出占比
+              產品類別售出總數
             </div>
             <div class="card-body">
               <div id="chart"></div>
@@ -122,6 +122,7 @@ export default {
           vm.products.push(item.product);
         });
       });
+
       vm.products.forEach((productItem) => {
         if (!categoryObj[productItem.category]) {
           categoryObj[productItem.category] = 1;

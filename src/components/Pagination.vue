@@ -1,7 +1,6 @@
 <template>
   <div class="d-flex justify-content-center">
-    <!-- bs4 分頁 -->
-    <nav aria-label="Page navigation example">
+    <nav>
       <ul class="pagination">
         <li class="page-item" :class="{ disabled: !pages.has_pre }">
           <a class="page-link" href="#" aria-label="Previous" @click.prevent="getProductPages(pages.current_page - 1)">
@@ -36,3 +35,18 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.page-item:first-child .page-link {
+  border-top-left-radius: 1.25rem;
+  border-bottom-left-radius: 1.25rem;
+}
+.page-item:last-child .page-link {
+  border-top-right-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+}
+.page-link {
+  border-radius: 1.25rem;
+  margin: 0 5px;
+  transition: all 0.3s;
+}
+</style>
