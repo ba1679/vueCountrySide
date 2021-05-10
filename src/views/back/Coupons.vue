@@ -210,7 +210,7 @@ export default {
     },
     openModal(isNewParam, item) {
       if (!isNewParam) {
-        this.newCoupon = Object.assign({}, item); //使用此方法避開物件傳參考
+        this.newCoupon = { ...item }; //使用此方法避開物件傳參考
         this.isNew = false;
       } else {
         this.newCoupon = {}; //按編輯後會有產品資料在裡面，所以要先清空
@@ -223,7 +223,7 @@ export default {
       let filterCoupon = this.couponList.filter(function(item) {
         return item.code === code;
       });
-      if (filterCoupon.length !== 0) {
+      if (filterCoupon.length !== 0 && this.isNew) {
         alert('此優惠碼已存在，請更換');
         return;
       }
@@ -256,11 +256,11 @@ export default {
     },
     checkDate() {
       const vm = this;
-      // *todo 待處理
       vm.couponList.forEach(function(item) {
         let due_date = Date.parse(item.due_date.replace(/-/g, '/'));
-        if (vm.todayDate > due_date) {
-          console.log('日期有誤');
+        let couponTitle = item.title;
+        if (vm.todayDate > due_date && item.is_enabled === 1) {
+          vm.$swal(`${couponTitle}的優惠日期已到，請取消啟用!`);
           return;
         }
       });
