@@ -18,13 +18,15 @@ Demo: https://ba1679.github.io/vueCountrySide/
     *  優惠券: 新增、刪除、修改優惠券，並於一載入時檢查有無過期之優惠券   
 
 ## 使用技術
-* Vue CLI建置專案
-* Vue + javaScript(ES6)資料處理及渲染
+* Vue CLI 搭配Webpack建置專案
+* Vue.js + javaScript(ES6)資料處理及渲染
+* jQuery 操作DOM元素
 * Vue Router頁面切換
 * Axios串接API更新資料
 * 後台C3.js圖表呈現
 * SweetAlert 提醒視窗套件
 * Vee-validate驗證表單內容
+* AOS scroll 動畫效果
 * bootstrap 4 格線系統、元件、utilities使用
 * SCSS
 
