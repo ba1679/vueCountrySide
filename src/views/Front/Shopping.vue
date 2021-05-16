@@ -25,7 +25,7 @@
             <a
               class="nav-link"
               :class="{ active: category == '全部商品' }"
-              href="#"
+              href="#全部商品"
               data-category="全部商品"
               @click.prevent="categoryFilter"
               >全部商品</a
@@ -35,7 +35,7 @@
             <a
               class="nav-link"
               :class="{ active: category == '台灣好米' }"
-              href="#"
+              href="#台灣好米"
               data-category="台灣好米"
               @click.prevent="categoryFilter"
               >台灣好米</a
@@ -72,7 +72,7 @@
             >
           </li>
         </ul>
-        <div class="row mb-3">
+        <div class="tab-pane row mb-3" role="tabpanel" :id="category">
           <div
             class="col-lg-3 col-md-6 mb-3"
             v-for="item in productFilter"

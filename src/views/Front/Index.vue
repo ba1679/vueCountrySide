@@ -50,7 +50,7 @@
                   <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
                 </div>
                 <div class="taiwan">
-                  <img class="img-fluid" src="../../assets/images/taiwan.png" alt="" />
+                  <img class="img-fluid" src="../../assets/images/taiwan.png" alt="台灣圖" />
                 </div>
               </div>
             </div>
