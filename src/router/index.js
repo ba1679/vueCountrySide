@@ -45,7 +45,7 @@ const routes = [
   {
     // 避免用戶在網址換輸入，若用戶不是輸入我們定義的path則導向login頁面
     path: '*',
-    redirect: '/login'
+    redirect: '/'
   },
   {
     name: 'Login',

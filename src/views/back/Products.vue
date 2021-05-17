@@ -229,7 +229,7 @@
 <script>
 // 若需在此元件使用jQuery的$字號與法，需另外載入
 import $ from 'jquery';
-import Pagination from '../../components/Pagination';
+import Pagination from '@/components/Pagination';
 
 export default {
   data() {
@@ -250,16 +250,11 @@ export default {
     Pagination
   },
   methods: {
-    // page參數預設給1，有帶入參數就會覆蓋過去
     getProductList(page = 1) {
-      // api及api_path最好宣告在環境變數內(config/dev.env.js)
-      //https://www.npmjs.com/package/vue-axios vue-axios語法
-      // 環境變數的使用語法: process.env.變數名稱
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
-      let vm = this;
       vm.isLoading = true;
-      this.$http.get(api).then((response) => {
-        console.log(response.data);
+      vm.$http.get(api).then((response) => {
         vm.isLoading = false;
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
@@ -268,27 +263,26 @@ export default {
     // 編輯&新增共用同Modal，因此使用傳入的參數判斷是否為新產品，若為編輯則另外傳入原有的產品物件
     openModal(isNewParam, item) {
       if (!isNewParam) {
-        this.cacheProduct = Object.assign({}, item); //使用此方法避開物件傳參考
+        this.cacheProduct = { ...item };
         this.isNew = false;
       } else {
         this.cacheProduct = {}; //按編輯後會有產品資料在裡面，所以要先清空
         this.isNew = true;
       }
-      // 透過click觸發modal開啟
       $('#productModal').modal('show');
     },
     // 新增&編輯產品
     updateProduct() {
-      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
+      const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
       let httpMethod = 'post';
-      let vm = this;
       if (!vm.isNew) {
         // 更改為編輯產品的api及方法
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.cacheProduct.id}`;
         httpMethod = 'put';
       }
       // post的api需要帶參數
-      this.$http[httpMethod](api, { data: vm.cacheProduct })
+      vm.$http[httpMethod](api, { data: vm.cacheProduct })
         .then((response) => {
           if (response.data.success) {
             $('#productModal').modal('hide');
@@ -301,17 +295,16 @@ export default {
         });
     },
     uploadFile() {
+      const vm = this;
       // 檔案路徑
-      // console.log(this);
       const uploadedFile = this.$refs.files.files[0];
       const fileId = this.$refs.files.id; //取得input的id
-      const vm = this;
       vm.status.fileUploading = true; //loading圖示更改狀態
       const formData = new FormData(); //https://developer.mozilla.org/en-US/docs/Web/API/FormData/FormData  表單送出需要使用的方法
       // 使用append將api文件規定的欄位新增進去
       formData.append('file-to-upload', uploadedFile);
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
-      this.$http
+      vm.$http
         .post(api, formData, {
           headers: {
             'Content-Type': 'multipart/form-data' //修改檔案格式為form-data
@@ -325,7 +318,7 @@ export default {
             document.getElementById(fileId).value = ''; //將上傳檔名清空以免影響其他商品
           } else {
             // ? 內層$emit觸發 ('註冊的方法','註冊時預設要帶的參數')
-            this.$bus.$emit('messagePush', response.data.message, 'danger');
+            vm.$bus.$emit('messagePush', response.data.message, 'danger');
           }
         });
     },
@@ -335,10 +328,10 @@ export default {
       $('#delProductModal').modal('show');
     },
     deleteProduct() {
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${this.productId}`;
-      let vm = this;
       vm.isLoading = true;
-      this.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then((response) => {
         if (response.data.success) {
           vm.isLoading = false;
           $('#delProductModal').modal('hide');

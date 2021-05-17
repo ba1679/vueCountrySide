@@ -65,7 +65,6 @@ new Vue({
 
 // 切換頁面時做驗證，避免用戶透過網址切換畫面
 router.beforeEach((to, from, next) => {
-  // console.log("to", to, "from", from, "next", next);
   // 若要到達的頁面有meta.requiresAuth為true的話，進行驗證，沒有的話就直接放行
   if (to.meta.requiresAuth) {
     const api = `${process.env.VUE_APP_APIPATH}/api/user/check`; //檢查用戶使否持續登入的api

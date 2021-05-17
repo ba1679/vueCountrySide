@@ -99,24 +99,23 @@ export default {
   },
   methods: {
     getOrderList(page = 1) {
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      let vm = this;
       vm.isLoading = true;
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.orderList = response.data.orders;
-        this.renderCategoryChart();
-        this.renderProductChart();
+        vm.renderCategoryChart();
+        vm.renderProductChart();
         vm.isLoading = false;
       });
     },
     renderCategoryChart() {
-      let categoryAry = [];
       const vm = this;
+      let categoryAry = [];
       vm.orderList.forEach((item) => {
         categoryAry.push(Object.values(item.products));
       });
       let categoryObj = {};
-
       categoryAry.forEach((categoryItem) => {
         categoryItem.forEach((item) => {
           vm.products.push(item.product);
@@ -140,9 +139,8 @@ export default {
       let chart = c3.generate({
         bindto: '#chart',
         data: {
-          // 目標資料: [['台灣好米',數量],['國產蜂蜜',數量]]
           type: 'bar',
-          columns: this.chartCategoryAry
+          columns: vm.chartCategoryAry
         },
         color: {
           pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f']
@@ -150,8 +148,8 @@ export default {
       });
     },
     renderProductChart() {
-      let productObj = {};
       const vm = this;
+      let productObj = {};
       vm.products.forEach((item) => {
         if (!productObj[item.title]) {
           productObj[item.title] = 1;

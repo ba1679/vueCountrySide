@@ -237,7 +237,7 @@
 </template>
 <script>
 import $ from 'jquery';
-import Pagination from '../../components/Pagination';
+import Pagination from '@/components/Pagination';
 
 export default {
   name: 'OrderList',
@@ -274,38 +274,36 @@ export default {
   },
   methods: {
     getOrderList(page = 1) {
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      let vm = this;
       vm.isLoading = true;
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.orderList = response.data.orders;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
       });
     },
     getAllProducts() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`;
       const vm = this;
-      this.isLoading = true;
-      this.$http.get(api).then((res) => {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`;
+      vm.isLoading = true;
+      vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
       });
     },
     openModal(item) {
-      this.cacheOrder = { ...item }; //使用此方法避開物件傳參考
-      // 透過click觸發modal開啟
+      this.cacheOrder = { ...item };
       $('#orderModal').modal('show');
     },
     openProductModal(item) {
       this.cacheOrder = { ...item };
-      console.log(this.cacheOrder.coupon);
       $('#orderProductsModal').modal('show');
     },
     // 新增&編輯優惠券
     updateOrder(id) {
-      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${id}`;
-      let vm = this;
-      this.$http
+      const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${id}`;
+      vm.$http
         .put(api, { data: vm.cacheOrder })
         .then((response) => {
           if (response.data.success) {

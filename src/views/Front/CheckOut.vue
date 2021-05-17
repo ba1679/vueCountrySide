@@ -189,7 +189,7 @@
   </div>
 </template>
 <script>
-import cartHandler from '../../mixins/getCart.js';
+import cartHandler from '@/mixins/getCart.js';
 export default {
   name: 'CheckOut',
   data() {
@@ -208,12 +208,12 @@ export default {
   mixins: [cartHandler],
   methods: {
     useCoupon() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
       const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
       let couponCode = {
         code: vm.couponCode
       };
-      this.$http
+      vm.$http
         .post(api, { data: couponCode })
         .then((res) => {
           vm.couponCode = '';
@@ -229,13 +229,12 @@ export default {
         });
     },
     sendOrder() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
       const vm = this;
-      this.$http
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
+      vm.$http
         .post(api, { data: vm.form })
         .then((res) => {
           if (res.data.success) {
-            console.log(res);
             let orderId = res.data.orderId;
             vm.$router.push(`/confirmOrder/${orderId}`);
           } else {

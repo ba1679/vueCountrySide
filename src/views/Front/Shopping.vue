@@ -95,7 +95,7 @@
                     >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
                   >
                 </div>
-                <img :src="item.imageUrl" alt="" class="card-img-top" />
+                <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
               </a>
               <div class="card-body ">
                 <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
@@ -136,9 +136,9 @@
 </template>
 <script>
 import $ from 'jquery';
-import cartHandler from '../../mixins/getCart.js';
-import Pagination from '../../components/Pagination';
-import Cart from '../../components/front/Cart';
+import cartHandler from '@/mixins/getCart.js';
+import Pagination from '@/components/Pagination';
+import Cart from '@/components/front/Cart';
 export default {
   name: 'Shopping',
   data: function() {
@@ -158,10 +158,10 @@ export default {
     productFilter() {
       const vm = this;
       if (vm.category === '全部商品') {
-        return this.products;
+        return vm.products;
       } else {
-        this.getAllProduct();
-        this.isLoading = false;
+        vm.getAllProduct();
+        vm.isLoading = false;
         return vm.products.filter((item) => {
           return item.category === vm.category;
         });
@@ -170,19 +170,19 @@ export default {
   },
   methods: {
     getAllProduct() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
       const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
       vm.isLoading = true;
-      this.$http.get(api).then((res) => {
+      vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
         vm.isLoading = false;
       });
     },
     getProductList(page = 1) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
       const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
       vm.isLoading = true;
-      this.$http.get(api).then((res) => {
+      vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
         vm.pagination = res.data.pagination;
         vm.isLoading = false;

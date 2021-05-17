@@ -177,7 +177,7 @@
 </template>
 <script>
 import $ from 'jquery';
-import Pagination from '../../components/Pagination';
+import Pagination from '@/components/Pagination';
 
 export default {
   name: 'Coupons',
@@ -197,10 +197,10 @@ export default {
   },
   methods: {
     getCouponList(page = 1) {
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`;
-      let vm = this;
       vm.isLoading = true;
-      this.$http.get(api).then((response) => {
+      vm.$http.get(api).then((response) => {
         vm.couponList = response.data.coupons;
         vm.pagination = response.data.pagination;
         vm.isLoading = false;
@@ -210,13 +210,12 @@ export default {
     },
     openModal(isNewParam, item) {
       if (!isNewParam) {
-        this.newCoupon = { ...item }; //使用此方法避開物件傳參考
+        this.newCoupon = { ...item };
         this.isNew = false;
       } else {
         this.newCoupon = {}; //按編輯後會有產品資料在裡面，所以要先清空
         this.isNew = true;
       }
-      // 透過click觸發modal開啟
       $('#couponModal').modal('show');
     },
     checkCoupon(code) {
@@ -231,9 +230,9 @@ export default {
     },
     // 新增&編輯優惠券
     updateCoupon() {
-      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
+      const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
       let httpMethod = 'post';
-      let vm = this;
       if (!vm.isNew) {
         // 更改為編輯產品的api及方法
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.newCoupon.id}`;
@@ -241,7 +240,7 @@ export default {
       }
 
       // post的api需要帶參數
-      this.$http[httpMethod](api, { data: vm.newCoupon })
+      vm.$http[httpMethod](api, { data: vm.newCoupon })
         .then((response) => {
           if (response.data.success) {
             $('#couponModal').modal('hide');
@@ -270,10 +269,10 @@ export default {
       $('#deleteModal').modal('show');
     },
     deleteCoupon() {
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${this.couponId}`;
-      let vm = this;
       vm.isLoading = true;
-      this.$http.delete(api).then((response) => {
+      vm.$http.delete(api).then((response) => {
         if (response.data.success) {
           vm.isLoading = false;
           $('#deleteModal').modal('hide');

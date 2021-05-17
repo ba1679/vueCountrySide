@@ -41,16 +41,16 @@
           <div class="col-md-6 position-relative">
             <div class="product-md-center">
               <div class="product-circle">
-                <img class="icon tea-icon" src="../../assets/images/green-tea.svg" alt="" />
-                <img class="icon hen-icon" src="../../assets/images/hen.svg" alt="" />
-                <img class="icon honey-icon" src="../../assets/images/honey.svg" alt="" />
-                <img class="icon rice-icon" src="../../assets/images/rice-bowl.svg" alt="" />
+                <img class="icon tea-icon" src="@/assets/images/green-tea.svg" alt="茶icon" />
+                <img class="icon hen-icon" src="@/assets/images/hen.svg" alt="雞icon" />
+                <img class="icon honey-icon" src="@/assets/images/honey.svg" alt="蜂蜜icon" />
+                <img class="icon rice-icon" src="@/assets/images/rice-bowl.svg" alt="米icon" />
                 <div class="sr-only">
                   Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from
                   <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
                 </div>
                 <div class="taiwan">
-                  <img class="img-fluid" src="../../assets/images/taiwan.png" alt="台灣圖" />
+                  <img class="img-fluid" src="@/assets/images/taiwan.png" alt="台灣圖" />
                 </div>
               </div>
             </div>
@@ -68,7 +68,7 @@
         </div>
         <div class="col-md-6 order-md-1">
           <div class="d-flex justify-content-center align-items-center">
-            <img src="../../assets/images/countrySide.png" class="countrySide-img" alt="countrySide" />
+            <img src="@/assets/images/countrySide.png" class="countrySide-img" alt="countrySide" />
           </div>
         </div>
       </div>
@@ -161,7 +161,7 @@
   </div>
 </template>
 <script>
-import cartHandler from '../../mixins/getCart.js';
+import cartHandler from '@/mixins/getCart.js';
 
 export default {
   name: 'Index',

@@ -14,13 +14,7 @@ export default {
   name: 'AlertMsg',
   data() {
     return {
-      messages: [
-        // {
-        //   message: "訊息內容",
-        //   status: "danger",
-        //   timestamp: 12313
-        // }
-      ] //之後會傳入物件
+      messages: []
     };
   },
   methods: {

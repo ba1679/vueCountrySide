@@ -28,9 +28,7 @@ export default {
           let cartId = item.id;
           // 刪除重複的購物車商品
           const deletApi = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${cartId}`;
-          vm.$http.delete(deletApi).then((res) => {
-            // console.log('刪除重複購物車商品');
-          });
+          vm.$http.delete(deletApi).then((res) => {});
         }
       });
       vm.isLoading = true;
@@ -62,7 +60,6 @@ export default {
       this.$http
         .delete(api)
         .then((res) => {
-          console.log(res);
           this.getCartList();
         })
         .catch((err) => {

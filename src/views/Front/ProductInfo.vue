@@ -15,7 +15,7 @@
               >具有國產蜂蜜認證標章</i
             >
             <img
-              src="../../assets/images/蜂蜜認證.png"
+              src="@/assets/images/蜂蜜認證.png"
               alt="國產蜂蜜認證標章"
               v-if="productDetail.category === '國產蜂蜜'"
             />
@@ -56,7 +56,7 @@
                   >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
                 >
               </div>
-              <img :src="item.imageUrl" alt="" class="card-img-top" />
+              <img :src="item.imageUrl" alt="商品圖" class="card-img-top" />
             </a>
             <div class="card-body ">
               <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
@@ -74,7 +74,7 @@
   </div>
 </template>
 <script>
-import cartHandler from '../../mixins/getCart.js';
+import cartHandler from '@/mixins/getCart.js';
 export default {
   name: 'ProductInfo',
   data() {
@@ -96,11 +96,10 @@ export default {
   },
   methods: {
     getProductDetail(id) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
       const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
       vm.isLoading = true;
-      this.$http.get(api).then((res) => {
-        // console.log(res.data.product);
+      vm.$http.get(api).then((res) => {
         vm.productDetail = res.data.product;
         vm.isLoading = false;
       });
@@ -109,10 +108,10 @@ export default {
       this.addToCart(id, num);
     },
     getAllProduct() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
       const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
       vm.isLoading = true;
-      this.$http.get(api).then((res) => {
+      vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
         vm.isLoading = false;
       });

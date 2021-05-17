@@ -190,9 +190,9 @@ export default {
   },
   methods: {
     getOrderList(id) {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${id}`;
       const vm = this;
-      this.$http
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${id}`;
+      vm.$http
         .get(api)
         .then((res) => {
           vm.order = res.data.order;
@@ -203,7 +203,7 @@ export default {
     },
     confirmAlert() {
       const vm = this;
-      this.$swal({
+      vm.$swal({
         title: '取消後需重新選購商品',
         showCancelButton: true,
         cancelButtonText: `取消`,
@@ -215,10 +215,10 @@ export default {
       });
     },
     payOrder() {
-      let id = this.orderId;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${id}`;
       const vm = this;
-      this.$http
+      let id = vm.orderId;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${id}`;
+      vm.$http
         .post(api)
         .then((res) => {
           vm.$swal('付款成功，感謝購買!', '', 'success');
