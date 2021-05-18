@@ -7,8 +7,8 @@
 </template>
 <script>
 import $ from 'jquery';
-import Navbar from '@/components/front/Navbar';
-import Footer from '@/components/front/Footer';
+import Navbar from '@/components/front/Navbar.vue';
+import Footer from '@/components/front/Footer.vue';
 
 export default {
   components: {

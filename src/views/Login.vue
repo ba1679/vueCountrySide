@@ -45,16 +45,15 @@ export default {
   },
   methods: {
     signin() {
-      const vm = this; //post為箭頭函式，因此需先將this存起來
+      const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
       this.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
           // 先把cookie存起來，才能正確傳到後端
           const token = response.data.token;
           const expired = response.data.expired;
-          // MDN 寫入cookie語法，必須寫在轉址之前
+          // 寫入cookie語法，必須寫在轉址之前
           document.cookie = `hsinToken=${token};expires=${new Date(expired)};`;
-          // 使用this.$router.push 可切換頁面的path
           vm.$router.push('/admin/products');
         }
       });

@@ -84,7 +84,7 @@ export default {
       products: []
     };
   },
-  mixins: [cartHandler], //get cart & add cart
+  mixins: [cartHandler],
   computed: {
     categoryFilter() {
       return this.products.filter((item) => {

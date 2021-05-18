@@ -40,7 +40,6 @@
       </tbody>
     </table>
     <Pagination :pages="pagination" @emitProductPage="getProductList"></Pagination>
-    <!-- bs4 Modal 建立新產品會跳出的框框 -->
     <!-- Modal -->
     <div
       class="modal fade"
@@ -227,15 +226,14 @@
 </template>
 
 <script>
-// 若需在此元件使用jQuery的$字號與法，需另外載入
 import $ from 'jquery';
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   data() {
     return {
-      products: [], //產品列表get到後存到這邊
-      pagination: {}, //將api回傳的pagination傳到這邊
+      products: [],
+      pagination: {},
       cacheProduct: {},
       category: ['台灣好米', '台灣好茶', '黃金畜牧', '國產蜂蜜'],
       productId: '',
@@ -260,13 +258,12 @@ export default {
         vm.pagination = response.data.pagination;
       });
     },
-    // 編輯&新增共用同Modal，因此使用傳入的參數判斷是否為新產品，若為編輯則另外傳入原有的產品物件
     openModal(isNewParam, item) {
       if (!isNewParam) {
         this.cacheProduct = { ...item };
         this.isNew = false;
       } else {
-        this.cacheProduct = {}; //按編輯後會有產品資料在裡面，所以要先清空
+        this.cacheProduct = {};
         this.isNew = true;
       }
       $('#productModal').modal('show');
@@ -277,11 +274,9 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
       let httpMethod = 'post';
       if (!vm.isNew) {
-        // 更改為編輯產品的api及方法
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.cacheProduct.id}`;
         httpMethod = 'put';
       }
-      // post的api需要帶參數
       vm.$http[httpMethod](api, { data: vm.cacheProduct })
         .then((response) => {
           if (response.data.success) {
@@ -299,7 +294,7 @@ export default {
       // 檔案路徑
       const uploadedFile = this.$refs.files.files[0];
       const fileId = this.$refs.files.id; //取得input的id
-      vm.status.fileUploading = true; //loading圖示更改狀態
+      vm.status.fileUploading = true;
       const formData = new FormData(); //https://developer.mozilla.org/en-US/docs/Web/API/FormData/FormData  表單送出需要使用的方法
       // 使用append將api文件規定的欄位新增進去
       formData.append('file-to-upload', uploadedFile);

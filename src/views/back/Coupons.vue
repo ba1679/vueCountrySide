@@ -177,7 +177,7 @@
 </template>
 <script>
 import $ from 'jquery';
-import Pagination from '@/components/Pagination';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'Coupons',

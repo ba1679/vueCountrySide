@@ -137,8 +137,8 @@
 <script>
 import $ from 'jquery';
 import cartHandler from '@/mixins/getCart.js';
-import Pagination from '@/components/Pagination';
-import Cart from '@/components/front/Cart';
+import Pagination from '@/components/Pagination.vue';
+import Cart from '@/components/front/Cart.vue';
 export default {
   name: 'Shopping',
   data: function() {
@@ -149,7 +149,7 @@ export default {
       category: '全部商品'
     };
   },
-  mixins: [cartHandler], //get cart & add cart
+  mixins: [cartHandler],
   components: {
     Pagination,
     Cart
