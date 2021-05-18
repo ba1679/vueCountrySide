@@ -111,7 +111,6 @@
                 <hr />
                 <div class="form-group">
                   <div class="form-check">
-                    <!-- 原本checkbox的v-model value是true/false 要更改為1/0 -->
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -213,7 +212,7 @@ export default {
         this.newCoupon = { ...item };
         this.isNew = false;
       } else {
-        this.newCoupon = {}; //按編輯後會有產品資料在裡面，所以要先清空
+        this.newCoupon = {};
         this.isNew = true;
       }
       $('#couponModal').modal('show');
@@ -234,12 +233,9 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
       let httpMethod = 'post';
       if (!vm.isNew) {
-        // 更改為編輯產品的api及方法
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.newCoupon.id}`;
         httpMethod = 'put';
       }
-
-      // post的api需要帶參數
       vm.$http[httpMethod](api, { data: vm.newCoupon })
         .then((response) => {
           if (response.data.success) {
@@ -276,7 +272,7 @@ export default {
         if (response.data.success) {
           vm.isLoading = false;
           $('#deleteModal').modal('hide');
-          // this.$swal("成功刪除優惠券");
+          vm.$swal('成功刪除優惠券');
         } else {
           alert('刪除失敗');
         }

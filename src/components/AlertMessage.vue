@@ -47,7 +47,6 @@ export default {
     // 自定義名稱 'messagePush'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
-    // ? 外層$on註冊message:push方法
     vm.$bus.$on('messagePush', (message, status = 'warning') => {
       vm.updateMessage(message, status);
     });

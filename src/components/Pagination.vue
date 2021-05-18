@@ -27,10 +27,10 @@
 <script>
 export default {
   name: 'Pagination',
-  props: ['pages'], //透過page將外層資料傳進來,
+  props: ['pages'],
   methods: {
     getProductPages(pages) {
-      this.$emit('emitProductPage', pages); //觸發內層getProductPages => 觸發外層emitProductPage => 觸發最終所需methods
+      this.$emit('emitProductPage', pages);
     }
   }
 };

@@ -160,7 +160,6 @@
                 </div>
                 <div class="form-group">
                   <div class="form-check">
-                    <!-- 原本checkbox的v-model value是true/false 要更改為1/0 -->
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -291,26 +290,23 @@ export default {
     },
     uploadFile() {
       const vm = this;
-      // 檔案路徑
       const uploadedFile = this.$refs.files.files[0];
-      const fileId = this.$refs.files.id; //取得input的id
+      const fileId = this.$refs.files.id;
       vm.status.fileUploading = true;
-      const formData = new FormData(); //https://developer.mozilla.org/en-US/docs/Web/API/FormData/FormData  表單送出需要使用的方法
-      // 使用append將api文件規定的欄位新增進去
+      const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
       vm.$http
         .post(api, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data' //修改檔案格式為form-data
+            'Content-Type': 'multipart/form-data'
           }
         })
         .then((response) => {
           if (response.data.success) {
-            // 將imageUrl用set方式寫入vue的data，才能及時渲染
             vm.status.fileUploading = false;
             vm.$set(vm.cacheProduct, 'imageUrl', response.data.imageUrl);
-            document.getElementById(fileId).value = ''; //將上傳檔名清空以免影響其他商品
+            document.getElementById(fileId).value = '';
           } else {
             // ? 內層$emit觸發 ('註冊的方法','註冊時預設要帶的參數')
             vm.$bus.$emit('messagePush', response.data.message, 'danger');
