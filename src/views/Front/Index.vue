@@ -29,7 +29,7 @@
         <div class="carousel-item header-carousel-item bg-cover carousel-tea"></div>
       </div>
     </div>
-    <section class="py-5" data-aos="fade-up" data-aos-duration="2000">
+    <section class="py-6" data-aos="fade-up" data-aos-duration="2000">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -58,7 +58,7 @@
         </div>
       </div>
     </section>
-    <section class="container py-5" data-aos="fade-up" data-aos-duration="2000">
+    <section class="container py-6" data-aos="fade-up" data-aos-duration="2000">
       <div class="row">
         <div class="col-md-6 order-md-2">
           <h3>為什麼想返鄉務農?</h3>
@@ -74,7 +74,7 @@
       </div>
     </section>
     <!-- 小農的堅持 -->
-    <section class="container-fluid py-5 promise-bg bg-cover">
+    <section class="container-fluid py-6 promise-bg bg-cover">
       <div class="row text-center justify-content-center">
         <div class="col-md-5">
           <div class="display-4 farm-promise text-center">小農的堅持</div>
@@ -102,7 +102,7 @@
       </div>
     </section>
     <!-- 在地優良農產 -->
-    <section class="py-5" data-aos="flip-left" data-aos-duration="2000">
+    <section class="py-6" data-aos="flip-left" data-aos-duration="2000">
       <h2 class="text-center">在地優良農產</h2>
       <div class="container mt-4">
         <div class="row">
@@ -146,7 +146,7 @@
         background-image: url(https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
       "
     >
-      <div class="p-4">
+      <div class="py-6 px-4">
         <div class="bg-filter p-3">
           <small>加入我們</small>
           <h3>集合青年力量，讓更多人知道台灣農產</h3>
@@ -256,6 +256,10 @@ export default {
 .promise-bg {
   background-image: url(../../assets/images/小農堅持.jpg);
   color: #e3f2fd;
+}
+.bg-filter {
+  backdrop-filter: blur(3px);
+  border-radius: 20px;
 }
 @media (min-width: 768px) {
   .register-content {

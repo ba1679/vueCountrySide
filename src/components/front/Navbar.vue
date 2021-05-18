@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
       <div class="container">
         <h1 class="mb-0"><router-link to="/" class="d-block logo">上田園農產</router-link></h1>
-        <div class="h3 text-countryLight ml-lg-2 ml-sm-1 eg-logo">CountrySide</div>
+        <router-link to="/" class="h3 text-countryLight ml-lg-2 ml-sm-1 eg-logo">CountrySide</router-link>
         <button
           class="navbar-toggler"
           type="button"
@@ -78,6 +78,9 @@ export default {
 }
 .eg-logo {
   font-family: 'Pacifico', cursive;
+  &:focus {
+    color: #e3f2fd !important;
+  }
 }
 .nav-link {
   transition: all 0.3s;
@@ -89,7 +92,6 @@ export default {
 .cart-color {
   color: #e3f2fd;
 }
-// ruoter-link被點擊後，會自動產生此class name，可使用此class 設定 active後的顏色
 .nav-item > .router-link-exact-active {
   color: rgba(0, 0, 0, 0.9) !important;
 }

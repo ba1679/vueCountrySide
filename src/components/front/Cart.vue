@@ -3,7 +3,9 @@
     <div class="dropdown">
       <a href="#" class="position-relative" data-toggle="dropdown"
         ><i class="fas fa-shopping-cart fa-2x text-countryLight"></i
-        ><span class="badge badge-pill badge-danger position-absolute badge-position">{{ cartLength }}</span></a
+        ><span class="badge badge-pill badge-danger position-absolute badge-position" v-if="cartLength !== 0">{{
+          cartLength
+        }}</span></a
       >
       <div class="dropdown-menu dropdown-menu-right">
         <div class="px-4 py-3">
