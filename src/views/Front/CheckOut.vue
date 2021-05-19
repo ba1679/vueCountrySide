@@ -39,45 +39,51 @@
                 >
                   購物車明細
                 </a>
-                <strong>{{ (carts.total + 80) | currency }}</strong>
+                <!-- <strong>{{ (carts.total + 80) | currency }}</strong> -->
               </div>
             </div>
           </div>
           <div id="collapseCart" class="collapse show" data-parent="#cartDetail">
             <div class="table-responsive my-3">
               <table class="table">
-                <tr v-for="item in carts.carts" :key="item.id">
+                <tr v-for="item in cartData" :key="item.id">
                   <td>
-                    <a href="#" class="far fa-trash-alt text-danger" @click.prevent="showAlert(item.id)"></a>
+                    <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeCart(item)"></a>
                   </td>
-                  <td>{{ item.product.title }}</td>
+                  <td>{{ item.title }}</td>
                   <td>
-                    <img :src="item.product.imageUrl" alt="商品圖" class="cart-img" />
+                    <img :src="item.imageUrl" alt="商品圖" class="cart-img" />
                   </td>
-                  <td>{{ item.qty }}</td>
-                  <td>{{ item.product.unit }}</td>
+                  <td>
+                    <button type="button" class="btn">
+                      <i class="fas fa-minus text-primary" @click="minusItem(item)"></i>
+                    </button>
+                    {{ item.qty }}
+                    <button type="button" class="btn">
+                      <i class="fas fa-plus text-primary" @click="plusItem(item)"></i>
+                    </button>
+                  </td>
+                  <td>{{ item.unit }}</td>
                   <td class="text-right">NT${{ item.total }}</td>
                 </tr>
                 <tr>
-                  <td class="text-right" colspan="5">運費</td>
-                  <td class="text-right">{{ 80 | currency }}</td>
+                  <td class="text-right" colspan="5">處理費</td>
+                  <td class="text-right">{{ handleFee | currency }}</td>
                 </tr>
 
                 <tr>
                   <td class="text-right" colspan="5">總計</td>
-                  <td class="text-right">{{ (carts.total + 80) | currency }}</td>
+                  <td class="text-right">{{ (cartTotalPrice + handleFee) | currency }}</td>
                 </tr>
                 <tr>
-                  <td class="text-right text-success" colspan="5" v-if="carts.total !== carts.final_total">折扣價</td>
+                  <!-- <td class="text-right text-success" colspan="5" v-if="carts.total !== carts.final_total">折扣價</td>
                   <td class="text-right text-success" v-if="carts.total !== carts.final_total">
                     {{ (carts.final_total + 80) | currency }}
-                  </td>
+                  </td> -->
                 </tr>
               </table>
 
-              <div class="text-right text-success mb-2 ">
-                {{ couponMsg }}
-              </div>
+              <div class="text-right text-success mb-2 ">{{ couponMsg }} 如有折扣碼可於下一步輸入</div>
               <div class="input-group">
                 <input type="text" class="form-control" v-model="couponCode" />
                 <div class="input-group-append">
@@ -91,7 +97,7 @@
           <div class="h3 bg-light text-center text-secondary py-3">訂購人資訊</div>
           <!-- validation-observer(針對整個表單驗證)、validation-provider(針對單一input) -->
           <validation-observer v-slot="{ invalid }">
-            <form @submit.prevent="sendOrder">
+            <form @submit.prevent="createOrder">
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <validation-provider rules="required" v-slot="{ errors, classes }">
@@ -191,7 +197,6 @@
   </div>
 </template>
 <script>
-import cartHandler from '@/mixins/getCart.js';
 export default {
   name: 'CheckOut',
   data() {
@@ -199,6 +204,8 @@ export default {
       isLoading: false,
       couponCode: '',
       couponMsg: '',
+      handleFee: 80,
+      cartData: JSON.parse(localStorage.getItem('cart')) || [],
       form: {
         //送出訂單的參數
         user: {
@@ -211,8 +218,54 @@ export default {
       }
     };
   },
-  mixins: [cartHandler],
+  computed: {
+    cartTotalPrice() {
+      let total = 0;
+      this.cartData.forEach((item) => {
+        total += item.total;
+      });
+      return total;
+    }
+  },
   methods: {
+    plusItem(item) {
+      this.cartData.forEach((cartItem) => {
+        if (item.product_id === cartItem.product_id) {
+          cartItem.qty += 1;
+          cartItem.total = cartItem.price * cartItem.qty;
+        }
+      });
+      localStorage.setItem('cart', JSON.stringify(this.cartData));
+    },
+    minusItem(item) {
+      this.cartData.forEach((cartItem) => {
+        if (item.product_id === cartItem.product_id) {
+          if (cartItem.qty > 1) {
+            cartItem.qty -= 1;
+            cartItem.total = cartItem.price * cartItem.qty;
+          }
+        }
+      });
+      localStorage.setItem('cart', JSON.stringify(this.cartData));
+    },
+    removeCart(item) {
+      this.$swal({
+        title: '確定要從購物車移除此商品?',
+        showCancelButton: true,
+        cancelButtonText: `取消`,
+        confirmButtonText: `確定`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal('刪除成功', '', 'success');
+          this.cartData.forEach((cartItem, index) => {
+            if (item.product_id === cartItem.product_id) {
+              this.cartData.splice(index, 1);
+            }
+          });
+          localStorage.setItem('cart', JSON.stringify(this.cartData));
+        }
+      });
+    },
     useCoupon() {
       const vm = this;
       vm.status.loading = true;
@@ -226,7 +279,6 @@ export default {
           vm.couponCode = '';
           if (res.data.success) {
             vm.couponMsg = res.data.message;
-            vm.getCartList();
             vm.status.loading = false;
           } else {
             vm.$swal('找不到此優惠券');
@@ -236,6 +288,21 @@ export default {
         .catch((err) => {
           vm.$swal('找不到此優惠券');
         });
+    },
+    createOrder() {
+      const vm = this;
+      // console.log(this.cartData);
+      vm.cartData.forEach((cartItem) => {
+        let cache = {
+          product_id: cartItem.product_id,
+          qty: cartItem.qty
+        };
+        console.log(cache);
+        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
+        vm.$http.post(api, { data: cache }).then(function(res) {
+          console.log(res);
+        });
+      });
     },
     sendOrder() {
       const vm = this;
@@ -254,9 +321,6 @@ export default {
           vm.$swal('送出失敗');
         });
     }
-  },
-  mounted() {
-    this.getCartList();
   }
 };
 </script>
