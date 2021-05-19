@@ -153,7 +153,6 @@ export default {
         return vm.products;
       } else {
         vm.getAllProduct();
-        vm.isLoading = false;
         return vm.products.filter((item) => {
           return item.category === vm.category;
         });
@@ -164,10 +163,8 @@ export default {
     getAllProduct() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.isLoading = true;
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
-        vm.isLoading = false;
       });
     },
     getProductList(page = 1) {

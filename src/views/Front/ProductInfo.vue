@@ -44,9 +44,9 @@
       <div class="h4 mt-5">你可能也喜歡...</div>
       <hr />
       <div class="row same-category">
-        <div class="col-md-4" v-for="item in categoryFilter" :key="item.id">
-          <div class="card h-100 ">
-            <a class="detail-href">
+        <div class="col-md-3" v-for="item in categoryFilter" :key="item.id">
+          <a href="#" class="d-block detail-href h-100">
+            <div class="card h-100">
               <div class="detail-bg">
                 <a
                   href="#"
@@ -56,18 +56,25 @@
                   >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
                 >
               </div>
-              <img :src="item.imageUrl" alt="商品圖" class="card-img-top" />
-            </a>
-            <div class="card-body ">
-              <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
-              <div class="d-flex justify-content-end mt-3">
-                <del class="mr-auto">{{ item.origin_price | currency }}</del>
-                <span class="text-warning"
-                  >特價<strong class="h6">{{ item.price | currency }}</strong></span
-                >
+              <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
+              <div class="card-body">
+                <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
+                <div class="d-flex justify-content-end mt-3">
+                  <del class="mr-auto">{{ item.origin_price | currency }}</del>
+                  <span class="text-warning"
+                    >特價<strong class="h6">{{ item.price | currency }}</strong></span
+                  >
+                </div>
               </div>
+              <a
+                href="#"
+                class="bg-primary btn cart-btn w-100"
+                :class="{ disabled: !item.is_enabled }"
+                @click.prevent="addToCart(item.id, cartSelect)"
+                >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
+              >
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </div>
@@ -143,7 +150,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.35);
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 42px);
     transition: opacity 0.3s;
     .btn {
       position: absolute;
@@ -154,6 +161,17 @@ export default {
   }
   &:hover .detail-bg {
     opacity: 1;
+  }
+}
+.cart-btn {
+  color: white;
+  padding: 5px;
+  transition: background-color 0.3s;
+  border-radius: 0 0 0.25rem 0.25rem;
+  &:hover {
+    text-decoration: none;
+    background-color: #ffc107 !important;
+    color: #0077b6;
   }
 }
 </style>

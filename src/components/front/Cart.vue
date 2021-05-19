@@ -30,8 +30,8 @@
               </tr>
             </table>
 
-            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary btn-block" v-if="cartLength !== 0"
-              >結帳去</router-link
+            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary btn-block" v-if="cartLength !== 0">
+              結帳去</router-link
             >
             <router-link :to="{ name: 'Shopping' }" class="btn btn-primary btn-block" v-else>趕緊購物去</router-link>
           </div>
