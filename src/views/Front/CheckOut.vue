@@ -81,7 +81,9 @@
               <div class="input-group">
                 <input type="text" class="form-control" v-model="couponCode" />
                 <div class="input-group-append">
-                  <a href="#" class="btn btn-outline-success" @click.prevent="useCoupon">套用優惠券</a>
+                  <a href="#" class="btn btn-outline-success" @click.prevent="useCoupon"
+                    >套用優惠券 <i class="fas fa-circle-notch fa-spin" v-if="status.loading"></i
+                  ></a>
                 </div>
               </div>
             </div>
@@ -194,6 +196,7 @@ export default {
   name: 'CheckOut',
   data() {
     return {
+      isLoading: false,
       couponCode: '',
       couponMsg: '',
       form: {
@@ -202,6 +205,9 @@ export default {
           address: ''
         },
         message: ''
+      },
+      status: {
+        loading: false
       }
     };
   },
@@ -209,6 +215,7 @@ export default {
   methods: {
     useCoupon() {
       const vm = this;
+      vm.status.loading = true;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
       let couponCode = {
         code: vm.couponCode
@@ -220,8 +227,10 @@ export default {
           if (res.data.success) {
             vm.couponMsg = res.data.message;
             vm.getCartList();
+            vm.status.loading = false;
           } else {
             vm.$swal('找不到此優惠券');
+            vm.status.loading = false;
           }
         })
         .catch((err) => {

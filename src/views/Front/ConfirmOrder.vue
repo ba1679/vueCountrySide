@@ -106,6 +106,9 @@
             <div class="table-responsive">
               <table class="table">
                 <tr v-for="item in order.products" :key="item.id">
+                  <td>
+                    <a href="#" class="far fa-trash-alt text-danger"></a>
+                  </td>
                   <td>{{ item.product.title }}</td>
                   <td>
                     <img :src="item.product.imageUrl" alt="商品圖" class="cart-img" />

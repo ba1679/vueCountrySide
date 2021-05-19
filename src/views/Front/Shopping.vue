@@ -81,8 +81,8 @@
             data-aos-duration="1000"
             data-aos-once="true"
           >
-            <div class="card h-100 ">
-              <a class="detail-href">
+            <a href="#" class="d-block detail-href h-100">
+              <div class="card h-100">
                 <div class="category-tag">
                   {{ item.category }}
                 </div>
@@ -96,32 +96,24 @@
                   >
                 </div>
                 <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
-              </a>
-              <div class="card-body ">
-                <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
-                <div class="d-flex justify-content-end mt-3">
-                  <del class="mr-auto">{{ item.origin_price | currency }}</del>
-                  <span class="text-warning"
-                    >特價<strong class="h6">{{ item.price | currency }}</strong></span
-                  >
+                <div class="card-body">
+                  <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
+                  <div class="d-flex justify-content-end mt-3">
+                    <del class="mr-auto">{{ item.origin_price | currency }}</del>
+                    <span class="text-warning"
+                      >特價<strong class="h6">{{ item.price | currency }}</strong></span
+                    >
+                  </div>
                 </div>
+                <a
+                  href="#"
+                  class="bg-primary btn cart-btn w-100"
+                  :class="{ disabled: !item.is_enabled }"
+                  @click.prevent="addToCart(item.id, cartSelect)"
+                  >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
+                >
               </div>
-              <div>
-                <div class="form-inline justify-content-center">
-                  <select name="num" class="form-control form-sm" v-model="cartSelect">
-                    <!-- 每個option會同步 待處理 -->
-                    <option v-for="(num, index) in 10" :value="num" :key="index">{{ num }}</option>
-                  </select>
-                  <a
-                    href="#"
-                    class="bg-primary btn cart-btn w-100"
-                    :class="{ disabled: !item.is_enabled }"
-                    @click.prevent="addToCart(item.id, cartSelect)"
-                    >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
-                  >
-                </div>
-              </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -161,7 +153,6 @@ export default {
         return vm.products;
       } else {
         vm.getAllProduct();
-        vm.isLoading = false;
         return vm.products.filter((item) => {
           return item.category === vm.category;
         });
@@ -172,10 +163,8 @@ export default {
     getAllProduct() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.isLoading = true;
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
-        vm.isLoading = false;
       });
     },
     getProductList(page = 1) {
@@ -254,7 +243,7 @@ export default {
     background-color: rgba(0, 0, 0, 0.35);
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 42px);
     transition: opacity 0.3s;
     .btn {
       position: absolute;
