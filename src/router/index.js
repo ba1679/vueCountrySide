@@ -2,6 +2,14 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
+//解決程式設計式路由往同一地址跳轉時會報錯的情況
+const originalPush = VueRouter.prototype.push;
+const originalReplace = VueRouter.prototype.replace;
+//push
+VueRouter.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject);
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 const routes = [
   {

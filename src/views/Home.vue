@@ -18,6 +18,7 @@ export default {
   watch: {
     $route() {
       $('html,body').scrollTop(0);
+      $('.navbar-collapse').removeClass('show');
     }
   }
 };

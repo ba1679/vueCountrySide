@@ -37,7 +37,6 @@
 </template>
 <script>
 import Cart from '../../components/front/Cart.vue';
-// import cartHandler from '../../mixins/getCart.js';
 export default {
   name: 'Navbar',
   data() {
@@ -48,15 +47,16 @@ export default {
   components: {
     Cart
   },
-  // mixins: [cartHandler], //get cart & add cart,
   methods: {
     changeToggle() {
       this.isToggled = !this.isToggled;
     }
+  },
+  watch: {
+    $route() {
+      this.isToggled = !this.isToggled;
+    }
   }
-  // mounted() {
-  //   this.getCartList();
-  // }
 };
 </script>
 <style lang="scss" scoped>

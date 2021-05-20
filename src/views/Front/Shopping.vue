@@ -129,7 +129,7 @@
 
     <Pagination :pages="pagination" @emitProductPage="getProductList" v-if="category === '全部商品'"></Pagination>
     <Cart class="cart-icon" />
-    <a href="#" class="text-primary back-to-top d-none" @click.prevent="backToTop"
+    <a href="#" class="text-warning back-to-top d-none" @click.prevent="backToTop"
       ><i class="fas fa-arrow-circle-up fa-3x"></i
     ></a>
   </div>

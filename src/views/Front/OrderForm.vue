@@ -280,7 +280,6 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.cleanCart();
-          // this.$router.push('/shopping');
         }
       });
     },
@@ -327,7 +326,6 @@ export default {
     }
   },
   mounted() {
-    // this.cleanCart();
     this.getCartList();
   }
 };
