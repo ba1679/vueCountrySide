@@ -161,14 +161,14 @@
   </div>
 </template>
 <script>
-import cartHandler from '@/mixins/getCart.js';
+// import cartHandler from '@/mixins/getCart.js';
 
 export default {
-  name: 'Index',
-  mixins: [cartHandler],
-  mounted() {
-    this.getCartList();
-  }
+  name: 'Index'
+  // mixins: [cartHandler],
+  // mounted() {
+  //   this.getCartList();
+  // }
 };
 </script>
 <style lang="scss" scoped>

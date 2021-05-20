@@ -81,7 +81,7 @@
   </div>
 </template>
 <script>
-import cartHandler from '@/mixins/getCart.js';
+// import cartHandler from '@/mixins/getCart.js';
 export default {
   name: 'ProductInfo',
   data() {
@@ -91,7 +91,7 @@ export default {
       products: []
     };
   },
-  mixins: [cartHandler],
+  // mixins: [cartHandler],
   computed: {
     categoryFilter() {
       return this.products.filter((item) => {
@@ -131,7 +131,7 @@ export default {
   mounted() {
     let productId = this.$route.params.productId;
     this.getProductDetail(productId);
-    this.getCartList();
+    // this.getCartList();
     this.getAllProduct();
   }
 };

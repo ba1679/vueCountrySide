@@ -3,13 +3,13 @@
     <div class="dropdown">
       <a href="#" class="position-relative" data-toggle="dropdown"
         ><i class="fas fa-shopping-cart fa-2x text-countryLight"></i
-        ><span class="badge badge-pill badge-danger position-absolute badge-position" v-if="cartLength !== 0">{{
-          cartLength
+        ><span class="badge badge-pill badge-danger position-absolute badge-position" v-if="cartList.length !== 0">{{
+          cartList.length
         }}</span></a
       >
       <div class="dropdown-menu dropdown-menu-right">
         <div class="px-4 py-3">
-          <h6 v-if="cartLength !== 0">已加入購物車商品</h6>
+          <h6 v-if="cartList.length !== 0">已加入購物車商品</h6>
           <h6 v-else>購物車沒有東西喔</h6>
           <div class="table-responsive">
             <table class="table">
@@ -19,20 +19,20 @@
                     href="#"
                     class="far fa-trash-alt text-danger"
                     data-title="100%台灣好米"
-                    @click.prevent="showAlert(item.id)"
+                    @click.prevent="removeCart(item)"
                   ></a>
                 </td>
-                <td class="title-width">{{ item.product.title }}</td>
+                <td class="title-width">{{ item.title }}</td>
                 <td>
-                  <img :src="item.product.imageUrl" alt="商品圖" class="cart-img" />
+                  <img :src="item.imageUrl" alt="商品圖" class="cart-img" />
                 </td>
                 <td>{{ item.qty }}</td>
-                <td>{{ item.product.unit }}</td>
+                <td>{{ item.unit }}</td>
                 <td>NT${{ item.total }}</td>
               </tr>
             </table>
 
-            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary btn-block" v-if="cartLength !== 0">
+            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary btn-block" v-if="cartList.length !== 0">
               結帳去</router-link
             >
             <router-link :to="{ name: 'Shopping' }" class="btn btn-primary btn-block" v-else>趕緊購物去</router-link>
@@ -44,20 +44,34 @@
 </template>
 
 <script>
-import cartHandler from '../../mixins/getCart.js';
 export default {
   name: 'CartInfo',
   data() {
     return {
-      cartList: [], //之後會傳入物件
-      cartLength: 0
+      cartList: JSON.parse(localStorage.getItem('cart')) || []
     };
   },
-  mixins: [cartHandler],
   methods: {
     updateCart(carts) {
       this.cartList = carts;
-      this.cartLength = this.cartList.length;
+    },
+    removeCart(item) {
+      this.$swal({
+        title: '確定要從購物車移除此商品?',
+        showCancelButton: true,
+        cancelButtonText: `取消`,
+        confirmButtonText: `確定`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal('刪除成功', '', 'success');
+          this.cartList.forEach((cartItem, index) => {
+            if (item.product_id === cartItem.product_id) {
+              this.cartList.splice(index, 1);
+            }
+          });
+          localStorage.setItem('cart', JSON.stringify(this.cartList));
+        }
+      });
     },
     busEvent() {
       const vm = this;

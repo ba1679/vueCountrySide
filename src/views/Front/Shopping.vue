@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="message-alert">
+      <div class="alert alert-primary alert-dismissible fade" role="alert">
+        <strong>加入購物車成功</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
     <loading :active.sync="isLoading"></loading>
     <div class="jumbotron jumbotron-fluid jumbotron-bg bg-cover pt-3">
       <div class="text-center">
@@ -109,7 +117,7 @@
                   href="#"
                   class="bg-primary btn cart-btn w-100"
                   :class="{ disabled: !item.is_enabled }"
-                  @click.prevent="addToCart(item.id, cartSelect)"
+                  @click.prevent="addToCart(item)"
                   >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
                 >
               </div>
@@ -128,7 +136,7 @@
 </template>
 <script>
 import $ from 'jquery';
-import cartHandler from '@/mixins/getCart.js';
+// import cartHandler from '@/mixins/getCart.js';
 import Pagination from '@/components/Pagination.vue';
 import Cart from '@/components/front/Cart.vue';
 export default {
@@ -138,10 +146,11 @@ export default {
       isLoading: false,
       products: [],
       pagination: {},
-      category: '全部商品'
+      category: '全部商品',
+      cartData: JSON.parse(localStorage.getItem('cart')) || []
     };
   },
-  mixins: [cartHandler],
+  // mixins: [cartHandler],
   components: {
     Pagination,
     Cart
@@ -184,6 +193,54 @@ export default {
       let categoryData = e.currentTarget.getAttribute('data-category');
       this.category = categoryData;
     },
+    addToCart(item) {
+      const cacheCartID = [];
+      this.cartData.forEach((item) => {
+        cacheCartID.push(item.product_id);
+      });
+      if (cacheCartID.indexOf(item.id) === -1) {
+        const cartContent = {
+          product_id: item.id,
+          qty: 1,
+          title: item.title,
+          origin_price: item.origin_price,
+          price: item.price,
+          unit: item.unit,
+          imageUrl: item.imageUrl
+        };
+        cartContent.total = item.price * cartContent.qty;
+        this.cartData.push(cartContent);
+        localStorage.setItem('cart', JSON.stringify(this.cartData));
+      } else {
+        let cache = {};
+        this.cartData.forEach((cartItem, keys) => {
+          if (cartItem.product_id === item.id) {
+            let { qty } = cartItem;
+            cache = {
+              product_id: item.id,
+              qty: (qty += 1),
+              title: item.title,
+              origin_price: item.origin_price,
+              price: item.price,
+              unit: item.unit,
+              imageUrl: item.imageUrl
+            };
+            cache.total = item.price * cache.qty;
+            // 移除現有 localStorage 購物車的資料，否則 localStorage 會重複加入
+            this.cartData.splice(keys, 1);
+          }
+        });
+        // 將數量已經增加的資料推回陣列中
+        this.cartData.push(cache);
+        // 重新寫入 localStorage
+        localStorage.setItem('cart', JSON.stringify(this.cartData));
+      }
+      this.$bus.$emit('cartPush', this.cartData);
+      $('.alert').addClass('show');
+      setTimeout(() => {
+        $('.alert').removeClass('show');
+      }, 3000);
+    },
     backToTop() {
       $('html,body').animate(
         {
@@ -194,9 +251,7 @@ export default {
     }
   },
   mounted() {
-    this.carts.carts = JSON.parse(localStorage.getItem('cartList')) || [];
     this.getProductList();
-    this.getCartList();
     $(window).scroll(function() {
       if ($(this).scrollTop() > 300) {
         $('.back-to-top').addClass('d-block');
@@ -286,6 +341,13 @@ export default {
   position: fixed;
   bottom: 170px;
   right: 15px;
+}
+.message-alert {
+  position: fixed;
+  max-width: 50%;
+  top: 135px;
+  right: 20px;
+  z-index: 1100;
 }
 @media (min-width: 992px) {
   .cart-icon {

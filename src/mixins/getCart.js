@@ -11,8 +11,8 @@ export default {
       const vm = this;
       this.$http.get(api).then((res) => {
         vm.carts = res.data.data;
-        localStorage.setItem('cartList', JSON.stringify(vm.carts.carts));
-        vm.$bus.$emit('cartPush', vm.carts.carts);
+        // localStorage.setItem('cartList', JSON.stringify(vm.carts.carts));
+        // vm.$bus.$emit('cartPush', vm.carts.carts);
       });
     },
     addToCart(id, num) {
@@ -35,7 +35,7 @@ export default {
       let cartData = { product_id: id, qty: newQty };
       this.$http.post(api, { data: cartData }).then(function(res) {
         vm.$swal('加入購物車成功!');
-        vm.$bus.$emit('cartPush', vm.carts.carts);
+        // vm.$bus.$emit('cartPush', vm.carts.carts);。
         vm.getCartList();
         vm.isLoading = false;
       });
