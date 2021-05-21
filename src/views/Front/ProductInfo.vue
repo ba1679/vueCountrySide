@@ -1,6 +1,14 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
+    <div class="message-alert">
+      <div class="alert alert-primary alert-dismissible fade" role="alert">
+        <strong>加入購物車成功</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
     <div class="container mb-5">
       <ol class="breadcrumb bg-transparent pl-0">
         <li class="breadcrumb-item"><router-link to="/">首頁</router-link></li>
@@ -36,7 +44,7 @@
             <select class="form-control mr-1" name="num" v-model="cartSelect">
               <option v-for="(num, index) in 10" :value="num" :key="index">{{ num }}</option>
             </select>
-            <a href="#" class="btn btn-primary" @click.prevent="addCart(productDetail.id, cartSelect)">加入購物車</a>
+            <a href="#" class="btn btn-primary" @click.prevent="addToCart(productDetail, cartSelect)">加入購物車</a>
           </div>
         </div>
       </div>
@@ -70,7 +78,7 @@
                 href="#"
                 class="bg-primary btn cart-btn w-100"
                 :class="{ disabled: !item.is_enabled }"
-                @click.prevent="addToCart(item.id, cartSelect)"
+                @click.prevent="addToCart(item, cartSelect)"
                 >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
               >
             </div>
@@ -81,17 +89,18 @@
   </div>
 </template>
 <script>
-// import cartHandler from '@/mixins/getCart.js';
+import $ from 'jquery';
 export default {
   name: 'ProductInfo',
   data() {
     return {
       isLoading: false,
       productDetail: {},
-      products: []
+      products: [],
+      cartSelect: 1,
+      cartData: JSON.parse(localStorage.getItem('cart')) || []
     };
   },
-  // mixins: [cartHandler],
   computed: {
     categoryFilter() {
       return this.products.filter((item) => {
@@ -111,8 +120,50 @@ export default {
         vm.isLoading = false;
       });
     },
-    addCart(id, num) {
-      this.addToCart(id, num);
+    addToCart(item, num) {
+      const cacheCartID = [];
+      this.cartData.forEach((item) => {
+        cacheCartID.push(item.product_id);
+      });
+      if (cacheCartID.indexOf(item.id) === -1) {
+        const cartContent = {
+          product_id: item.id,
+          qty: 1,
+          title: item.title,
+          origin_price: item.origin_price,
+          price: item.price,
+          unit: item.unit,
+          imageUrl: item.imageUrl
+        };
+        cartContent.total = item.price * cartContent.qty;
+        this.cartData.push(cartContent);
+        localStorage.setItem('cart', JSON.stringify(this.cartData));
+      } else {
+        let cache = {};
+        this.cartData.forEach((cartItem, keys) => {
+          if (cartItem.product_id === item.id) {
+            let { qty } = cartItem;
+            cache = {
+              product_id: item.id,
+              qty: (qty += num),
+              title: item.title,
+              origin_price: item.origin_price,
+              price: item.price,
+              unit: item.unit,
+              imageUrl: item.imageUrl
+            };
+            cache.total = item.price * cache.qty;
+            this.cartData.splice(keys, 1);
+          }
+        });
+        this.cartData.push(cache);
+        localStorage.setItem('cart', JSON.stringify(this.cartData));
+      }
+      this.$bus.$emit('cartPush', this.cartData);
+      $('.alert').addClass('show');
+      setTimeout(() => {
+        $('.alert').removeClass('show');
+      }, 3000);
     },
     getAllProduct() {
       const vm = this;
@@ -131,12 +182,18 @@ export default {
   mounted() {
     let productId = this.$route.params.productId;
     this.getProductDetail(productId);
-    // this.getCartList();
     this.getAllProduct();
   }
 };
 </script>
 <style lang="scss" scoped>
+.message-alert {
+  position: fixed;
+  max-width: 50%;
+  top: 135px;
+  right: 20px;
+  z-index: 1100;
+}
 .same-category {
   width: 100%;
   overflow-x: scroll;
