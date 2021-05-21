@@ -1,9 +1,17 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
+    <div class="message-alert">
+      <div class="alert alert-success alert-dismissible fade" role="alert">
+        <strong>更新優惠券成功</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
     <!-- 渲染優惠券列表 -->
     <div class="text-right mt-4">
-      <button class="btn btn-primary" @click="openModal(true)">
+      <button type="button" class="btn btn-primary" @click="openModal(true)">
         新增優惠券
       </button>
     </div>
@@ -29,10 +37,10 @@
             <span v-else>未啟用</span>
           </td>
           <td class="d-flex">
-            <button class="btn btn-outline-primary btn-sm mr-1" @click="openModal(false, item)">
+            <button type="button" class="btn btn-outline-primary btn-sm mr-1" @click="openModal(false, item)">
               編輯
             </button>
-            <button class="btn btn-outline-danger btn-sm" @click="deleteModal(item.id)">
+            <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteModal(item.id)">
               刪除
             </button>
           </td>
@@ -98,11 +106,11 @@
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label for="折扣碼">折扣碼</label>
+                    <label for="coupon-code">折扣碼</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="折扣碼"
+                      id="coupon-code"
                       placeholder="請輸入折扣碼"
                       v-model="newCoupon.code"
                     />
@@ -218,11 +226,9 @@ export default {
       $('#couponModal').modal('show');
     },
     checkCoupon(code) {
-      let filterCoupon = this.couponList.filter(function(item) {
-        return item.code === code;
-      });
+      let filterCoupon = this.couponList.filter((item) => item.code === code);
       if (filterCoupon.length !== 0 && this.isNew) {
-        alert('此優惠碼已存在，請更換');
+        this.$swal('此優惠碼已存在，請更換');
         return;
       }
       this.updateCoupon();
@@ -230,7 +236,7 @@ export default {
     // 新增&編輯優惠券
     updateCoupon() {
       const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
+      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
       let httpMethod = 'post';
       if (!vm.isNew) {
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.newCoupon.id}`;
@@ -240,7 +246,10 @@ export default {
         .then((response) => {
           if (response.data.success) {
             $('#couponModal').modal('hide');
-            alert('更新優惠券成功');
+            $('.alert').addClass('show');
+            setTimeout(() => {
+              $('.alert').removeClass('show');
+            }, 3000);
             vm.getCouponList();
           }
         })
@@ -272,7 +281,10 @@ export default {
         if (response.data.success) {
           vm.isLoading = false;
           $('#deleteModal').modal('hide');
-          vm.$swal('成功刪除優惠券');
+          $('.alert').addClass('show');
+          setTimeout(() => {
+            $('.alert').removeClass('show');
+          }, 3000);
         } else {
           alert('刪除失敗');
         }
@@ -286,3 +298,12 @@ export default {
   }
 };
 </script>
+<style scoped>
+.message-alert {
+  position: fixed;
+  max-width: 50%;
+  top: 135px;
+  right: 20px;
+  z-index: 1100;
+}
+</style>

@@ -79,7 +79,7 @@
                 class="bg-primary btn cart-btn w-100"
                 :class="{ disabled: !item.is_enabled }"
                 @click.prevent="addToCart(item, cartSelect)"
-                >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
+                >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
               >
             </div>
           </a>

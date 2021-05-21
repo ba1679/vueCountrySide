@@ -56,11 +56,6 @@ const routes = [
   },
   // 後台router
   {
-    // 避免用戶在網址換輸入，若用戶不是輸入我們定義的path則導向login頁面
-    path: '*',
-    redirect: '/'
-  },
-  {
     name: 'Login',
     path: '/login', //路徑使用小寫
     component: () => import('../views/Login.vue')
@@ -97,6 +92,11 @@ const routes = [
         meta: { requiresAuth: true }
       }
     ]
+  },
+  {
+    // 避免用戶在網址換輸入，若用戶不是輸入我們定義的path則導向首頁
+    path: '*',
+    redirect: '/'
   }
 ];
 

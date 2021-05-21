@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="dropdown">
-      <a href="#" class="position-relative" data-toggle="dropdown"
+      <a href="#" class="position-relative dropdown-btn" data-toggle="dropdown" @click.prevent="cartDetailOpen"
         ><i class="fas fa-shopping-cart fa-2x text-countryLight"></i
         ><span class="badge badge-pill badge-danger position-absolute badge-position" v-if="cartList.length !== 0">{{
           cartList.length
@@ -15,12 +15,7 @@
             <table class="table">
               <tr v-for="item in cartList" :key="item.id">
                 <td>
-                  <a
-                    href="#"
-                    class="far fa-trash-alt text-danger"
-                    data-title="100%台灣好米"
-                    @click.prevent="removeCart(item)"
-                  ></a>
+                  <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeCart(item)"></a>
                 </td>
                 <td class="title-width">{{ item.title }}</td>
                 <td>
@@ -44,6 +39,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 export default {
   name: 'CartInfo',
   data() {
@@ -52,6 +48,14 @@ export default {
     };
   },
   methods: {
+    cartDetailOpen() {
+      if ($(window).outerWidth() > 768) {
+        $('.dropdown-menu').dropdown();
+        console.log(768);
+      } else {
+        $('#cartModal').modal('show');
+      }
+    },
     updateCart(carts) {
       this.cartList = carts;
     },
@@ -80,15 +84,21 @@ export default {
       vm.$bus.$on('cartPush', (carts) => {
         vm.updateCart(carts);
       });
+    },
+    mobileHandler() {
+      if ($(window).outerWidth() < 768) {
+        $('.dropdown-btn').removeAttr('data-toggle');
+      }
     }
   },
   mounted() {
     this.busEvent();
+    this.mobileHandler();
   }
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss">
 .badge-position {
   top: -15px;
   right: -15px;
@@ -101,17 +111,13 @@ export default {
   max-height: 300px;
   min-width: 250px;
   overflow-y: scroll;
-  .title-width {
-    min-width: 160px;
-  }
 }
-.mobile-cart {
-  background-color: #e3f2fd;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateX(-100%);
-  width: 100%;
-  height: 100vh;
+.title-width {
+  min-width: 160px;
+}
+@media (max-width: 768px) {
+  .dropdown-menu.show {
+    display: none;
+  }
 }
 </style>

@@ -3,7 +3,7 @@
     <loading :active.sync="isLoading"></loading>
     <!-- 渲染產品列表 -->
     <div class="text-right mt-4">
-      <button class="btn btn-primary" @click="openModal(true)">
+      <button type="button" class="btn btn-primary" @click="openModal(true)">
         建立新產品
       </button>
     </div>
@@ -80,7 +80,7 @@
                   <!-- 上傳圖片有更動時，執行上傳圖片method -->
                   <input type="file" id="customFile" class="form-control" ref="files" @change="uploadFile" />
                 </div>
-                <img :src="cacheProduct.imageUrl" class="img-fluid" alt="" />
+                <img :src="cacheProduct.imageUrl" class="img-fluid" alt="產品縮圖" />
               </div>
               <div class="col-sm-8">
                 <div class="form-group">

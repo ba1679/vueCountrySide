@@ -105,6 +105,7 @@
   </div>
 </template>
 <script>
+import $ from 'jquery';
 export default {
   name: 'CheckOut',
   data() {
@@ -165,31 +166,22 @@ export default {
       });
     },
     cleanCart() {
-      // // 避免重複加入因此要先跑一次清空購物車
-      // const cacheID = [];
-      // this.axios
-      //   .get(`${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_COUSTOMPATH}/cart`)
-      //   .then((res) => {
-      //     // 取得「當前購物車內」的產品
-      //     const cacheData = res.data.data.carts;
-      //     // 撈出產品 ID 一一加入到暫存的陣列
-      //     cacheData.forEach((item) => {
-      //       cacheID.push(item.id);
-      //     });
-      //   })
-      //   .then(() => {
-      //     // 清空「當前購物車內」的資料，否則會重複加入
-      //     cacheID.forEach((item) => {
-      //       this.axios
-      //         .delete(`${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_COUSTOMPATH}/cart/${item}`)
-      //         .then(() => {
-      //           console.log('購物車已經清空');
-      //         });
-      //     });
-      //   });
-      this.cartData.splice(0, this.cartData.length);
-      localStorage.removeItem('cart');
-      this.$bus.$emit('cartPush', this.cartData);
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
+      const vm = this;
+      const cacheID = [];
+      vm.$http
+        .get(api)
+        .then((res) => {
+          const cacheData = res.data.data.carts;
+          cacheData.forEach((item) => {
+            cacheID.push(item.id);
+          });
+        })
+        .then(() => {
+          cacheID.forEach((item) => {
+            vm.$http.delete(`${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`);
+          });
+        });
     },
     confirmCart() {
       const vm = this;
@@ -202,11 +194,15 @@ export default {
         const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
         vm.$http.post(api, { data: cache }).then(() => {
           vm.isLoading = false;
-          vm.cleanCart();
           vm.$router.push('/orderForm');
         });
       });
     }
+  },
+  mounted() {
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open');
+    this.cleanCart();
   }
 };
 </script>

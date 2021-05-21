@@ -53,6 +53,14 @@
         <div id="collapseCart" class="collapse show" data-parent="#cartDetail">
           <div class="table-responsive my-3">
             <table class="table">
+              <thead>
+                <th>刪除</th>
+                <th colspan="2">品名</th>
+                <th>數量</th>
+                <th>單位</th>
+                <th class="text-right">單價</th>
+                <th class="text-right">小計</th>
+              </thead>
               <tr v-for="item in carts.carts" :key="item.id">
                 <td>
                   <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeAlert(item.id)"></a>
@@ -65,19 +73,20 @@
                   {{ item.qty }}
                 </td>
                 <td>{{ item.product.unit }}</td>
+                <td class="text-right">{{ item.product.price | currency }}</td>
                 <td class="text-right">NT${{ item.total }}</td>
               </tr>
               <tr>
-                <td class="text-right" colspan="5">處理費</td>
+                <td class="text-right" colspan="6">處理費</td>
                 <td class="text-right">{{ handleFee | currency }}</td>
               </tr>
 
               <tr>
-                <td class="text-right" colspan="5">總計</td>
+                <td class="text-right" colspan="6">總計</td>
                 <td class="text-right">{{ (carts.total + handleFee) | currency }}</td>
               </tr>
               <tr>
-                <td class="text-right text-success" colspan="5" v-if="carts.total !== carts.final_total">折扣價</td>
+                <td class="text-right text-success" colspan="6" v-if="carts.total !== carts.final_total">折扣價</td>
                 <td class="text-right text-success" v-if="carts.total !== carts.final_total">
                   {{ (carts.final_total + handleFee) | currency }}
                 </td>
@@ -187,7 +196,9 @@
             </div>
             <div class="d-flex justify-content-end">
               <button type="button" class="btn btn-secondary mr-1" @click="showAlert">取消</button>
-              <button type="submit" class="btn btn-primary" :disabled="invalid">下一步</button>
+              <button type="submit" class="btn btn-primary" :disabled="invalid" :class="{ 'not-allow': invalid }">
+                下一步
+              </button>
             </div>
           </form>
         </validation-observer>
@@ -336,5 +347,8 @@ export default {
 }
 .cart-title {
   min-width: 100px;
+}
+.not-allow {
+  cursor: not-allowed;
 }
 </style>

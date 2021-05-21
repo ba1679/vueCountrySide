@@ -32,7 +32,7 @@
           <li class="nav-item ">
             <a
               class="nav-link"
-              :class="{ active: category == '全部商品' }"
+              :class="{ active: category === '全部商品' }"
               href="#全部商品"
               data-category="全部商品"
               @click.prevent="categoryFilter"
@@ -42,7 +42,7 @@
           <li class="nav-item ">
             <a
               class="nav-link"
-              :class="{ active: category == '台灣好米' }"
+              :class="{ active: category === '台灣好米' }"
               href="#台灣好米"
               data-category="台灣好米"
               @click.prevent="categoryFilter"
@@ -52,7 +52,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              :class="{ active: category == '台灣好茶' }"
+              :class="{ active: category === '台灣好茶' }"
               href="#"
               data-category="台灣好茶"
               @click.prevent="categoryFilter"
@@ -62,7 +62,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              :class="{ active: category == '國產蜂蜜' }"
+              :class="{ active: category === '國產蜂蜜' }"
               href="#"
               data-category="國產蜂蜜"
               @click.prevent="categoryFilter"
@@ -72,7 +72,7 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              :class="{ active: category == '黃金畜牧' }"
+              :class="{ active: category === '黃金畜牧' }"
               href="#"
               data-category="黃金畜牧"
               @click.prevent="categoryFilter"
@@ -118,7 +118,7 @@
                   class="bg-primary btn cart-btn w-100"
                   :class="{ disabled: !item.is_enabled }"
                   @click.prevent="addToCart(item)"
-                  >{{ item.is_enabled == 1 ? '加入購物車' : '缺貨中' }}</a
+                  >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
                 >
               </div>
             </a>
@@ -128,15 +128,61 @@
     </section>
 
     <Pagination :pages="pagination" @emitProductPage="getProductList" v-if="category === '全部商品'"></Pagination>
-    <Cart class="cart-icon" />
+    <a href="#" class="cart-icon d-lg-none">
+      <Cart />
+    </a>
     <a href="#" class="text-warning back-to-top d-none" @click.prevent="backToTop"
       ><i class="fas fa-arrow-circle-up fa-3x"></i
     ></a>
+    <!-- 手機版購物車Modal -->
+    <div
+      class="modal fade"
+      id="cartModal"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="cartLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cartLabel">已加入購物車清單</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <tr v-for="item in cartData" :key="item.product_id">
+                  <td>
+                    <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeCart(item)"></a>
+                  </td>
+                  <td class="title-width">{{ item.title }}</td>
+                  <td>
+                    <img :src="item.imageUrl" alt="商品圖" class="cart-img" />
+                  </td>
+                  <td>{{ item.qty }}</td>
+                  <td>{{ item.unit }}</td>
+                  <td>NT${{ item.total }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">繼續購物</button>
+            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary" v-if="cartData.length !== 0"
+              >結帳去</router-link
+            >
+            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary btn-block" v-else>趕緊購物去</router-link>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import $ from 'jquery';
-// import cartHandler from '@/mixins/getCart.js';
 import Pagination from '@/components/Pagination.vue';
 import Cart from '@/components/front/Cart.vue';
 export default {
@@ -150,7 +196,6 @@ export default {
       cartData: JSON.parse(localStorage.getItem('cart')) || []
     };
   },
-  // mixins: [cartHandler],
   components: {
     Pagination,
     Cart
@@ -240,6 +285,24 @@ export default {
       setTimeout(() => {
         $('.alert').removeClass('show');
       }, 3000);
+    },
+    removeCart(item) {
+      this.$swal({
+        title: '確定要從購物車移除此商品?',
+        showCancelButton: true,
+        cancelButtonText: `取消`,
+        confirmButtonText: `確定`
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$swal('刪除成功', '', 'success');
+          this.cartData.forEach((cartItem, index) => {
+            if (item.product_id === cartItem.product_id) {
+              this.cartData.splice(index, 1);
+            }
+          });
+          localStorage.setItem('cart', JSON.stringify(this.cartData));
+        }
+      });
     },
     backToTop() {
       $('html,body').animate(
@@ -348,10 +411,5 @@ export default {
   top: 135px;
   right: 20px;
   z-index: 1100;
-}
-@media (min-width: 992px) {
-  .cart-icon {
-    display: none;
-  }
 }
 </style>

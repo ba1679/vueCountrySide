@@ -154,21 +154,15 @@
             近幾年，有許多新聞及報章雜誌在談有關「青壯年返鄉」、「嶄新的農業行業」、「新富農」的相關報導，已有許多年輕人返鄉務農的成功案例，及選擇務農為自己的生活方式。
             返鄉青年回鄉務農，殺出另一條嶄新的農業道路，使得在臺灣各行各行業的人重新回到土地上，投入務農的行列。
           </p>
-          <button class="btn btn-outline-warning">加入我們</button>
+          <button type="button" class="btn btn-outline-warning">加入我們</button>
         </div>
       </div>
     </section>
   </div>
 </template>
 <script>
-// import cartHandler from '@/mixins/getCart.js';
-
 export default {
   name: 'Index'
-  // mixins: [cartHandler],
-  // mounted() {
-  //   this.getCartList();
-  // }
 };
 </script>
 <style lang="scss" scoped>

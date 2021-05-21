@@ -28,7 +28,7 @@
             <td>{{ item.user.email }}</td>
             <td>{{ item.user.tel }}</td>
             <td>
-              <button class="btn btn-outline-primary btn-sm mr-1" @click="openProductModal(item)">
+              <button type="button" class="btn btn-outline-primary btn-sm mr-1" @click="openProductModal(item)">
                 訂單內容
               </button>
             </td>

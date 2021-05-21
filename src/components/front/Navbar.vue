@@ -54,7 +54,7 @@ export default {
   },
   watch: {
     $route() {
-      this.isToggled = !this.isToggled;
+      this.isToggled = false;
     }
   }
 };

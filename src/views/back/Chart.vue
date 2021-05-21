@@ -80,18 +80,14 @@ export default {
     // 計算總收益
     totalPaid() {
       if (this.orderList.length !== 0) {
-        let paidOrder = this.orderList.filter((item) => {
-          return item.is_paid;
-        });
+        let paidOrder = this.orderList.filter((item) => item.is_paid);
         let totalAry = paidOrder.map((el) => el.total); //將物件內的金額轉為一個陣列
         return totalAry.reduce((a, b) => a + b); //加總起來
       }
     },
     totalUnPaid() {
       if (this.orderList.length !== 0) {
-        let unPaidOrder = this.orderList.filter((item) => {
-          return !item.is_paid;
-        });
+        let unPaidOrder = this.orderList.filter((item) => !item.is_paid);
         let totalAry = unPaidOrder.map((el) => el.total);
         return totalAry.reduce((a, b) => a + b);
       }

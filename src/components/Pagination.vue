@@ -9,7 +9,7 @@
         </li>
         <li
           class="page-item"
-          :class="{ active: pages.current_page == page }"
+          :class="{ active: pages.current_page === page }"
           v-for="page in pages.total_pages"
           :key="page"
         >

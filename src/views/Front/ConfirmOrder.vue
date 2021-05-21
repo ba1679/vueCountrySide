@@ -142,38 +142,68 @@
 
         <div class="text-center mt-3" v-if="!order.is_paid">
           <div class="h5 pb-2">選擇付款方式</div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="payment" id="creditCard" />
-            <label class="form-check-label" for="creditCard">
-              信用卡
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="payment" id="webATM" />
-            <label class="form-check-label" for="webATM">
-              網路ATM
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="payment" id="cash" />
-            <label class="form-check-label" for="cash">
-              到店付現
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="payment" id="linePay" />
-            <label class="form-check-label" for="linePay">
-              LinePay
-            </label>
-          </div>
-          <div class="d-flex justify-content-end mt-3">
-            <div :class="{ 'd-none': order.is_paid }">
-              <button type="button" class="btn btn-secondary mr-1" @click="confirmAlert">取消</button>
-              <button type="button" class="btn btn-primary" @click="payOrder">
-                確認付款
-              </button>
+          <form @submit.prevent="payOrder">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="payment"
+                id="creditCard"
+                value="信用卡"
+                v-model="payMethod"
+              />
+              <label class="form-check-label" for="creditCard">
+                信用卡
+              </label>
             </div>
-          </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="payment"
+                id="webATM"
+                value="網路ATM"
+                v-model="payMethod"
+              />
+              <label class="form-check-label" for="webATM">
+                網路ATM
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="payment"
+                id="cash"
+                value="到店付現"
+                v-model="payMethod"
+              />
+              <label class="form-check-label" for="cash">
+                到店付現
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="payment"
+                id="linePay"
+                value="LinePay"
+                v-model="payMethod"
+              />
+              <label class="form-check-label" for="linePay">
+                LinePay
+              </label>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+              <div :class="{ 'd-none': order.is_paid }">
+                <button type="button" class="btn btn-secondary mr-1" @click="confirmAlert">取消</button>
+                <button type="button" class="btn btn-primary">
+                  確認付款
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </section>
@@ -191,6 +221,7 @@ export default {
         products: [],
         user: {}
       },
+      payMethod: '信用卡',
       handleFee: 80
     };
   },
@@ -223,6 +254,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           vm.cleanCart();
+          this.$router.push('/shopping');
         }
       });
     },
