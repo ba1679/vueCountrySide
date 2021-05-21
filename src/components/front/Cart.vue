@@ -40,37 +40,6 @@
         </div>
       </div>
     </div>
-    <!-- mobile cart detail -->
-    <div class="px-4 py-3 mobile-cart">
-      <h6 v-if="cartLength !== 0">已加入購物車商品</h6>
-      <h6 v-else>購物車沒有東西喔</h6>
-      <div class="table-responsive">
-        <table class="table">
-          <tr v-for="item in cartList" :key="item.id">
-            <td>
-              <a
-                href="#"
-                class="far fa-trash-alt text-danger"
-                data-title="100%台灣好米"
-                @click.prevent="showAlert(item.id)"
-              ></a>
-            </td>
-            <td class="title-width">{{ item.product.title }}</td>
-            <td>
-              <img :src="item.product.imageUrl" alt="商品圖" class="cart-img" />
-            </td>
-            <td>{{ item.qty }}</td>
-            <td>{{ item.product.unit }}</td>
-            <td>NT${{ item.total }}</td>
-          </tr>
-        </table>
-
-        <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary btn-block" v-if="cartLength !== 0"
-          >結帳去</router-link
-        >
-        <router-link :to="{ name: 'Shopping' }" class="btn btn-primary btn-block" v-else>趕緊購物去</router-link>
-      </div>
-    </div>
   </div>
 </template>
 
