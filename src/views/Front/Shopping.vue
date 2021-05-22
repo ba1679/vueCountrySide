@@ -3,7 +3,12 @@
     <div class="message-alert">
       <div class="alert alert-primary alert-dismissible fade" role="alert">
         <strong>加入購物車成功</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -15,7 +20,9 @@
         <div class="mt-3 d-flex justify-content-center">
           <div class="coupon">
             <p class="h4 p-2 text-white">
-              歡慶青年返鄉週年 <br />即日起輸入 <strong class="text-warning">countryside888 </strong> 即可享8折優惠!!
+              歡慶青年返鄉週年 <br />即日起輸入
+              <strong class="text-warning">countryside888 </strong>
+              即可享8折優惠!!
             </p>
           </div>
         </div>
@@ -29,7 +36,7 @@
       </ol>
       <div role="tabpanel">
         <ul class="nav nav-tabs mb-3">
-          <li class="nav-item ">
+          <li class="nav-item">
             <a
               class="nav-link"
               :class="{ active: category === '全部商品' }"
@@ -39,7 +46,7 @@
               >全部商品</a
             >
           </li>
-          <li class="nav-item ">
+          <li class="nav-item">
             <a
               class="nav-link"
               :class="{ active: category === '台灣好米' }"
@@ -105,11 +112,17 @@
                 </div>
                 <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
                 <div class="card-body">
-                  <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
+                  <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{
+                    item.title
+                  }}</a>
                   <div class="d-flex justify-content-end mt-3">
-                    <del class="mr-auto">{{ item.origin_price | currency }}</del>
+                    <del class="mr-auto">{{
+                      item.origin_price | currency
+                    }}</del>
                     <span class="text-warning"
-                      >特價<strong class="h6">{{ item.price | currency }}</strong></span
+                      >特價<strong class="h6">{{
+                        item.price | currency
+                      }}</strong></span
                     >
                   </div>
                 </div>
@@ -127,11 +140,18 @@
       </div>
     </section>
 
-    <Pagination :pages="pagination" @emitProductPage="getProductList" v-if="category === '全部商品'"></Pagination>
+    <Pagination
+      :pages="pagination"
+      @emitProductPage="getProductList"
+      v-if="category === '全部商品'"
+    ></Pagination>
     <a href="#" class="cart-icon d-lg-none">
       <Cart />
     </a>
-    <a href="#" class="text-warning back-to-top d-none" @click.prevent="backToTop"
+    <a
+      href="#"
+      class="text-warning back-to-top d-none"
+      @click.prevent="backToTop"
       ><i class="fas fa-arrow-circle-up fa-3x"></i
     ></a>
     <!-- 手機版購物車Modal -->
@@ -147,7 +167,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="cartLabel">已加入購物車清單</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -156,7 +181,11 @@
               <table class="table">
                 <tr v-for="item in cartData" :key="item.product_id">
                   <td>
-                    <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeCart(item)"></a>
+                    <a
+                      href="#"
+                      class="far fa-trash-alt text-danger"
+                      @click.prevent="removeCart(item)"
+                    ></a>
                   </td>
                   <td class="title-width">{{ item.title }}</td>
                   <td>
@@ -170,11 +199,25 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">繼續購物</button>
-            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary" v-if="cartData.length !== 0"
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              繼續購物
+            </button>
+            <router-link
+              :to="{ name: 'CheckOut' }"
+              class="btn btn-primary"
+              v-if="cartData.length !== 0"
               >結帳去</router-link
             >
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary btn-block" v-else>趕緊購物去</router-link>
+            <router-link
+              :to="{ name: 'Shopping' }"
+              class="btn btn-primary btn-block"
+              v-else
+              >趕緊購物去</router-link
+            >
           </div>
         </div>
       </div>
@@ -187,18 +230,18 @@ import Pagination from '@/components/Pagination.vue';
 import Cart from '@/components/front/Cart.vue';
 export default {
   name: 'Shopping',
-  data: function() {
+  data: function () {
     return {
       isLoading: false,
       products: [],
       pagination: {},
       category: '全部商品',
-      cartData: JSON.parse(localStorage.getItem('cart')) || []
+      cartData: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   components: {
     Pagination,
-    Cart
+    Cart,
   },
   computed: {
     productFilter() {
@@ -211,7 +254,7 @@ export default {
           return item.category === vm.category;
         });
       }
-    }
+    },
   },
   methods: {
     getAllProduct() {
@@ -235,7 +278,7 @@ export default {
       this.$router.push(`/productInfo/${id}`);
     },
     categoryFilter(e) {
-      let categoryData = e.currentTarget.getAttribute('data-category');
+      const categoryData = e.currentTarget.getAttribute('data-category');
       this.category = categoryData;
     },
     addToCart(item) {
@@ -251,7 +294,7 @@ export default {
           origin_price: item.origin_price,
           price: item.price,
           unit: item.unit,
-          imageUrl: item.imageUrl
+          imageUrl: item.imageUrl,
         };
         cartContent.total = item.price * cartContent.qty;
         this.cartData.push(cartContent);
@@ -268,7 +311,7 @@ export default {
               origin_price: item.origin_price,
               price: item.price,
               unit: item.unit,
-              imageUrl: item.imageUrl
+              imageUrl: item.imageUrl,
             };
             cache.total = item.price * cache.qty;
             // 移除現有 localStorage 購物車的資料，否則 localStorage 會重複加入
@@ -290,8 +333,8 @@ export default {
       this.$swal({
         title: '確定要從購物車移除此商品?',
         showCancelButton: true,
-        cancelButtonText: `取消`,
-        confirmButtonText: `確定`
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           this.$swal('刪除成功', '', 'success');
@@ -307,22 +350,22 @@ export default {
     backToTop() {
       $('html,body').animate(
         {
-          scrollTop: 0
+          scrollTop: 0,
         },
         1000
       );
-    }
+    },
   },
   mounted() {
     this.getProductList();
-    $(window).scroll(function() {
+    $(window).scroll(function () {
       if ($(this).scrollTop() > 300) {
         $('.back-to-top').addClass('d-block');
       } else {
         $('.back-to-top').removeClass('d-block');
       }
     });
-  }
+  },
 };
 </script>
 

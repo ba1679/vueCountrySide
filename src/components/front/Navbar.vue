@@ -2,8 +2,12 @@
   <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
       <div class="container">
-        <h1 class="mb-0"><router-link to="/" class="d-block logo">上田園農產</router-link></h1>
-        <router-link to="/" class="h3 text-countryLight ml-lg-2 ml-sm-1 eg-logo">CountrySide</router-link>
+        <h1 class="mb-0">
+          <router-link to="/" class="d-block logo">上田園農產</router-link>
+        </h1>
+        <router-link to="/" class="h3 text-countryLight ml-lg-2 ml-sm-1 eg-logo"
+          >CountrySide</router-link
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -11,10 +15,13 @@
           data-target="#navbarToggler"
           @click="changeToggle"
         >
-          <i class="fas fa-bars icon-transition" :class="{ rotate: isToggled }"></i>
+          <i
+            class="fas fa-bars icon-transition"
+            :class="{ rotate: isToggled }"
+          ></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggler">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0 ">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item">
               <router-link class="nav-link" href="#" to="/shopping">
                 線上商城
@@ -41,22 +48,22 @@ export default {
   name: 'Navbar',
   data() {
     return {
-      isToggled: false
+      isToggled: false,
     };
   },
   components: {
-    Cart
+    Cart,
   },
   methods: {
     changeToggle() {
       this.isToggled = !this.isToggled;
-    }
+    },
   },
   watch: {
     $route() {
       this.isToggled = false;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

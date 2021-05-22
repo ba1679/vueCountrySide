@@ -4,7 +4,12 @@
     <div class="message-alert">
       <div class="alert alert-primary alert-dismissible fade" role="alert">
         <strong>加入購物車成功</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -12,14 +17,18 @@
     <div class="container mb-5">
       <ol class="breadcrumb bg-transparent pl-0">
         <li class="breadcrumb-item"><router-link to="/">首頁</router-link></li>
-        <li class="breadcrumb-item"><router-link to="/shopping">線上商城</router-link></li>
+        <li class="breadcrumb-item">
+          <router-link to="/shopping">線上商城</router-link>
+        </li>
         <li class="breadcrumb-item active">{{ productDetail.title }}</li>
       </ol>
       <div class="row">
         <div class="col-lg-7">
           <div class="d-flex flex-column w-100 align-items-center">
             <img :src="productDetail.imageUrl" class="img-fluid" alt="商品圖" />
-            <i class="fas fa-medal text-danger mt-4" v-if="productDetail.category === '國產蜂蜜'"
+            <i
+              class="fas fa-medal text-danger mt-4"
+              v-if="productDetail.category === '國產蜂蜜'"
               >具有國產蜂蜜認證標章</i
             >
             <img
@@ -29,7 +38,7 @@
             />
           </div>
         </div>
-        <div class="col-lg-5 ">
+        <div class="col-lg-5">
           <div class="h2">{{ productDetail.title }}</div>
           <div class="d-flex justify-content-end align-items-center">
             <del class="mr-auto">售價 NT${{ productDetail.origin_price }}</del>
@@ -42,9 +51,16 @@
           <p>{{ productDetail.description }}</p>
           <div class="form-inline justify-content-end">
             <select class="form-control mr-1" name="num" v-model="cartSelect">
-              <option v-for="(num, index) in 10" :value="num" :key="index">{{ num }}</option>
+              <option v-for="(num, index) in 10" :value="num" :key="index">
+                {{ num }}
+              </option>
             </select>
-            <a href="#" class="btn btn-primary" @click.prevent="addToCart(productDetail, cartSelect)">加入購物車</a>
+            <a
+              href="#"
+              class="btn btn-primary"
+              @click.prevent="addToCart(productDetail, cartSelect)"
+              >加入購物車</a
+            >
           </div>
         </div>
       </div>
@@ -66,11 +82,15 @@
               </div>
               <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
               <div class="card-body">
-                <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{ item.title }}</a>
+                <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{
+                  item.title
+                }}</a>
                 <div class="d-flex justify-content-end mt-3">
                   <del class="mr-auto">{{ item.origin_price | currency }}</del>
                   <span class="text-warning"
-                    >特價<strong class="h6">{{ item.price | currency }}</strong></span
+                    >特價<strong class="h6">{{
+                      item.price | currency
+                    }}</strong></span
                   >
                 </div>
               </div>
@@ -98,7 +118,7 @@ export default {
       productDetail: {},
       products: [],
       cartSelect: 1,
-      cartData: JSON.parse(localStorage.getItem('cart')) || []
+      cartData: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   computed: {
@@ -108,7 +128,7 @@ export default {
           return item.category === this.productDetail.category;
         }
       });
-    }
+    },
   },
   methods: {
     getProductDetail(id) {
@@ -133,7 +153,7 @@ export default {
           origin_price: item.origin_price,
           price: item.price,
           unit: item.unit,
-          imageUrl: item.imageUrl
+          imageUrl: item.imageUrl,
         };
         cartContent.total = item.price * cartContent.qty;
         this.cartData.push(cartContent);
@@ -150,7 +170,7 @@ export default {
               origin_price: item.origin_price,
               price: item.price,
               unit: item.unit,
-              imageUrl: item.imageUrl
+              imageUrl: item.imageUrl,
             };
             cache.total = item.price * cache.qty;
             this.cartData.splice(keys, 1);
@@ -176,14 +196,14 @@ export default {
     },
     moreDetail(id) {
       this.$router.push(`/productInfo/${id}`);
-      this.getProductDetail(id); //點擊同類型產品能馬上切換頁面
-    }
+      this.getProductDetail(id); // 點擊同類型產品能馬上切換頁面
+    },
   },
   mounted() {
-    let productId = this.$route.params.productId;
+    const productId = this.$route.params.productId;
     this.getProductDetail(productId);
     this.getAllProduct();
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

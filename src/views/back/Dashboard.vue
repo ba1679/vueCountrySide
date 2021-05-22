@@ -22,13 +22,16 @@ export default {
   components: {
     Sidebar,
     Navbar,
-    Alert
+    Alert,
   },
   created() {
     // 讀取cookie語法
-    const tokenCookie = document.cookie.replace(/(?:(?:^|.*;\s*)hsinToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
-    //axios語法，將cookie往後端發送
+    const tokenCookie = document.cookie.replace(
+      /(?:(?:^|.*;\s*)hsinToken\s*=\s*([^;]*).*$)|^.*$/,
+      '$1'
+    );
+    // axios語法，將cookie往後端發送
     this.$http.defaults.headers.common.Authorization = tokenCookie;
-  }
+  },
 };
 </script>

@@ -13,14 +13,14 @@ import Footer from '@/components/front/Footer.vue';
 export default {
   components: {
     Navbar,
-    Footer
+    Footer,
   },
   watch: {
     $route() {
       $('html,body').scrollTop(0);
       $('.navbar-collapse').removeClass('show');
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

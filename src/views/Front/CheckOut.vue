@@ -1,32 +1,64 @@
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
-    <section class="container  my-5">
+    <section class="container my-5">
       <div class="h2 text-secondary text-center">上田園農產 結帳流程</div>
       <div class="row mt-3">
         <div class="col-lg-3">
-          <div class="alert alert-primary d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-primary
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 1.</small>
             <i class="fas fa-shopping-cart mb-1"></i>
             <p class="h5">確認購物清單</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-light d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-light
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 2.</small>
             <i class="fas fa-info mb-1"></i>
             <p class="h5">輸入訂購人資料</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-light d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-light
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 3.</small>
-            <i class="fas fa-clipboard-list  mb-1"></i>
+            <i class="fas fa-clipboard-list mb-1"></i>
             <p class="h5">選擇付款方式</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-light d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-light
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 3.</small>
             <i class="fas fa-check-circle mb-1"></i>
             <p class="h5">完成購買</p>
@@ -43,7 +75,11 @@
               <table class="table">
                 <tr v-for="item in cartData" :key="item.id">
                   <td>
-                    <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeCart(item)"></a>
+                    <a
+                      href="#"
+                      class="far fa-trash-alt text-danger"
+                      @click.prevent="removeCart(item)"
+                    ></a>
                   </td>
                   <td class="cart-title">{{ item.title }}</td>
                   <td>
@@ -51,11 +87,17 @@
                   </td>
                   <td class="d-flex align-items-center">
                     <button type="button" class="btn">
-                      <i class="fas fa-minus text-primary" @click="minusItem(item)"></i>
+                      <i
+                        class="fas fa-minus text-primary"
+                        @click="minusItem(item)"
+                      ></i>
                     </button>
                     {{ item.qty }}
                     <button type="button" class="btn">
-                      <i class="fas fa-plus text-primary" @click="plusItem(item)"></i>
+                      <i
+                        class="fas fa-plus text-primary"
+                        @click="plusItem(item)"
+                      ></i>
                     </button>
                   </td>
                   <td>{{ item.unit }}</td>
@@ -68,11 +110,15 @@
 
                 <tr>
                   <td class="text-right" colspan="5">總計</td>
-                  <td class="text-right">{{ (cartTotalPrice + handleFee) | currency }}</td>
+                  <td class="text-right">
+                    {{ (cartTotalPrice + handleFee) | currency }}
+                  </td>
                 </tr>
               </table>
 
-              <div class="text-right text-success mb-2 ">如有折扣碼可於確認購買後輸入</div>
+              <div class="text-right text-success mb-2">
+                如有折扣碼可於確認購買後輸入
+              </div>
             </div>
           </div>
         </div>
@@ -84,17 +130,32 @@
             <div class="col-lg-10">
               <div class="card-body">
                 <ul class="container list-style-none">
-                  <li>※ 請確認所填寫的資料是否正確，下單後未提供修改付款方式服務。</li>
                   <li>
-                    ※ 因家禽每隻肉質、大小不同，圖片僅供參考，實際請以收到商品為準。
+                    ※ 請確認所填寫的資料是否正確，下單後未提供修改付款方式服務。
                   </li>
-                  <li>※ 本店商品目前只供應台灣地區，只提供店內自取及宅配到府</li>
+                  <li>
+                    ※
+                    因家禽每隻肉質、大小不同，圖片僅供參考，實際請以收到商品為準。
+                  </li>
+                  <li>
+                    ※ 本店商品目前只供應台灣地區，只提供店內自取及宅配到府
+                  </li>
                   <li>※ 若購買黃金畜牧產品，皆以低溫冷藏配送。</li>
                   <li>※ 本店商品為統一會於付款後7個工作日內出貨(不含假日)。</li>
                 </ul>
                 <div class="d-flex justify-content-end">
-                  <router-link :to="{ name: 'Shopping' }" class="btn btn-secondary mr-1">繼續逛逛</router-link>
-                  <button type="submit" class="btn btn-primary" @click="confirmCart">確認購買</button>
+                  <router-link
+                    :to="{ name: 'Shopping' }"
+                    class="btn btn-secondary mr-1"
+                    >繼續逛逛</router-link
+                  >
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    @click="confirmCart"
+                  >
+                    確認購買
+                  </button>
                 </div>
               </div>
             </div>
@@ -112,7 +173,7 @@ export default {
     return {
       isLoading: false,
       handleFee: 80,
-      cartData: JSON.parse(localStorage.getItem('cart')) || []
+      cartData: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   computed: {
@@ -122,7 +183,7 @@ export default {
         total += item.total;
       });
       return total;
-    }
+    },
   },
   methods: {
     plusItem(item) {
@@ -151,8 +212,8 @@ export default {
       this.$swal({
         title: '確定要從購物車移除此商品?',
         showCancelButton: true,
-        cancelButtonText: `取消`,
-        confirmButtonText: `確定`
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           this.$swal('刪除成功', '', 'success');
@@ -179,7 +240,9 @@ export default {
         })
         .then(() => {
           cacheID.forEach((item) => {
-            vm.$http.delete(`${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`);
+            vm.$http.delete(
+              `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`
+            );
           });
         });
     },
@@ -187,9 +250,9 @@ export default {
       const vm = this;
       vm.isLoading = true;
       vm.cartData.forEach((cartItem) => {
-        let cache = {
+        const cache = {
           product_id: cartItem.product_id,
-          qty: cartItem.qty
+          qty: cartItem.qty,
         };
         const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
         vm.$http.post(api, { data: cache }).then(() => {
@@ -197,13 +260,13 @@ export default {
           vm.$router.push('/orderForm');
         });
       });
-    }
+    },
   },
   mounted() {
     $('.modal-backdrop').remove();
     $('body').removeClass('modal-open');
     this.cleanCart();
-  }
+  },
 };
 </script>
 <style scoped>

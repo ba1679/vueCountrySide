@@ -1,8 +1,18 @@
 <template>
   <div class="message-alert">
-    <div class="alert alert-dismissible" :class="'alert-' + item.status" v-for="(item, i) in messages" :key="i">
+    <div
+      class="alert alert-dismissible"
+      :class="'alert-' + item.status"
+      v-for="(item, i) in messages"
+      :key="i"
+    >
       {{ item.message }}
-      <button type="button" class="close" @click="removeMessage(i)" aria-label="Close">
+      <button
+        type="button"
+        class="close"
+        @click="removeMessage(i)"
+        aria-label="Close"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -14,16 +24,16 @@ export default {
   name: 'AlertMsg',
   data() {
     return {
-      messages: []
+      messages: [],
     };
   },
   methods: {
     updateMessage(message, status) {
       const timestamp = Math.floor(new Date() / 1000);
       this.messages.push({
-        message, //錯誤訊息內容
-        status, //綁定bs4 的class用
-        timestamp
+        message, // 錯誤訊息內容
+        status, // 綁定bs4 的class用
+        timestamp,
       });
       this.removeMessageWithTiming(timestamp);
     },
@@ -40,7 +50,7 @@ export default {
           }
         });
       }, 5000);
-    }
+    },
   },
   created() {
     const vm = this;
@@ -54,7 +64,7 @@ export default {
   // 在組件銷毀前取消監聽，才不會導致一些錯誤
   beforeDestroy() {
     this.$bus.$off('messagePush');
-  }
+  },
 };
 </script>
 

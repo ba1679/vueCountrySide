@@ -1,49 +1,92 @@
 <template>
   <div>
     <section class="container my-5">
-      <div class="row mt-3 justify-content-center text-center" v-if="order.is_paid">
+      <div
+        class="row mt-3 justify-content-center text-center"
+        v-if="order.is_paid"
+      >
         <div class="col-8">
           <div class="alert alert-success alert-rounded">
             <div class="h5">結帳完成，感謝購買</div>
           </div>
-          <router-link :to="{ name: 'Home' }" class="btn btn-outline-primary mr-1">回首頁</router-link>
-          <router-link :to="{ name: 'Shopping' }" class="btn btn-primary mr-1">繼續逛逛</router-link>
+          <router-link
+            :to="{ name: 'Home' }"
+            class="btn btn-outline-primary mr-1"
+            >回首頁</router-link
+          >
+          <router-link :to="{ name: 'Shopping' }" class="btn btn-primary mr-1"
+            >繼續逛逛</router-link
+          >
         </div>
       </div>
       <div class="row mt-3" v-if="!order.is_paid">
         <div class="col-lg-3">
-          <div class="alert alert-secondary d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-secondary
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 1.</small>
             <i class="fas fa-shopping-cart mb-1"></i>
             <p class="h5">確認購物清單</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-secondary d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-secondary
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 2.</small>
             <i class="fas fa-info mb-1"></i>
             <p class="h5">輸入訂購人資料</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-primary d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-primary
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 3.</small>
-            <i class="fas fa-clipboard-list  mb-1"></i>
+            <i class="fas fa-clipboard-list mb-1"></i>
             <p class="h5">選擇付款方式</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-light d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-light
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 3.</small>
             <i class="fas fa-check-circle mb-1"></i>
             <p class="h5">完成購買</p>
           </div>
         </div>
       </div>
-      <p class="text-center my-4">親愛的顧客您好，<br />感謝您訂購我們的優質農產，以下是您的訂購資訊</p>
+      <p class="text-center my-4">
+        親愛的顧客您好，<br />感謝您訂購我們的優質農產，以下是您的訂購資訊
+      </p>
       <div class="row justify-content-center my-3">
         <div class="col-lg-6">
-          <div class="table-responsive ">
+          <div class="table-responsive">
             <table class="table mb-3 text-center">
               <thead>
                 <th colspan="2">收件人資料</th>
@@ -62,7 +105,9 @@
               </tr>
               <tr>
                 <th>寄送地址</th>
-                <td>{{ order.user.address ? order.user.address : '到店自取' }}</td>
+                <td>
+                  {{ order.user.address ? order.user.address : '到店自取' }}
+                </td>
               </tr>
             </table>
           </div>
@@ -83,7 +128,9 @@
               </tr>
               <tr>
                 <th>付款狀態</th>
-                <td :class="{ 'text-success': order.is_paid }">{{ order.is_paid ? '已付款' : '未付款' }}</td>
+                <td :class="{ 'text-success': order.is_paid }">
+                  {{ order.is_paid ? '已付款' : '未付款' }}
+                </td>
               </tr>
               <tr>
                 <th>訂單金額</th>
@@ -117,13 +164,19 @@
               <tr v-for="item in order.products" :key="item.id">
                 <td class="cart-item">{{ item.product.title }}</td>
                 <td>
-                  <img :src="item.product.imageUrl" alt="商品圖" class="cart-img" />
+                  <img
+                    :src="item.product.imageUrl"
+                    alt="商品圖"
+                    class="cart-img"
+                  />
                 </td>
                 <td>{{ item.qty }}</td>
                 <td>{{ item.product.unit }}</td>
                 <td>{{ item.product.origin_price | currency }}</td>
                 <td class="text-right">{{ item.final_total | currency }}</td>
-                <td class="text-right text-success" v-if="item.coupon">已套用優惠券</td>
+                <td class="text-right text-success" v-if="item.coupon">
+                  已套用優惠券
+                </td>
               </tr>
               <tr>
                 <td colspan="6" class="text-right">處理費</td>
@@ -133,7 +186,9 @@
               <tr>
                 <td colspan="6" class="text-right">合計</td>
                 <td class="text-right">
-                  <strong class="h4">{{ (order.total + handleFee) | currency }}</strong>
+                  <strong class="h4">{{
+                    (order.total + handleFee) | currency
+                  }}</strong>
                 </td>
               </tr>
             </table>
@@ -152,9 +207,7 @@
                 value="信用卡"
                 v-model="payMethod"
               />
-              <label class="form-check-label" for="creditCard">
-                信用卡
-              </label>
+              <label class="form-check-label" for="creditCard"> 信用卡 </label>
             </div>
             <div class="form-check form-check-inline">
               <input
@@ -165,9 +218,7 @@
                 value="網路ATM"
                 v-model="payMethod"
               />
-              <label class="form-check-label" for="webATM">
-                網路ATM
-              </label>
+              <label class="form-check-label" for="webATM"> 網路ATM </label>
             </div>
             <div class="form-check form-check-inline">
               <input
@@ -178,9 +229,7 @@
                 value="到店付現"
                 v-model="payMethod"
               />
-              <label class="form-check-label" for="cash">
-                到店付現
-              </label>
+              <label class="form-check-label" for="cash"> 到店付現 </label>
             </div>
             <div class="form-check form-check-inline">
               <input
@@ -191,16 +240,18 @@
                 value="LinePay"
                 v-model="payMethod"
               />
-              <label class="form-check-label" for="linePay">
-                LinePay
-              </label>
+              <label class="form-check-label" for="linePay"> LinePay </label>
             </div>
             <div class="d-flex justify-content-end mt-3">
               <div :class="{ 'd-none': order.is_paid }">
-                <button type="button" class="btn btn-secondary mr-1" @click="confirmAlert">取消</button>
-                <button type="button" class="btn btn-primary">
-                  確認付款
+                <button
+                  type="button"
+                  class="btn btn-secondary mr-1"
+                  @click="confirmAlert"
+                >
+                  取消
                 </button>
+                <button type="button" class="btn btn-primary">確認付款</button>
               </div>
             </div>
           </form>
@@ -219,17 +270,17 @@ export default {
       order: {
         coupon: '',
         products: [],
-        user: {}
+        user: {},
       },
       payMethod: '信用卡',
-      handleFee: 80
+      handleFee: 80,
     };
   },
   computed: {
     timeTransform() {
-      let date = new Date(this.order.create_at * 1000).toLocaleDateString();
+      const date = new Date(this.order.create_at * 1000).toLocaleDateString();
       return date;
-    }
+    },
   },
   methods: {
     getOrderList(id) {
@@ -249,8 +300,8 @@ export default {
       vm.$swal({
         title: '取消後需重新選購商品',
         showCancelButton: true,
-        cancelButtonText: `取消`,
-        confirmButtonText: `確定`
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           vm.cleanCart();
@@ -273,7 +324,9 @@ export default {
         .then(() => {
           cacheID.forEach((item) => {
             vm.$http
-              .delete(`${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`)
+              .delete(
+                `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`
+              )
               .then(() => {
                 vm.$router.push('/shopping');
               });
@@ -282,7 +335,7 @@ export default {
     },
     payOrder() {
       const vm = this;
-      let id = vm.orderId;
+      const id = vm.orderId;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${id}`;
       vm.$http
         .post(api)
@@ -294,12 +347,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-    }
+    },
   },
   mounted() {
     this.orderId = this.$route.params.orderId;
     this.getOrderList(this.orderId);
-  }
+  },
 };
 </script>
 <style scoped>

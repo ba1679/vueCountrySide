@@ -2,31 +2,51 @@
   <div>
     <div id="countrySideCarousel" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
-        <li data-target="#countrySideCarousel" data-slide-to="0" class="active"></li>
+        <li
+          data-target="#countrySideCarousel"
+          data-slide-to="0"
+          class="active"
+        ></li>
         <li data-target="#countrySideCarousel" data-slide-to="1"></li>
         <li data-target="#countrySideCarousel" data-slide-to="2"></li>
       </ol>
       <div class="carousel-inner">
-        <div class="carousel-item header-carousel-item active bg-cover carousel-honey">
+        <div
+          class="
+            carousel-item
+            header-carousel-item
+            active
+            bg-cover
+            carousel-honey
+          "
+        >
           <div class="carousel-caption bg-transparent">
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary">馬上購買</router-link>
+            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+              >馬上購買</router-link
+            >
           </div>
         </div>
         <div class="carousel-item header-carousel-item bg-cover carousel-rice">
           <div class="carousel-caption d-none d-md-block">
             <h5>台灣農民用心耕種</h5>
             <p>100%台灣好米，值得您支持</p>
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary">馬上購買</router-link>
+            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+              >馬上購買</router-link
+            >
           </div>
         </div>
         <div class="carousel-item header-carousel-item bg-cover carousel-hen">
           <div class="carousel-caption d-none d-md-block">
             <h5>小農親自餵養</h5>
             <p>堅持給你最好的雞</p>
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary">馬上購買</router-link>
+            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+              >馬上購買</router-link
+            >
           </div>
         </div>
-        <div class="carousel-item header-carousel-item bg-cover carousel-tea"></div>
+        <div
+          class="carousel-item header-carousel-item bg-cover carousel-tea"
+        ></div>
       </div>
     </div>
     <section class="py-6" data-aos="fade-up" data-aos-duration="2000">
@@ -41,16 +61,40 @@
           <div class="col-md-6 position-relative">
             <div class="product-md-center">
               <div class="product-circle">
-                <img class="icon tea-icon" src="@/assets/images/green-tea.svg" alt="茶icon" />
-                <img class="icon hen-icon" src="@/assets/images/hen.svg" alt="雞icon" />
-                <img class="icon honey-icon" src="@/assets/images/honey.svg" alt="蜂蜜icon" />
-                <img class="icon rice-icon" src="@/assets/images/rice-bowl.svg" alt="米icon" />
+                <img
+                  class="icon tea-icon"
+                  src="@/assets/images/green-tea.svg"
+                  alt="茶icon"
+                />
+                <img
+                  class="icon hen-icon"
+                  src="@/assets/images/hen.svg"
+                  alt="雞icon"
+                />
+                <img
+                  class="icon honey-icon"
+                  src="@/assets/images/honey.svg"
+                  alt="蜂蜜icon"
+                />
+                <img
+                  class="icon rice-icon"
+                  src="@/assets/images/rice-bowl.svg"
+                  alt="米icon"
+                />
                 <div class="sr-only">
-                  Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from
-                  <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                  Icons made by
+                  <a href="https://www.freepik.com" title="Freepik">Freepik</a>
+                  from
+                  <a href="https://www.flaticon.com/" title="Flaticon"
+                    >www.flaticon.com</a
+                  >
                 </div>
                 <div class="taiwan">
-                  <img class="img-fluid" src="@/assets/images/taiwan.png" alt="台灣圖" />
+                  <img
+                    class="img-fluid"
+                    src="@/assets/images/taiwan.png"
+                    alt="台灣圖"
+                  />
                 </div>
               </div>
             </div>
@@ -68,7 +112,11 @@
         </div>
         <div class="col-md-6 order-md-1">
           <div class="d-flex justify-content-center align-items-center">
-            <img src="@/assets/images/countrySide.png" class="countrySide-img" alt="countrySide" />
+            <img
+              src="@/assets/images/countrySide.png"
+              class="countrySide-img"
+              alt="countrySide"
+            />
           </div>
         </div>
       </div>
@@ -133,7 +181,9 @@
         </div>
 
         <div class="mt-3 text-center">
-          <router-link class="btn btn-primary shopping-btn" :to="{ name: 'Shopping' }"
+          <router-link
+            class="btn btn-primary shopping-btn"
+            :to="{ name: 'Shopping' }"
             >趕緊去逛逛<i class="fas fa-arrow-right"></i
           ></router-link>
         </div>
@@ -154,7 +204,9 @@
             近幾年，有許多新聞及報章雜誌在談有關「青壯年返鄉」、「嶄新的農業行業」、「新富農」的相關報導，已有許多年輕人返鄉務農的成功案例，及選擇務農為自己的生活方式。
             返鄉青年回鄉務農，殺出另一條嶄新的農業道路，使得在臺灣各行各行業的人重新回到土地上，投入務農的行列。
           </p>
-          <button type="button" class="btn btn-outline-warning">加入我們</button>
+          <button type="button" class="btn btn-outline-warning">
+            加入我們
+          </button>
         </div>
       </div>
     </section>
@@ -162,7 +214,7 @@
 </template>
 <script>
 export default {
-  name: 'Index'
+  name: 'Index',
 };
 </script>
 <style lang="scss" scoped>

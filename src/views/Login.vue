@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :active.sync="isLoading" loader="dots"></loading>
     <form class="form-signin" @submit.prevent="signin">
       <h1 class="h3 mb-3 font-weight-normal">請輸入帳號及密碼登入</h1>
       <label for="inputEmail" class="sr-only">帳號</label>
@@ -39,14 +40,16 @@ export default {
     return {
       user: {
         username: '',
-        password: ''
-      }
+        password: '',
+      },
+      isLoading: false,
     };
   },
   methods: {
     signin() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
+      vm.isLoading = true;
       this.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
           // 先把cookie存起來，才能正確傳到後端
@@ -55,10 +58,12 @@ export default {
           // 寫入cookie語法，必須寫在轉址之前
           document.cookie = `hsinToken=${token};expires=${new Date(expired)};`;
           vm.$router.push('/admin/products');
+        } else {
+          vm.$swal('帳號或密碼錯誤');
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

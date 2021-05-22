@@ -4,7 +4,12 @@
     <!-- 渲染訂單列表 -->
     <h2 class="text-center mt-3">訂單列表</h2>
     <div class="d-flex justify-content-end">
-      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#placeOrderModal">
+      <button
+        class="btn btn-primary"
+        type="button"
+        data-toggle="modal"
+        data-target="#placeOrderModal"
+      >
         <i class="fas fa-shopping-cart mr-2"></i>快速下單
       </button>
     </div>
@@ -28,7 +33,11 @@
             <td>{{ item.user.email }}</td>
             <td>{{ item.user.tel }}</td>
             <td>
-              <button type="button" class="btn btn-outline-primary btn-sm mr-1" @click="openProductModal(item)">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm mr-1"
+                @click="openProductModal(item)"
+              >
                 訂單內容
               </button>
             </td>
@@ -39,10 +48,19 @@
             <td>{{ item.total | currency }}</td>
             <td>
               <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-outline-secondary" @click="openModal(item)">編輯</button>
                 <button
                   type="button"
-                  class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+                  class="btn btn-outline-secondary"
+                  @click="openModal(item)"
+                >
+                  編輯
+                </button>
+                <button
+                  type="button"
+                  class="
+                    btn btn-outline-secondary
+                    dropdown-toggle dropdown-toggle-split
+                  "
                   data-toggle="dropdown"
                 ></button>
                 <div class="dropdown-menu dropdown-menu-right">
@@ -57,7 +75,10 @@
         </tbody>
       </table>
     </div>
-    <Pagination :pages="pagination" @emitProductPage="getOrderList"></Pagination>
+    <Pagination
+      :pages="pagination"
+      @emitProductPage="getOrderList"
+    ></Pagination>
     <!-- Modal -->
     <div class="modal fade" id="orderModal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
@@ -66,7 +87,12 @@
             <h5 class="modal-title">
               <span>修改訂單</span>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -75,20 +101,35 @@
               <div class="col-sm-8">
                 <div class="form-group">
                   <label for="name">訂購姓名</label>
-                  <input type="text" class="form-control" id="name" v-model="cacheOrder.user.name" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    v-model="cacheOrder.user.name"
+                  />
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="address">寄送地址</label>
-                    <input type="text" class="form-control" id="address" v-model="cacheOrder.user.address" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="address"
+                      v-model="cacheOrder.user.address"
+                    />
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="tel">電話</label>
-                    <input type="tel" class="form-control" id="tel" v-model="cacheOrder.user.tel" />
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="tel"
+                      v-model="cacheOrder.user.tel"
+                    />
                   </div>
                 </div>
                 <hr />
@@ -96,10 +137,18 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
               取消
             </button>
-            <button type="button" class="btn btn-primary" @click="updateOrder(cacheOrder.id)">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="updateOrder(cacheOrder.id)"
+            >
               確認
             </button>
           </div>
@@ -120,7 +169,12 @@
             <h5 class="modal-title">
               <span>訂單內容</span>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -153,7 +207,9 @@
               <tfoot>
                 <tr>
                   <td colspan="4" class="text-right">總價</td>
-                  <td class="text-right">{{ parseInt(cacheOrder.total) | currency }}</td>
+                  <td class="text-right">
+                    {{ parseInt(cacheOrder.total) | currency }}
+                  </td>
                 </tr>
               </tfoot>
             </table>
@@ -167,12 +223,22 @@
       </div>
     </div>
     <!-- 下單Modal -->
-    <div class="modal fade" id="placeOrderModal" tabindex="-1" data-backdrop="static">
+    <div
+      class="modal fade"
+      id="placeOrderModal"
+      tabindex="-1"
+      data-backdrop="static"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header bg-primary text-white">
             <h5 class="modal-title" id="editModalLabel">快速下單</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -190,7 +256,12 @@
               </div>
               <div class="form-group">
                 <label for="address">寄送地址</label>
-                <input type="text" class="form-control" id="address" placeholder="請輸入路名、街道、樓層" />
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  placeholder="請輸入路名、街道、樓層"
+                />
               </div>
               <div class="form-row">
                 <div class="form-group col-md-5">
@@ -213,21 +284,39 @@
                 <div class="form-group col-md-8">
                   <label for="product">購買品項</label>
                   <select class="form-control" name="product" id="product">
-                    <option v-for="item in products" :value="item.title" :key="item.id">{{ item.title }}</option>
+                    <option
+                      v-for="item in products"
+                      :value="item.title"
+                      :key="item.id"
+                    >
+                      {{ item.title }}
+                    </option>
                   </select>
                 </div>
                 <div class="form-group col-md-4">
                   <label for="num">數量</label>
                   <select id="num" class="form-control">
                     <option selected>請選擇...</option>
-                    <option v-for="(num, index) in 10" :value="num" :key="index">{{ num }}</option>
+                    <option
+                      v-for="(num, index) in 10"
+                      :value="num"
+                      :key="index"
+                    >
+                      {{ num }}
+                    </option>
                   </select>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              取消
+            </button>
             <button type="button" class="btn btn-primary">確認下單</button>
           </div>
         </div>
@@ -250,27 +339,27 @@ export default {
           is_paid: false,
           num: 1,
           products: {
-            product: []
+            product: [],
           },
           total: 0,
-          user: {}
-        }
+          user: {},
+        },
       ],
       products: [],
       cacheOrder: {
         final_total: '',
         coupon: {
-          code: ''
+          code: '',
         },
         products: [],
-        user: {}
+        user: {},
       },
       pagination: {},
-      isLoading: false
+      isLoading: false,
     };
   },
   components: {
-    Pagination
+    Pagination,
   },
   methods: {
     getOrderList(page = 1) {
@@ -316,11 +405,11 @@ export default {
           alert('修改失敗');
           console.log(err);
         });
-    }
+    },
   },
   mounted() {
     this.getOrderList();
     this.getAllProducts();
-  }
+  },
 };
 </script>

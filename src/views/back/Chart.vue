@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
   <div>
     <loading :active.sync="isLoading"></loading>
@@ -5,7 +6,9 @@
       <div class="row my-3">
         <div class="col-lg-4 mb-2">
           <div class="card text-center py-2 h-100">
-            <div class="card-body d-flex justify-content-around align-items-center">
+            <div
+              class="card-body d-flex justify-content-around align-items-center"
+            >
               <i class="fas fa-wallet text-primary fa-3x"></i>
               <div>
                 <div class="h4">目前總收益</div>
@@ -16,7 +19,9 @@
         </div>
         <div class="col-lg-4 mb-2">
           <div class="card text-center py-2 h-100">
-            <div class="card-body d-flex justify-content-around align-items-center">
+            <div
+              class="card-body d-flex justify-content-around align-items-center"
+            >
               <i class="fas fa-clipboard-list text-primary fa-3x"></i>
               <div>
                 <div class="h4">訂單總量</div>
@@ -28,7 +33,9 @@
 
         <div class="col-lg-4 mb-2">
           <div class="card text-center py-2 h-100">
-            <div class="card-body d-flex justify-content-around align-items-center">
+            <div
+              class="card-body d-flex justify-content-around align-items-center"
+            >
               <i class="fas fa-file-invoice-dollar text-primary fa-3x"></i>
               <div>
                 <div class="h4">應收貨款</div>
@@ -41,9 +48,7 @@
       <div class="row mb-5">
         <div class="col-lg-6 mb-2">
           <div class="card">
-            <div class="card-header">
-              產品類別售出總數
-            </div>
+            <div class="card-header">產品類別售出總數</div>
             <div class="card-body">
               <div id="chart"></div>
             </div>
@@ -51,9 +56,7 @@
         </div>
         <div class="col-lg-6">
           <div class="card">
-            <div class="card-header">
-              單一產品售出排名
-            </div>
+            <div class="card-header">單一產品售出排名</div>
             <div class="card-body">
               <div id="chartProduct"></div>
             </div>
@@ -72,26 +75,31 @@ export default {
       orderList: [],
       chartCategoryAry: [],
       chartProductAry: [],
-      products: []
+      products: [],
     };
   },
-
   computed: {
     // 計算總收益
     totalPaid() {
       if (this.orderList.length !== 0) {
-        let paidOrder = this.orderList.filter((item) => item.is_paid);
-        let totalAry = paidOrder.map((el) => el.total); //將物件內的金額轉為一個陣列
-        return totalAry.reduce((a, b) => a + b); //加總起來
+        const paidOrder = this.orderList.filter((item) => {
+          return item.is_paid;
+        });
+        const totalAry = paidOrder.map((el) => el.total); // 將物件內的金額轉為一個陣列
+        return totalAry.reduce((a, b) => a + b); // 加總起來
+      } else {
+        return '目前無訂單';
       }
     },
     totalUnPaid() {
       if (this.orderList.length !== 0) {
-        let unPaidOrder = this.orderList.filter((item) => !item.is_paid);
-        let totalAry = unPaidOrder.map((el) => el.total);
+        const unPaidOrder = this.orderList.filter((item) => !item.is_paid);
+        const totalAry = unPaidOrder.map((el) => el.total);
         return totalAry.reduce((a, b) => a + b);
+      } else {
+        return '目前無訂單';
       }
-    }
+    },
   },
   methods: {
     getOrderList(page = 1) {
@@ -107,17 +115,16 @@ export default {
     },
     renderCategoryChart() {
       const vm = this;
-      let categoryAry = [];
+      const categoryAry = [];
       vm.orderList.forEach((item) => {
         categoryAry.push(Object.values(item.products));
       });
-      let categoryObj = {};
+      const categoryObj = {};
       categoryAry.forEach((categoryItem) => {
         categoryItem.forEach((item) => {
           vm.products.push(item.product);
         });
       });
-
       vm.products.forEach((productItem) => {
         if (!categoryObj[productItem.category]) {
           categoryObj[productItem.category] = 1;
@@ -125,27 +132,28 @@ export default {
           categoryObj[productItem.category] += 1;
         }
       });
-      let chartAry = Object.keys(categoryObj);
+      const chartAry = Object.keys(categoryObj);
       chartAry.forEach((aryItem) => {
-        let ary = [];
+        const ary = [];
         ary.push(aryItem);
         ary.push(categoryObj[aryItem]);
         vm.chartCategoryAry.push(ary);
       });
-      let chart = c3.generate({
+      // eslint-disable-next-line no-unused-vars,no-undef
+      const chart = c3.generate({
         bindto: '#chart',
         data: {
           type: 'bar',
-          columns: vm.chartCategoryAry
+          columns: vm.chartCategoryAry,
         },
         color: {
-          pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f']
-        }
+          pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f'],
+        },
       });
     },
     renderProductChart() {
       const vm = this;
-      let productObj = {};
+      const productObj = {};
       vm.products.forEach((item) => {
         if (!productObj[item.title]) {
           productObj[item.title] = 1;
@@ -153,9 +161,9 @@ export default {
           productObj[item.title] += 1;
         }
       });
-      let chartAry = Object.keys(productObj);
+      const chartAry = Object.keys(productObj);
       chartAry.forEach((aryItem) => {
-        let ary = [];
+        const ary = [];
         ary.push(aryItem);
         ary.push(productObj[aryItem]);
         vm.chartProductAry.push(ary);
@@ -173,20 +181,21 @@ export default {
         vm.chartProductAry.splice(3, vm.chartProductAry.length);
         vm.chartProductAry.push(['其他', otherTotal]);
       }
-      let chartProduct = c3.generate({
+      // eslint-disable-next-line no-unused-vars,no-undef
+      const chartProduct = c3.generate({
         bindto: '#chartProduct',
         data: {
           type: 'pie',
-          columns: vm.chartProductAry
+          columns: vm.chartProductAry,
         },
         color: {
-          pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f']
-        }
+          pattern: ['#ED7D31', '#5A9BD5', '#FFC000', '#2a9d8f'],
+        },
       });
-    }
+    },
   },
   mounted() {
     this.getOrderList();
-  }
+  },
 };
 </script>

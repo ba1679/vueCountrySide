@@ -4,7 +4,12 @@
     <div class="message-alert">
       <div class="alert alert-success alert-dismissible fade" role="alert">
         <strong>更新優惠券成功</strong>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -37,17 +42,28 @@
             <span v-else>未啟用</span>
           </td>
           <td class="d-flex">
-            <button type="button" class="btn btn-outline-primary btn-sm mr-1" @click="openModal(false, item)">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-sm mr-1"
+              @click="openModal(false, item)"
+            >
               編輯
             </button>
-            <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteModal(item.id)">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm"
+              @click="deleteModal(item.id)"
+            >
               刪除
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <Pagination :pages="pagination" @emitProductPage="getCouponList"></Pagination>
+    <Pagination
+      :pages="pagination"
+      @emitProductPage="getCouponList"
+    ></Pagination>
     <!-- Modal -->
     <div
       class="modal fade"
@@ -63,7 +79,12 @@
             <h5 class="modal-title" id="couponModal">
               <span>新增優惠券</span>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -136,10 +157,18 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
               取消
             </button>
-            <button type="button" class="btn btn-primary" @click="checkCoupon(newCoupon.code)">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="checkCoupon(newCoupon.code)"
+            >
               確認
             </button>
           </div>
@@ -160,7 +189,12 @@
             <h5 class="modal-title" id="deleteModal">
               <span>刪除優惠券</span>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -170,7 +204,11 @@
             優惠券? (刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
               取消
             </button>
             <button type="button" class="btn btn-danger" @click="deleteCoupon">
@@ -196,11 +234,11 @@ export default {
       isLoading: false,
       isNew: false,
       couponId: '',
-      todayDate: ''
+      todayDate: '',
     };
   },
   components: {
-    Pagination
+    Pagination,
   },
   methods: {
     getCouponList(page = 1) {
@@ -226,7 +264,7 @@ export default {
       $('#couponModal').modal('show');
     },
     checkCoupon(code) {
-      let filterCoupon = this.couponList.filter((item) => item.code === code);
+      const filterCoupon = this.couponList.filter((item) => item.code === code);
       if (filterCoupon.length !== 0 && this.isNew) {
         this.$swal('此優惠碼已存在，請更換');
         return;
@@ -260,12 +298,11 @@ export default {
     },
     checkDate() {
       const vm = this;
-      vm.couponList.forEach(function(item) {
-        let due_date = Date.parse(item.due_date.replace(/-/g, '/'));
-        let couponTitle = item.title;
-        if (vm.todayDate > due_date && item.is_enabled === 1) {
+      vm.couponList.forEach(function (item) {
+        const dueDate = Date.parse(item.due_date.replace(/-/g, '/'));
+        const couponTitle = item.title;
+        if (vm.todayDate > dueDate && item.is_enabled === 1) {
           vm.$swal(`${couponTitle}的優惠日期已到，請取消啟用!`);
-          return;
         }
       });
     },
@@ -290,12 +327,12 @@ export default {
         }
         vm.getCouponList(vm.pagination.current_page);
       });
-    }
+    },
   },
   mounted() {
     this.getCouponList();
     this.todayDate = Date.parse(new Date().toDateString());
-  }
+  },
 };
 </script>
 <style scoped>

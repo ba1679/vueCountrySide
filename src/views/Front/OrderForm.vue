@@ -5,28 +5,60 @@
       <div class="h2 text-secondary text-center">上田園農產 結帳流程</div>
       <div class="row mt-3">
         <div class="col-lg-3">
-          <div class="alert alert-secondary d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-secondary
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 1.</small>
             <i class="fas fa-shopping-cart mb-1"></i>
             <p class="h5">確認購物清單</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-primary d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-primary
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 2.</small>
             <i class="fas fa-info mb-1"></i>
             <p class="h5">輸入訂購人資料</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-light d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-light
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 3.</small>
-            <i class="fas fa-clipboard-list  mb-1"></i>
+            <i class="fas fa-clipboard-list mb-1"></i>
             <p class="h5">選擇付款方式</p>
           </div>
         </div>
         <div class="col-lg-3">
-          <div class="alert alert-light d-flex flex-column align-items-center alert-rounded">
+          <div
+            class="
+              alert alert-light
+              d-flex
+              flex-column
+              align-items-center
+              alert-rounded
+            "
+          >
             <small>STEP 3.</small>
             <i class="fas fa-check-circle mb-1"></i>
             <p class="h5">完成購買</p>
@@ -63,11 +95,19 @@
               </thead>
               <tr v-for="item in carts.carts" :key="item.id">
                 <td>
-                  <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeAlert(item.id)"></a>
+                  <a
+                    href="#"
+                    class="far fa-trash-alt text-danger"
+                    @click.prevent="removeAlert(item.id)"
+                  ></a>
                 </td>
                 <td class="cart-title">{{ item.product.title }}</td>
                 <td>
-                  <img :src="item.product.imageUrl" alt="商品圖" class="cart-img" />
+                  <img
+                    :src="item.product.imageUrl"
+                    alt="商品圖"
+                    class="cart-img"
+                  />
                 </td>
                 <td>
                   {{ item.qty }}
@@ -83,11 +123,22 @@
 
               <tr>
                 <td class="text-right" colspan="6">總計</td>
-                <td class="text-right">{{ (carts.total + handleFee) | currency }}</td>
+                <td class="text-right">
+                  {{ (carts.total + handleFee) | currency }}
+                </td>
               </tr>
               <tr>
-                <td class="text-right text-success" colspan="6" v-if="carts.total !== carts.final_total">折扣價</td>
-                <td class="text-right text-success" v-if="carts.total !== carts.final_total">
+                <td
+                  class="text-right text-success"
+                  colspan="6"
+                  v-if="carts.total !== carts.final_total"
+                >
+                  折扣價
+                </td>
+                <td
+                  class="text-right text-success"
+                  v-if="carts.total !== carts.final_total"
+                >
                   {{ (carts.final_total + handleFee) | currency }}
                 </td>
               </tr>
@@ -96,21 +147,35 @@
             <div class="input-group">
               <input type="text" class="form-control" v-model="couponCode" />
               <div class="input-group-append">
-                <a href="#" class="btn btn-outline-success" @click.prevent="useCoupon"
-                  >套用優惠券 <i class="fas fa-circle-notch fa-spin" v-if="status.loading"></i
+                <a
+                  href="#"
+                  class="btn btn-outline-success"
+                  @click.prevent="useCoupon"
+                  >套用優惠券
+                  <i
+                    class="fas fa-circle-notch fa-spin"
+                    v-if="status.loading"
+                  ></i
                 ></a>
               </div>
             </div>
           </div>
         </div>
-        <div class="h3 bg-light text-center text-secondary py-3">訂購人資訊</div>
+        <div class="h3 bg-light text-center text-secondary py-3">
+          訂購人資訊
+        </div>
         <!-- validation-observer(針對整個表單驗證)、validation-provider(針對單一input) -->
         <validation-observer v-slot="{ invalid }">
           <form @submit.prevent="sendOrder">
             <div class="form-row">
               <div class="form-group col-md-6">
-                <validation-provider rules="required" v-slot="{ errors, classes }">
-                  <label for="name">訂購人姓名 <span class="text-danger">*</span></label>
+                <validation-provider
+                  rules="required"
+                  v-slot="{ errors, classes }"
+                >
+                  <label for="name"
+                    >訂購人姓名 <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -124,8 +189,13 @@
                 </validation-provider>
               </div>
               <div class="form-group col-md-6">
-                <validation-provider rules="required|email" v-slot="{ errors, classes }">
-                  <label for="email">訂購人Email <span class="text-danger">*</span></label>
+                <validation-provider
+                  rules="required|email"
+                  v-slot="{ errors, classes }"
+                >
+                  <label for="email"
+                    >訂購人Email <span class="text-danger">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -140,9 +210,15 @@
               </div>
             </div>
             <div class="form-row">
-              <validation-provider class="form-group col-md-6" rules="required" v-slot="{ errors, classes }">
+              <validation-provider
+                class="form-group col-md-6"
+                rules="required"
+                v-slot="{ errors, classes }"
+              >
                 <div>
-                  <label for="tel">連絡電話 <span class="text-danger">*</span></label>
+                  <label for="tel"
+                    >連絡電話 <span class="text-danger">*</span></label
+                  >
                   <input
                     class="form-control"
                     :class="classes"
@@ -156,23 +232,38 @@
               </validation-provider>
 
               <div class="form-group col-md-6">
-                <label for="shipping" class="mr-3">
-                  取貨方式 :
-                </label>
+                <label for="shipping" class="mr-3"> 取貨方式 : </label>
 
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="selfTake" name="shippingOption" checked />
-                  <label class="form-check-label" for="selfTake">到店自取</label>
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="selfTake"
+                    name="shippingOption"
+                    checked
+                  />
+                  <label class="form-check-label" for="selfTake"
+                    >到店自取</label
+                  >
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" id="shipping" name="shippingOption" />
-                  <label class="form-check-label" for="shipping">宅配寄送</label>
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="shipping"
+                    name="shippingOption"
+                  />
+                  <label class="form-check-label" for="shipping"
+                    >宅配寄送</label
+                  >
                 </div>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="address">寄送地址 <small class="ml-2">若自取可跳過此欄位</small></label>
+              <label for="address"
+                >寄送地址 <small class="ml-2">若自取可跳過此欄位</small></label
+              >
               <input
                 type="text"
                 class="form-control"
@@ -195,8 +286,19 @@
               ></textarea>
             </div>
             <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-secondary mr-1" @click="showAlert">取消</button>
-              <button type="submit" class="btn btn-primary" :disabled="invalid" :class="{ 'not-allow': invalid }">
+              <button
+                type="button"
+                class="btn btn-secondary mr-1"
+                @click="showAlert"
+              >
+                取消
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="invalid"
+                :class="{ 'not-allow': invalid }"
+              >
                 下一步
               </button>
             </div>
@@ -218,13 +320,13 @@ export default {
       carts: [],
       form: {
         user: {
-          address: ''
+          address: '',
         },
-        message: ''
+        message: '',
       },
       status: {
-        loading: false
-      }
+        loading: false,
+      },
     };
   },
   methods: {
@@ -250,7 +352,9 @@ export default {
         .then(() => {
           cacheID.forEach((item) => {
             vm.$http
-              .delete(`${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`)
+              .delete(
+                `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`
+              )
               .then(() => {
                 vm.$router.push('/shopping');
               });
@@ -261,8 +365,8 @@ export default {
       this.$swal({
         title: '確定要從購物車移除此商品?',
         showCancelButton: true,
-        cancelButtonText: `取消`,
-        confirmButtonText: `確定`
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           this.$swal('刪除成功', '', 'success');
@@ -286,8 +390,8 @@ export default {
       this.$swal({
         title: '現在取消將清空購物車!',
         showCancelButton: true,
-        cancelButtonText: `取消`,
-        confirmButtonText: `確定`
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           this.cleanCart();
@@ -298,8 +402,8 @@ export default {
       const vm = this;
       vm.status.loading = true;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
-      let couponCode = {
-        code: vm.couponCode
+      const couponCode = {
+        code: vm.couponCode,
       };
       vm.$http
         .post(api, { data: couponCode })
@@ -314,7 +418,7 @@ export default {
             vm.status.loading = false;
           }
         })
-        .catch((err) => {
+        .catch(() => {
           vm.$swal('找不到此優惠券');
         });
     },
@@ -325,20 +429,20 @@ export default {
         .post(api, { data: vm.form })
         .then((res) => {
           if (res.data.success) {
-            let orderId = res.data.orderId;
+            const orderId = res.data.orderId;
             vm.$router.push(`/confirmOrder/${orderId}`);
           } else {
             vm.$swal('購物車沒有東西');
           }
         })
-        .catch((err) => {
+        .catch(() => {
           vm.$swal('送出失敗');
         });
-    }
+    },
   },
   mounted() {
     this.getCartList();
-  }
+  },
 };
 </script>
 <style scoped>

@@ -29,17 +29,26 @@
             <span v-else>未啟用</span>
           </td>
           <td class="d-flex">
-            <button class="btn btn-outline-primary btn-sm mr-1" @click="openModal(false, item)">
+            <button
+              class="btn btn-outline-primary btn-sm mr-1"
+              @click="openModal(false, item)"
+            >
               編輯
             </button>
-            <button class="btn btn-outline-danger btn-sm" @click="deleteModal(item.id)">
+            <button
+              class="btn btn-outline-danger btn-sm"
+              @click="deleteModal(item.id)"
+            >
               刪除
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <Pagination :pages="pagination" @emitProductPage="getProductList"></Pagination>
+    <Pagination
+      :pages="pagination"
+      @emitProductPage="getProductList"
+    ></Pagination>
     <!-- Modal -->
     <div
       class="modal fade"
@@ -55,7 +64,12 @@
             <h5 class="modal-title" id="exampleModalLabel">
               <span>新增產品</span>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -75,12 +89,25 @@
                 <div class="form-group">
                   <label for="customFile"
                     >或 上傳圖片
-                    <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
+                    <i
+                      class="fas fa-spinner fa-spin"
+                      v-if="status.fileUploading"
+                    ></i>
                   </label>
                   <!-- 上傳圖片有更動時，執行上傳圖片method -->
-                  <input type="file" id="customFile" class="form-control" ref="files" @change="uploadFile" />
+                  <input
+                    type="file"
+                    id="customFile"
+                    class="form-control"
+                    ref="files"
+                    @change="uploadFile"
+                  />
                 </div>
-                <img :src="cacheProduct.imageUrl" class="img-fluid" alt="產品縮圖" />
+                <img
+                  :src="cacheProduct.imageUrl"
+                  class="img-fluid"
+                  alt="產品縮圖"
+                />
               </div>
               <div class="col-sm-8">
                 <div class="form-group">
@@ -97,9 +124,19 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="category">分類</label>
-                    <select id="category" class="form-control" v-model="cacheProduct.category">
+                    <select
+                      id="category"
+                      class="form-control"
+                      v-model="cacheProduct.category"
+                    >
                       <option value="請選擇分類" disabled>請選擇分類</option>
-                      <option v-for="item in category" :value="item" :key="item">{{ item }}</option>
+                      <option
+                        v-for="item in category"
+                        :value="item"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </option>
                     </select>
                   </div>
                   <div class="form-group col-md-6">
@@ -177,10 +214,18 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
               取消
             </button>
-            <button type="button" class="btn btn-primary" @click="updateProduct">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="updateProduct"
+            >
               確認
             </button>
           </div>
@@ -201,7 +246,12 @@
             <h5 class="modal-title" id="exampleModalLabel">
               <span>刪除產品</span>
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -211,7 +261,11 @@
             商品(刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-dismiss="modal"
+            >
               取消
             </button>
             <button type="button" class="btn btn-danger" @click="deleteProduct">
@@ -239,12 +293,12 @@ export default {
       isNew: false,
       isLoading: false,
       status: {
-        fileUploading: false
-      }
+        fileUploading: false,
+      },
     };
   },
   components: {
-    Pagination
+    Pagination,
   },
   methods: {
     getProductList(page = 1) {
@@ -273,6 +327,7 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
       let httpMethod = 'post';
       if (!vm.isNew) {
+        // eslint-disable-next-line no-const-assign
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.cacheProduct.id}`;
         httpMethod = 'put';
       }
@@ -299,8 +354,8 @@ export default {
       vm.$http
         .post(api, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            'Content-Type': 'multipart/form-data',
+          },
         })
         .then((response) => {
           if (response.data.success) {
@@ -332,10 +387,10 @@ export default {
         }
         vm.getProductList(vm.pagination.current_page);
       });
-    }
+    },
   },
   mounted() {
     this.getProductList();
-  }
+  },
 };
 </script>

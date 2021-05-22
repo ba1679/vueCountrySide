@@ -1,11 +1,17 @@
 <template>
   <div>
     <div class="dropdown">
-      <a href="#" class="position-relative dropdown-btn" data-toggle="dropdown" @click.prevent="cartDetailOpen"
+      <a
+        href="#"
+        class="position-relative dropdown-btn"
+        data-toggle="dropdown"
+        @click.prevent="cartDetailOpen"
         ><i class="fas fa-shopping-cart fa-2x text-countryLight"></i
-        ><span class="badge badge-pill badge-danger position-absolute badge-position" v-if="cartList.length !== 0">{{
-          cartList.length
-        }}</span></a
+        ><span
+          class="badge badge-pill badge-danger position-absolute badge-position"
+          v-if="cartList.length !== 0"
+          >{{ cartList.length }}</span
+        ></a
       >
       <div class="dropdown-menu dropdown-menu-right">
         <div class="px-4 py-3">
@@ -15,7 +21,11 @@
             <table class="table">
               <tr v-for="item in cartList" :key="item.id">
                 <td>
-                  <a href="#" class="far fa-trash-alt text-danger" @click.prevent="removeCart(item)"></a>
+                  <a
+                    href="#"
+                    class="far fa-trash-alt text-danger"
+                    @click.prevent="removeCart(item)"
+                  ></a>
                 </td>
                 <td class="title-width">{{ item.title }}</td>
                 <td>
@@ -27,10 +37,19 @@
               </tr>
             </table>
 
-            <router-link :to="{ name: 'CheckOut' }" class="btn btn-primary btn-block" v-if="cartList.length !== 0">
+            <router-link
+              :to="{ name: 'CheckOut' }"
+              class="btn btn-primary btn-block"
+              v-if="cartList.length !== 0"
+            >
               結帳去</router-link
             >
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary btn-block" v-else>趕緊購物去</router-link>
+            <router-link
+              :to="{ name: 'Shopping' }"
+              class="btn btn-primary btn-block"
+              v-else
+              >趕緊購物去</router-link
+            >
           </div>
         </div>
       </div>
@@ -44,7 +63,7 @@ export default {
   name: 'CartInfo',
   data() {
     return {
-      cartList: JSON.parse(localStorage.getItem('cart')) || []
+      cartList: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   methods: {
@@ -63,8 +82,8 @@ export default {
       this.$swal({
         title: '確定要從購物車移除此商品?',
         showCancelButton: true,
-        cancelButtonText: `取消`,
-        confirmButtonText: `確定`
+        cancelButtonText: '取消',
+        confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           this.$swal('刪除成功', '', 'success');
@@ -89,12 +108,12 @@ export default {
       if ($(window).outerWidth() < 768) {
         $('.dropdown-btn').removeAttr('data-toggle');
       }
-    }
+    },
   },
   mounted() {
     this.busEvent();
     this.mobileHandler();
-  }
+  },
 };
 </script>
 
