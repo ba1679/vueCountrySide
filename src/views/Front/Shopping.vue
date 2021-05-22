@@ -166,7 +166,10 @@
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="cartLabel">已加入購物車清單</h5>
+            <h5 class="modal-title" id="cartLabel" v-if="cartData.length !== 0">
+              已加入購物車清單
+            </h5>
+            <h6 v-else>購物車沒有東西喔</h6>
             <button
               type="button"
               class="close"
@@ -176,7 +179,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" v-if="cartData.length !== 0">
             <div class="table-responsive">
               <table class="table">
                 <tr v-for="item in cartData" :key="item.product_id">
@@ -203,6 +206,7 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              v-if="cartData.length !== 0"
             >
               繼續購物
             </button>
@@ -388,7 +392,7 @@ export default {
   background-color: #0077b6;
   position: relative;
   top: -55px;
-  right: 9px;
+  right: 12px;
   z-index: -100;
   border-radius: 50%;
 }
