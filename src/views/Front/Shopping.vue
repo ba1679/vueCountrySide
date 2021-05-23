@@ -310,8 +310,10 @@ export default {
     getAllProduct() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
+        vm.$store.dispatch('updateLoading', false);
       });
     },
     moreDetail(id) {
