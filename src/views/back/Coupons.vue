@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <div class="message-alert">
       <div class="alert alert-success alert-dismissible fade" role="alert">
         <strong>更新優惠券成功</strong>
@@ -231,7 +230,6 @@ export default {
       couponList: [] || JSON.parse(localStorage.getItem('coupons')),
       pagination: {},
       newCoupon: {},
-      isLoading: false,
       isNew: false,
       couponId: '',
       todayDate: '',
@@ -244,11 +242,11 @@ export default {
     getCouponList(page = 1) {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((response) => {
         vm.couponList = response.data.coupons;
         vm.pagination = response.data.pagination;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false);
         localStorage.setItem('coupons', JSON.stringify(vm.couponList));
         vm.checkDate();
       });
@@ -313,10 +311,10 @@ export default {
     deleteCoupon() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${this.couponId}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.delete(api).then((response) => {
         if (response.data.success) {
-          vm.isLoading = false;
+          vm.$store.dispatch('updateLoading', false);
           $('#deleteModal').modal('hide');
           $('.alert').addClass('show');
           setTimeout(() => {

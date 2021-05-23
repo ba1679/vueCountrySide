@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <section class="container my-5">
       <div class="h2 text-secondary text-center">上田園農產 結帳流程</div>
       <div class="row mt-3">
@@ -171,7 +170,6 @@ export default {
   name: 'CheckOut',
   data() {
     return {
-      isLoading: false,
       handleFee: 80,
       cartData: JSON.parse(localStorage.getItem('cart')) || [],
     };
@@ -248,7 +246,7 @@ export default {
     },
     confirmCart() {
       const vm = this;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.cartData.forEach((cartItem) => {
         const cache = {
           product_id: cartItem.product_id,
@@ -256,7 +254,7 @@ export default {
         };
         const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
         vm.$http.post(api, { data: cache }).then(() => {
-          vm.isLoading = false;
+          vm.$store.dispatch('updateLoading', false);
           vm.$router.push('/orderForm');
         });
       });

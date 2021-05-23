@@ -28,6 +28,7 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">
         登入
       </button>
+      <router-link :to="{ name: 'Index' }">返回首頁</router-link>
       <p class="mt-5 mb-3 text-muted">&copy; 2021 上田園農產後台管理系統</p>
     </form>
   </div>
@@ -59,6 +60,7 @@ export default {
           document.cookie = `hsinToken=${token};expires=${new Date(expired)};`;
           vm.$router.push('/admin/products');
         } else {
+          vm.isLoading = false;
           vm.$swal('帳號或密碼錯誤');
         }
       });

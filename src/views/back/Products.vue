@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <!-- 渲染產品列表 -->
     <div class="text-right mt-4">
       <button type="button" class="btn btn-primary" @click="openModal(true)">
@@ -291,7 +290,6 @@ export default {
       category: ['台灣好米', '台灣好茶', '黃金畜牧', '國產蜂蜜'],
       productId: '',
       isNew: false,
-      isLoading: false,
       status: {
         fileUploading: false,
       },
@@ -304,9 +302,9 @@ export default {
     getProductList(page = 1) {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((response) => {
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false);
         vm.products = response.data.products;
         vm.pagination = response.data.pagination;
       });
@@ -376,10 +374,10 @@ export default {
     deleteProduct() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${this.productId}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.delete(api).then((response) => {
         if (response.data.success) {
-          vm.isLoading = false;
+          vm.$store.dispatch('updateLoading', false);
           $('#delProductModal').modal('hide');
           alert('成功刪除產品');
         } else {

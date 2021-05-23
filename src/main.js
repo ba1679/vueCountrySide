@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 // vue-axios 套件
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -31,6 +32,7 @@ import App from './App.vue';
 import router from './router';
 import './bus';
 import currencyFilter from './filters/currency.js';
+import store from './store';
 
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios); // 套件使用use
@@ -38,6 +40,7 @@ const options = {
   confirmButtonColor: '#0077b6',
 };
 Vue.use(VueSweetalert2, options);
+Vue.use(Vuex);
 AOS.init();
 Vue.component('Loading', Loading); // 將此套件作為元件使用
 // 以下為啟用vee-validate套件相關方法
@@ -60,6 +63,7 @@ axios.defaults.withCredentials = true;
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount('#app');
 

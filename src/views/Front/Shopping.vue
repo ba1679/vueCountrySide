@@ -13,7 +13,6 @@
         </button>
       </div>
     </div>
-    <loading :active.sync="isLoading"></loading>
     <div class="jumbotron jumbotron-fluid jumbotron-bg bg-cover pt-3">
       <div class="text-center">
         <div class="h3 mb-4 text-primary">上田園農產 - 線上商城</div>
@@ -34,15 +33,14 @@
         <li class="breadcrumb-item"><router-link to="/">首頁</router-link></li>
         <li class="breadcrumb-item active">線上商城</li>
       </ol>
-      <div role="tabpanel">
+      <div>
         <ul class="nav nav-tabs mb-3">
           <li class="nav-item">
             <a
               class="nav-link"
               :class="{ active: category === '全部商品' }"
-              href="#全部商品"
-              data-category="全部商品"
-              @click.prevent="categoryFilter"
+              href="#"
+              @click.prevent="category = '全部商品'"
               >全部商品</a
             >
           </li>
@@ -50,9 +48,8 @@
             <a
               class="nav-link"
               :class="{ active: category === '台灣好米' }"
-              href="#台灣好米"
-              data-category="台灣好米"
-              @click.prevent="categoryFilter"
+              href="#"
+              @click.prevent="category = '台灣好米'"
               >台灣好米</a
             >
           </li>
@@ -61,8 +58,7 @@
               class="nav-link"
               :class="{ active: category === '台灣好茶' }"
               href="#"
-              data-category="台灣好茶"
-              @click.prevent="categoryFilter"
+              @click.prevent="category = '台灣好茶'"
               >台灣好茶</a
             >
           </li>
@@ -71,8 +67,7 @@
               class="nav-link"
               :class="{ active: category === '國產蜂蜜' }"
               href="#"
-              data-category="國產蜂蜜"
-              @click.prevent="categoryFilter"
+              @click.prevent="category = '國產蜂蜜'"
               >國產蜂蜜</a
             >
           </li>
@@ -81,16 +76,15 @@
               class="nav-link"
               :class="{ active: category === '黃金畜牧' }"
               href="#"
-              data-category="黃金畜牧"
-              @click.prevent="categoryFilter"
+              @click.prevent="category = '黃金畜牧'"
               >黃金畜牧</a
             >
           </li>
         </ul>
-        <div class="tab-pane row mb-3" role="tabpanel" :id="category">
+        <div class="row mb-3" :id="category">
           <div
             class="col-lg-3 col-md-6 mb-3"
-            v-for="item in productFilter"
+            v-for="item in productFilter[currentPage]"
             :key="item.id"
             data-aos="fade-up"
             data-aos-duration="1000"
@@ -112,18 +106,19 @@
                 </div>
                 <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
                 <div class="card-body">
-                  <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{
-                    item.title
-                  }}</a>
+                  <a href="#" class="h5" @click.prevent="moreDetail(item.id)">
+                    {{ item.title }}
+                  </a>
                   <div class="d-flex justify-content-end mt-3">
-                    <del class="mr-auto">{{
-                      item.origin_price | currency
-                    }}</del>
-                    <span class="text-warning"
-                      >特價<strong class="h6">{{
-                        item.price | currency
-                      }}</strong></span
-                    >
+                    <del class="mr-auto">
+                      {{ item.origin_price | currency }}
+                    </del>
+                    <span class="text-warning">
+                      特價
+                      <strong class="h6">
+                        {{ item.price | currency }}
+                      </strong>
+                    </span>
                   </div>
                 </div>
                 <a
@@ -139,12 +134,49 @@
         </div>
       </div>
     </section>
-
-    <Pagination
-      :pages="pagination"
-      @emitProductPage="getProductList"
-      v-if="category === '全部商品'"
-    ></Pagination>
+    <!-- pagination -->
+    <div class="d-flex justify-content-center">
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" :class="{ disabled: !currentPage }">
+            <a
+              class="page-link"
+              href="#"
+              aria-label="Previous"
+              @click.prevent="prev"
+            >
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li
+            class="page-item"
+            :class="{ active: currentPage === page - 1 }"
+            v-for="page in productFilter.length"
+            :key="page"
+          >
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="currentPage = page - 1"
+              >{{ page }}</a
+            >
+          </li>
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === filtedProducts.length - 1 }"
+          >
+            <a
+              class="page-link"
+              href="#"
+              aria-label="Next"
+              @click.prevent="next"
+            >
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
     <a href="#" class="cart-icon d-lg-none">
       <Cart />
     </a>
@@ -230,34 +262,48 @@
 </template>
 <script>
 import $ from 'jquery';
-import Pagination from '@/components/Pagination.vue';
 import Cart from '@/components/front/Cart.vue';
 export default {
   name: 'Shopping',
   data: function () {
     return {
-      isLoading: false,
       products: [],
-      pagination: {},
       category: '全部商品',
       cartData: JSON.parse(localStorage.getItem('cart')) || [],
+      currentPage: 0,
+      filtedProducts: [],
     };
   },
   components: {
-    Pagination,
     Cart,
+  },
+  watch: {
+    currentPage() {
+      $('html,body').scrollTop(0);
+    },
   },
   computed: {
     productFilter() {
       const vm = this;
-      if (vm.category === '全部商品') {
-        return vm.products;
-      } else {
-        vm.getAllProduct();
-        return vm.products.filter((item) => {
+      let tempData = [];
+      // 確保每次都回歸初始值
+      vm.currentPage = 0;
+      vm.filtedProducts = [];
+      tempData = vm.products.filter((item) => {
+        if (vm.category === '全部商品') {
+          return vm.products;
+        } else {
           return item.category === vm.category;
-        });
-      }
+        }
+      });
+      tempData.forEach((item, index) => {
+        if (index % 8 === 0) {
+          vm.filtedProducts.push([]);
+        }
+        const pagenum = parseInt(index / 8);
+        vm.filtedProducts[pagenum].push(item);
+      });
+      return vm.filtedProducts;
     },
   },
   methods: {
@@ -268,22 +314,8 @@ export default {
         vm.products = res.data.products;
       });
     },
-    getProductList(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
-      vm.isLoading = true;
-      vm.$http.get(api).then((res) => {
-        vm.products = res.data.products;
-        vm.pagination = res.data.pagination;
-        vm.isLoading = false;
-      });
-    },
     moreDetail(id) {
       this.$router.push(`/productInfo/${id}`);
-    },
-    categoryFilter(e) {
-      const categoryData = e.currentTarget.getAttribute('data-category');
-      this.category = categoryData;
     },
     addToCart(item) {
       const cacheCartID = [];
@@ -351,6 +383,7 @@ export default {
         }
       });
     },
+    // 回到最上方
     backToTop() {
       $('html,body').animate(
         {
@@ -359,9 +392,26 @@ export default {
         1000
       );
     },
+    // 換頁行為
+    prev() {
+      const vm = this;
+      if (vm.currentPage === 0) {
+        vm.currentPage = 0;
+      } else {
+        vm.currentPage--;
+      }
+    },
+    next() {
+      const vm = this;
+      if (vm.currentPage === vm.filtedProducts.length - 1) {
+        vm.currentPage = vm.filtedProducts.length - 1;
+      } else {
+        vm.currentPage++;
+      }
+    },
   },
   mounted() {
-    this.getProductList();
+    this.getAllProduct();
     $(window).scroll(function () {
       if ($(this).scrollTop() > 300) {
         $('.back-to-top').addClass('d-block');
@@ -458,5 +508,18 @@ export default {
   top: 135px;
   right: 20px;
   z-index: 1100;
+}
+.page-item:first-child .page-link {
+  border-top-left-radius: 1.25rem;
+  border-bottom-left-radius: 1.25rem;
+}
+.page-item:last-child .page-link {
+  border-top-right-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+}
+.page-link {
+  border-radius: 1.25rem;
+  margin: 0 5px;
+  transition: all 0.3s;
 }
 </style>

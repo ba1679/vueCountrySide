@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <section class="container my-5">
       <div class="h2 text-secondary text-center">上田園農產 結帳流程</div>
       <div class="row mt-3">
@@ -313,7 +312,6 @@ export default {
   name: 'CheckOut',
   data() {
     return {
-      isLoading: false,
       couponCode: '',
       couponMsg: '',
       handleFee: 80,

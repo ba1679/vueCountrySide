@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <div class="message-alert">
       <div class="alert alert-primary alert-dismissible fade" role="alert">
         <strong>加入購物車成功</strong>
@@ -114,7 +113,6 @@ export default {
   name: 'ProductInfo',
   data() {
     return {
-      isLoading: false,
       productDetail: {},
       products: [],
       cartSelect: 1,
@@ -134,10 +132,10 @@ export default {
     getProductDetail(id) {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((res) => {
         vm.productDetail = res.data.product;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false);
       });
     },
     addToCart(item, num) {
@@ -188,10 +186,10 @@ export default {
     getAllProduct() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false);
       });
     },
     moreDetail(id) {

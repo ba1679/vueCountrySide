@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <!-- 渲染訂單列表 -->
     <h2 class="text-center mt-3">訂單列表</h2>
     <div class="d-flex justify-content-end">
@@ -355,7 +354,6 @@ export default {
         user: {},
       },
       pagination: {},
-      isLoading: false,
     };
   },
   components: {
@@ -365,17 +363,16 @@ export default {
     getOrderList(page = 1) {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((response) => {
         vm.orderList = response.data.orders;
         vm.pagination = response.data.pagination;
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false);
       });
     },
     getAllProducts() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`;
-      vm.isLoading = true;
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products;
       });

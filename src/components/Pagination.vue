@@ -50,18 +50,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.page-item:first-child .page-link {
-  border-top-left-radius: 1.25rem;
-  border-bottom-left-radius: 1.25rem;
-}
-.page-item:last-child .page-link {
-  border-top-right-radius: 1.25rem;
-  border-bottom-right-radius: 1.25rem;
-}
-.page-link {
-  border-radius: 1.25rem;
-  margin: 0 5px;
-  transition: all 0.3s;
-}
-</style>

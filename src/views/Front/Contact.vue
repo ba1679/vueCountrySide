@@ -133,6 +133,7 @@
                   type="submit"
                   class="btn btn-primary"
                   :disabled="invalid"
+                  :class="{ 'not-allow': invalid }"
                   @click="sendInfo"
                 >
                   送出
@@ -165,3 +166,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.not-allow {
+  cursor: not-allowed;
+}
+</style>

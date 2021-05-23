@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 <template>
   <div>
-    <loading :active.sync="isLoading"></loading>
     <section class="containter">
       <div class="row my-3">
         <div class="col-lg-4 mb-2">
@@ -71,7 +70,6 @@ export default {
   name: 'Chart',
   data() {
     return {
-      isLoading: false,
       orderList: [],
       chartCategoryAry: [],
       chartProductAry: [],
@@ -105,12 +103,12 @@ export default {
     getOrderList(page = 1) {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      vm.isLoading = true;
+      vm.$store.dispatch('updateLoading', true);
       vm.$http.get(api).then((response) => {
         vm.orderList = response.data.orders;
         vm.renderCategoryChart();
         vm.renderProductChart();
-        vm.isLoading = false;
+        vm.$store.dispatch('updateLoading', false);
       });
     },
     renderCategoryChart() {
