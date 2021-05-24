@@ -7,7 +7,7 @@
       <ul class="footer-nav d-flex justify-content-center list-style-none">
         <li class="mr-3">
           <router-link
-            :to="{ name: 'About' }"
+            :to="{ name: 'Index' }"
             class="text-countryLight a-hover-none"
             >關於我們</router-link
           >
