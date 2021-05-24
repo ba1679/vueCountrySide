@@ -123,7 +123,7 @@
                 </div>
                 <a
                   href="#"
-                  class="bg-primary btn cart-btn w-100"
+                  class="btn btn-primary cart-btn w-100"
                   :class="{ disabled: !item.is_enabled }"
                   @click.prevent="addToCart(item)"
                   >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
@@ -491,8 +491,9 @@ export default {
   border-radius: 0 0 0.25rem 0.25rem;
   &:hover {
     text-decoration: none;
-    background-color: #ffc107 !important;
+    background-color: #ffc107;
     color: #0077b6;
+    border-color: transparent;
   }
 }
 .form-sm {

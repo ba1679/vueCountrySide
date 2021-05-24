@@ -1,54 +1,55 @@
 <template>
   <div>
-    <div id="countrySideCarousel" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li
-          data-target="#countrySideCarousel"
-          data-slide-to="0"
-          class="active"
-        ></li>
-        <li data-target="#countrySideCarousel" data-slide-to="1"></li>
-        <li data-target="#countrySideCarousel" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div
-          class="
-            carousel-item
-            header-carousel-item
-            active
-            bg-cover
-            carousel-honey
-          "
-        >
-          <div class="carousel-caption bg-transparent">
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
-              >馬上購買</router-link
-            >
-          </div>
+    <swiper
+      class="swiper"
+      :options="swiperOptions"
+      :not-next-tick="notNextTick"
+      ref="mySwiper"
+    >
+      <swiper-slide class="slide bg-cover carousel-honey">
+        <div class="carousel-caption bg-transparent">
+          <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+            >馬上購買</router-link
+          >
         </div>
-        <div class="carousel-item header-carousel-item bg-cover carousel-rice">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>台灣農民用心耕種</h5>
-            <p>100%台灣好米，值得您支持</p>
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
-              >馬上購買</router-link
-            >
-          </div>
+      </swiper-slide>
+      <swiper-slide class="slide bg-cover carousel-tea">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>台灣高山茶葉</h5>
+          <p>絕無參雜劣質不明來源茶葉</p>
+          <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+            >馬上購買</router-link
+          >
         </div>
-        <div class="carousel-item header-carousel-item bg-cover carousel-hen">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>小農親自餵養</h5>
-            <p>堅持給你最好的雞</p>
-            <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
-              >馬上購買</router-link
-            >
-          </div>
+      </swiper-slide>
+      <swiper-slide class="slide bg-cover carousel-hen">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>小農親自餵養</h5>
+          <p>堅持給你最好的雞</p>
+          <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+            >馬上購買</router-link
+          >
         </div>
-        <div
-          class="carousel-item header-carousel-item bg-cover carousel-tea"
-        ></div>
-      </div>
-    </div>
+      </swiper-slide>
+      <swiper-slide class="slide bg-cover carousel-rice">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>台灣農民用心耕種</h5>
+          <p>100%台灣好米，值得您支持</p>
+          <router-link :to="{ name: 'Shopping' }" class="btn btn-primary"
+            >馬上購買</router-link
+          >
+        </div>
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+      <div
+        class="swiper-button-prev swiper-button-white"
+        slot="button-prev"
+      ></div>
+      <div
+        class="swiper-button-next swiper-button-white"
+        slot="button-next"
+      ></div>
+    </swiper>
     <section class="py-6" data-aos="fade-up" data-aos-duration="2000">
       <div class="container">
         <div class="row">
@@ -118,6 +119,7 @@
               alt="countrySide"
             />
           </div>
+          <div class="h3 text-center pt-3 font-weight-bold">COUNTRYSIDE</div>
         </div>
       </div>
     </section>
@@ -215,26 +217,50 @@
 <script>
 export default {
   name: 'Index',
+  data() {
+    return {
+      notNextTick: true,
+      swiperOptions: {
+        spaceBetween: 30,
+        effect: 'fade',
+        centeredSlides: true,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+      },
+    };
+  },
 };
 </script>
 <style lang="scss" scoped>
-.header-carousel-item {
+.slide {
   height: 450px;
 }
 .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.17);
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
 }
 .carousel-honey {
   background-image: url(../../assets/images/banner1.jpg);
 }
 .carousel-rice {
-  background-image: url(../../assets/images/ricebanner.jpg);
+  background-image: url('https://p6-tt.byteimg.com/origin/pgc-image/4f4f8dab782f4e03b42738c87d6c1ee6?from=pc');
 }
 .carousel-hen {
-  background-image: url(../../assets/images/chikenbanner.jpg);
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/07/%E9%9B%B2%E6%9E%97%E7%AB%8B%E7%91%9E%E7%95%9C%E7%94%A2%E5%85%AC%E5%8F%B8%E7%9A%84%E9%A4%8A%E9%9B%9E%E5%A0%B4.jpg');
 }
 .carousel-tea {
-  background-image: url(../../assets/images/teabanner.jpg);
+  background-image: url('https://p6-tt.byteimg.com/origin/pgc-image/SRnKTpxHjwQp5d?from=pc');
 }
 .icon {
   width: 75px;
@@ -291,8 +317,8 @@ export default {
   background-image: url(../../assets/images/intro.jpg);
 }
 .countrySide-img {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
 }
 
 .product-md-center {

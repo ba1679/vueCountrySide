@@ -48,7 +48,7 @@
           <hr />
           <p>商品描述 : <br />{{ productDetail.content }}</p>
           <p>{{ productDetail.description }}</p>
-          <div class="form-inline justify-content-end">
+          <div class="form-inline num-select">
             <select class="form-control mr-1" name="num" v-model="cartSelect">
               <option v-for="(num, index) in 10" :value="num" :key="index">
                 {{ num }}
@@ -95,7 +95,7 @@
               </div>
               <a
                 href="#"
-                class="bg-primary btn cart-btn w-100"
+                class="btn btn-primary cart-btn w-100"
                 :class="{ disabled: !item.is_enabled }"
                 @click.prevent="addToCart(item, cartSelect)"
                 >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
@@ -245,8 +245,20 @@ export default {
   border-radius: 0 0 0.25rem 0.25rem;
   &:hover {
     text-decoration: none;
-    background-color: #ffc107 !important;
+    background-color: #ffc107;
     color: #0077b6;
+    border-color: transparent;
   }
 }
+.num-select {
+  justify-content: flex-end;
+}
+@media (max-width: 576px) {
+  .num-select {
+    justify-content: center;
+    .btn {
+      margin-top: 1rem;
+    }
+  }
+} ;
 </style>

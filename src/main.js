@@ -3,6 +3,9 @@ import Vuex from 'vuex';
 // vue-axios 套件
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+// Swiper
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+import 'swiper/swiper-bundle.css';
 
 // Alert套件
 import VueSweetalert2 from 'vue-sweetalert2';
@@ -40,6 +43,7 @@ const options = {
   confirmButtonColor: '#0077b6',
 };
 Vue.use(VueSweetalert2, options);
+Vue.use(VueAwesomeSwiper);
 Vue.use(Vuex);
 AOS.init();
 Vue.component('Loading', Loading); // 將此套件作為元件使用
