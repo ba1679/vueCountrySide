@@ -20,6 +20,7 @@ Demo: https://ba1679.github.io/vueCountrySide/
 ## 使用技術
 * Vue CLI 搭配Webpack建置專案
 * Vue.js + javaScript(ES6)資料處理及渲染
+* Vuex 模組化資料管理
 * jQuery 操作DOM元素
 * Vue Router頁面切換
 * Axios串接API更新資料
