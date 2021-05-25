@@ -18,16 +18,16 @@ Demo: https://ba1679.github.io/vueCountrySide/
     *  優惠券: 新增、刪除、修改優惠券，並於一載入時檢查有無過期之優惠券   
 
 ## 使用技術
-網頁切版:
+### 網頁切版:
    * HTML5、CSS3、Scss
    * bootstrap 4 格線系統、元件、utilities使用
-前端開發&框架:
+### 前端開發&框架:
    * Vue CLI 搭配Webpack建置專案
    * Vue.js + javaScript(ES6)資料處理及渲染
    * Vuex 模組化資料管理
    * Vue Router頁面切換
    * jQuery 操作DOM元素
-第三方套件運用:
+### 第三方套件運用:
    * Axios串接API更新資料
    * 後台C3.js圖表呈現
    * Vue-awesome-swiper 輪播套件
