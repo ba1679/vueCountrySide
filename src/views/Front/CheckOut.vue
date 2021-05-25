@@ -72,7 +72,7 @@
           <div class="card-body">
             <div class="table-responsive my-3">
               <table class="table">
-                <tr v-for="item in cartData" :key="item.id">
+                <tr v-for="item in carts" :key="item.id">
                   <td>
                     <a
                       href="#"
@@ -166,88 +166,38 @@
 </template>
 <script>
 import $ from 'jquery';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'CheckOut',
   data() {
     return {
       handleFee: 80,
-      cartData: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   computed: {
     cartTotalPrice() {
       let total = 0;
-      this.cartData.forEach((item) => {
+      this.carts.forEach((item) => {
         total += item.total;
       });
       return total;
     },
+    ...mapGetters(['carts']),
   },
   methods: {
     plusItem(item) {
-      this.cartData.forEach((cartItem) => {
-        if (item.product_id === cartItem.product_id) {
-          cartItem.qty += 1;
-          cartItem.total = cartItem.price * cartItem.qty;
-        }
-      });
-      localStorage.setItem('cart', JSON.stringify(this.cartData));
-      this.$bus.$emit('cartPush', this.cartData);
+      this.$store.dispatch('plusItem', item);
     },
     minusItem(item) {
-      this.cartData.forEach((cartItem) => {
-        if (item.product_id === cartItem.product_id) {
-          if (cartItem.qty > 1) {
-            cartItem.qty -= 1;
-            cartItem.total = cartItem.price * cartItem.qty;
-          }
-        }
-      });
-      localStorage.setItem('cart', JSON.stringify(this.cartData));
-      this.$bus.$emit('cartPush', this.cartData);
+      this.$store.dispatch('minusItem', item);
     },
     removeCart(item) {
-      this.$swal({
-        title: '確定要從購物車移除此商品?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$swal('刪除成功', '', 'success');
-          this.cartData.forEach((cartItem, index) => {
-            if (item.product_id === cartItem.product_id) {
-              this.cartData.splice(index, 1);
-            }
-          });
-          localStorage.setItem('cart', JSON.stringify(this.cartData));
-        }
-      });
-    },
-    cleanCart() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      const vm = this;
-      const cacheID = [];
-      vm.$http
-        .get(api)
-        .then((res) => {
-          const cacheData = res.data.data.carts;
-          cacheData.forEach((item) => {
-            cacheID.push(item.id);
-          });
-        })
-        .then(() => {
-          cacheID.forEach((item) => {
-            vm.$http.delete(
-              `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`
-            );
-          });
-        });
+      this.$store.dispatch('removeCart', item);
     },
     confirmCart() {
       const vm = this;
       vm.$store.dispatch('updateLoading', true);
-      vm.cartData.forEach((cartItem) => {
+      this.carts.forEach((cartItem) => {
         const cache = {
           product_id: cartItem.product_id,
           qty: cartItem.qty,
@@ -259,6 +209,7 @@ export default {
         });
       });
     },
+    ...mapActions(['cleanCart']),
   },
   mounted() {
     $('.modal-backdrop').remove();

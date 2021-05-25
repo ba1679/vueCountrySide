@@ -198,7 +198,7 @@
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="cartLabel" v-if="cartData.length !== 0">
+            <h5 class="modal-title" id="cartLabel" v-if="carts.length !== 0">
               已加入購物車清單
             </h5>
             <h6 v-else>購物車沒有東西喔</h6>
@@ -211,10 +211,10 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body" v-if="cartData.length !== 0">
+          <div class="modal-body" v-if="carts.length !== 0">
             <div class="table-responsive">
               <table class="table">
-                <tr v-for="item in cartData" :key="item.product_id">
+                <tr v-for="item in carts" :key="item.product_id">
                   <td>
                     <a
                       href="#"
@@ -238,14 +238,14 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
-              v-if="cartData.length !== 0"
+              v-if="carts.length !== 0"
             >
               繼續購物
             </button>
             <router-link
               :to="{ name: 'CheckOut' }"
               class="btn btn-primary"
-              v-if="cartData.length !== 0"
+              v-if="carts.length !== 0"
               >結帳去</router-link
             >
             <router-link
@@ -263,13 +263,12 @@
 <script>
 import $ from 'jquery';
 import Cart from '@/components/front/Cart.vue';
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'Shopping',
   data: function () {
     return {
-      products: [],
       category: '全部商品',
-      cartData: JSON.parse(localStorage.getItem('cart')) || [],
       currentPage: 0,
       filtedProducts: [],
     };
@@ -305,85 +304,21 @@ export default {
       });
       return vm.filtedProducts;
     },
+    ...mapGetters(['products', 'carts']),
   },
   methods: {
-    getAllProduct() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.$store.dispatch('updateLoading', true);
-      vm.$http.get(api).then((res) => {
-        vm.products = res.data.products;
-        vm.$store.dispatch('updateLoading', false);
-      });
-    },
     moreDetail(id) {
       this.$router.push(`/productInfo/${id}`);
     },
-    addToCart(item) {
-      const cacheCartID = [];
-      this.cartData.forEach((item) => {
-        cacheCartID.push(item.product_id);
-      });
-      if (cacheCartID.indexOf(item.id) === -1) {
-        const cartContent = {
-          product_id: item.id,
-          qty: 1,
-          title: item.title,
-          origin_price: item.origin_price,
-          price: item.price,
-          unit: item.unit,
-          imageUrl: item.imageUrl,
-        };
-        cartContent.total = item.price * cartContent.qty;
-        this.cartData.push(cartContent);
-        localStorage.setItem('cart', JSON.stringify(this.cartData));
-      } else {
-        let cache = {};
-        this.cartData.forEach((cartItem, keys) => {
-          if (cartItem.product_id === item.id) {
-            let { qty } = cartItem;
-            cache = {
-              product_id: item.id,
-              qty: (qty += 1),
-              title: item.title,
-              origin_price: item.origin_price,
-              price: item.price,
-              unit: item.unit,
-              imageUrl: item.imageUrl,
-            };
-            cache.total = item.price * cache.qty;
-            // 移除現有 localStorage 購物車的資料，否則 localStorage 會重複加入
-            this.cartData.splice(keys, 1);
-          }
-        });
-        // 將數量已經增加的資料推回陣列中
-        this.cartData.push(cache);
-        // 重新寫入 localStorage
-        localStorage.setItem('cart', JSON.stringify(this.cartData));
-      }
-      this.$bus.$emit('cartPush', this.cartData);
+    addToCart(item, num = 1) {
+      this.$store.dispatch('addToCart', { item, num });
       $('.alert').addClass('show');
       setTimeout(() => {
         $('.alert').removeClass('show');
       }, 3000);
     },
     removeCart(item) {
-      this.$swal({
-        title: '確定要從購物車移除此商品?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$swal('刪除成功', '', 'success');
-          this.cartData.forEach((cartItem, index) => {
-            if (item.product_id === cartItem.product_id) {
-              this.cartData.splice(index, 1);
-            }
-          });
-          localStorage.setItem('cart', JSON.stringify(this.cartData));
-        }
-      });
+      this.$store.dispatch('removeCart', item);
     },
     // 回到最上方
     backToTop() {
@@ -411,6 +346,7 @@ export default {
         vm.currentPage++;
       }
     },
+    ...mapActions(['getAllProduct']),
   },
   mounted() {
     this.getAllProduct();

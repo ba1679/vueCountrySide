@@ -12,6 +12,3 @@ Vue.prototype.$bus = new Vue();
 // this.$bus.$emit("messagePush", message, status);
 // message(String): 訊息內容
 // status(String): bs4樣式的className
-
-// Cart
-//  vm.$bus.$emit('cartPush', vm.carts.carts);

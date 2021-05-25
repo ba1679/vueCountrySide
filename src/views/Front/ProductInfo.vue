@@ -109,14 +109,13 @@
 </template>
 <script>
 import $ from 'jquery';
+import { mapGetters } from 'vuex';
 export default {
   name: 'ProductInfo',
   data() {
     return {
       productDetail: {},
-      products: [],
       cartSelect: 1,
-      cartData: JSON.parse(localStorage.getItem('cart')) || [],
     };
   },
   computed: {
@@ -127,6 +126,7 @@ export default {
         }
       });
     },
+    ...mapGetters(['products', 'carts']),
   },
   methods: {
     getProductDetail(id) {
@@ -139,58 +139,14 @@ export default {
       });
     },
     addToCart(item, num) {
-      const cacheCartID = [];
-      this.cartData.forEach((item) => {
-        cacheCartID.push(item.product_id);
-      });
-      if (cacheCartID.indexOf(item.id) === -1) {
-        const cartContent = {
-          product_id: item.id,
-          qty: 1,
-          title: item.title,
-          origin_price: item.origin_price,
-          price: item.price,
-          unit: item.unit,
-          imageUrl: item.imageUrl,
-        };
-        cartContent.total = item.price * cartContent.qty;
-        this.cartData.push(cartContent);
-        localStorage.setItem('cart', JSON.stringify(this.cartData));
-      } else {
-        let cache = {};
-        this.cartData.forEach((cartItem, keys) => {
-          if (cartItem.product_id === item.id) {
-            let { qty } = cartItem;
-            cache = {
-              product_id: item.id,
-              qty: (qty += num),
-              title: item.title,
-              origin_price: item.origin_price,
-              price: item.price,
-              unit: item.unit,
-              imageUrl: item.imageUrl,
-            };
-            cache.total = item.price * cache.qty;
-            this.cartData.splice(keys, 1);
-          }
-        });
-        this.cartData.push(cache);
-        localStorage.setItem('cart', JSON.stringify(this.cartData));
-      }
-      this.$bus.$emit('cartPush', this.cartData);
+      this.$store.dispatch('addToCart', { item, num });
       $('.alert').addClass('show');
       setTimeout(() => {
         $('.alert').removeClass('show');
       }, 3000);
     },
     getAllProduct() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.$store.dispatch('updateLoading', true);
-      vm.$http.get(api).then((res) => {
-        vm.products = res.data.products;
-        vm.$store.dispatch('updateLoading', false);
-      });
+      this.$store.dispatch('getAllProduct');
     },
     moreDetail(id) {
       this.$router.push(`/productInfo/${id}`);

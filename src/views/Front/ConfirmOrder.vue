@@ -251,7 +251,9 @@
                 >
                   取消
                 </button>
-                <button type="button" class="btn btn-primary">確認付款</button>
+                <button type="button" class="btn btn-primary" @click="payOrder">
+                  確認付款
+                </button>
               </div>
             </div>
           </form>
@@ -262,6 +264,7 @@
 </template>
 <script>
 import $ from 'jquery';
+import { mapActions } from 'vuex';
 export default {
   name: 'ConfirmOrder',
   data() {
@@ -298,7 +301,7 @@ export default {
     confirmAlert() {
       const vm = this;
       vm.$swal({
-        title: '取消後需重新選購商品',
+        title: '確定取消購買?',
         showCancelButton: true,
         cancelButtonText: '取消',
         confirmButtonText: '確定',
@@ -308,30 +311,6 @@ export default {
           this.$router.push('/shopping');
         }
       });
-    },
-    cleanCart() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      const vm = this;
-      const cacheID = [];
-      vm.$http
-        .get(api)
-        .then((res) => {
-          const cacheData = res.data.data.carts;
-          cacheData.forEach((item) => {
-            cacheID.push(item.id);
-          });
-        })
-        .then(() => {
-          cacheID.forEach((item) => {
-            vm.$http
-              .delete(
-                `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`
-              )
-              .then(() => {
-                vm.$router.push('/shopping');
-              });
-          });
-        });
     },
     payOrder() {
       const vm = this;
@@ -343,11 +322,13 @@ export default {
           vm.getOrderList(id);
           vm.$swal('付款成功，感謝購買!', '', 'success');
           $('html,body').scrollTop(0);
+          localStorage.removeItem('cart');
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    ...mapActions(['cleanCart']),
   },
   mounted() {
     this.orderId = this.$route.params.orderId;

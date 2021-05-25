@@ -9,17 +9,17 @@
         ><i class="fas fa-shopping-cart fa-2x text-countryLight"></i
         ><span
           class="badge badge-pill badge-danger position-absolute badge-position"
-          v-if="cartList.length !== 0"
-          >{{ cartList.length }}</span
+          v-if="carts.length !== 0"
+          >{{ carts.length }}</span
         ></a
       >
       <div class="dropdown-menu dropdown-menu-right">
         <div class="px-4 py-3">
-          <h6 v-if="cartList.length !== 0">已加入購物車商品</h6>
+          <h6 v-if="carts.length !== 0">已加入購物車商品</h6>
           <h6 v-else>購物車沒有東西喔</h6>
           <div class="table-responsive">
             <table class="table">
-              <tr v-for="item in cartList" :key="item.id">
+              <tr v-for="item in carts" :key="item.id">
                 <td>
                   <a
                     href="#"
@@ -40,7 +40,7 @@
             <router-link
               :to="{ name: 'CheckOut' }"
               class="btn btn-primary btn-block"
-              v-if="cartList.length !== 0"
+              v-if="carts.length !== 0"
             >
               結帳去</router-link
             >
@@ -59,50 +59,25 @@
 
 <script>
 import $ from 'jquery';
+import { mapGetters } from 'vuex';
 export default {
   name: 'CartInfo',
   data() {
-    return {
-      cartList: JSON.parse(localStorage.getItem('cart')) || [],
-    };
+    return {};
+  },
+  computed: {
+    ...mapGetters(['carts']),
   },
   methods: {
     cartDetailOpen() {
       if ($(window).outerWidth() > 768) {
         $('.dropdown-menu').dropdown();
-        console.log(768);
       } else {
         $('#cartModal').modal('show');
       }
     },
-    updateCart(carts) {
-      this.cartList = carts;
-    },
     removeCart(item) {
-      this.$swal({
-        title: '確定要從購物車移除此商品?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$swal('刪除成功', '', 'success');
-          this.cartList.forEach((cartItem, index) => {
-            if (item.product_id === cartItem.product_id) {
-              this.cartList.splice(index, 1);
-            }
-          });
-          localStorage.setItem('cart', JSON.stringify(this.cartList));
-        }
-      });
-    },
-    busEvent() {
-      const vm = this;
-      // 自定義名稱 'cartPush'
-      // ? 外層$on註冊cartPush方法
-      vm.$bus.$on('cartPush', (carts) => {
-        vm.updateCart(carts);
-      });
+      this.$store.dispatch('removeCart', item);
     },
     mobileHandler() {
       if ($(window).outerWidth() < 768) {
@@ -111,7 +86,6 @@ export default {
     },
   },
   mounted() {
-    this.busEvent();
     this.mobileHandler();
   },
 };

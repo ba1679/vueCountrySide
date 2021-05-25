@@ -308,6 +308,7 @@
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'CheckOut',
   data() {
@@ -334,30 +335,6 @@ export default {
       this.$http.get(api).then((res) => {
         vm.carts = res.data.data;
       });
-    },
-    cleanCart() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      const vm = this;
-      const cacheID = [];
-      vm.$http
-        .get(api)
-        .then((res) => {
-          const cacheData = res.data.data.carts;
-          cacheData.forEach((item) => {
-            cacheID.push(item.id);
-          });
-        })
-        .then(() => {
-          cacheID.forEach((item) => {
-            vm.$http
-              .delete(
-                `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${item}`
-              )
-              .then(() => {
-                vm.$router.push('/shopping');
-              });
-          });
-        });
     },
     removeAlert(id) {
       this.$swal({
@@ -386,13 +363,14 @@ export default {
     },
     showAlert() {
       this.$swal({
-        title: '現在取消將清空購物車!',
+        title: '確定取消購買?',
         showCancelButton: true,
         cancelButtonText: '取消',
         confirmButtonText: '確定',
       }).then((result) => {
         if (result.isConfirmed) {
           this.cleanCart();
+          this.$router.push('/shopping');
         }
       });
     },
@@ -437,6 +415,7 @@ export default {
           vm.$swal('送出失敗');
         });
     },
+    ...mapActions(['cleanCart']),
   },
   mounted() {
     this.getCartList();
