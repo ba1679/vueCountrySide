@@ -25,6 +25,7 @@ Demo: https://ba1679.github.io/vueCountrySide/
 * Vue Router頁面切換
 * Axios串接API更新資料
 * 後台C3.js圖表呈現
+* Vue-awesome-swiper 輪播套件
 * SweetAlert 提醒視窗套件
 * Vee-validate驗證表單內容
 * AOS scroll 動畫效果
@@ -37,25 +38,25 @@ Demo: https://ba1679.github.io/vueCountrySide/
 ### 首頁 : 
 圖片輪播、AOS滑動效果、理念介紹
 
-![image alt](https://media.giphy.com/media/XdHy4HO6Lg6J5N15eV/giphy.gif)
+![image alt](https://media.giphy.com/media/nCp0bQQ6CTi8APHem6/giphy.gif)
 
 ### 線上商城 : 
 
 產品分類、查看更多按鈕、加入購物車按鈕
 
-![image alt](https://media.giphy.com/media/nmWuUU8laTi1YIQ3fJ/giphy.gif)
+![image alt](https://media.giphy.com/media/aP7GR6l72A0IkWwXK6/giphy.gif)
 
 ### 產品詳細介紹 : 
 
 查看產品詳細說明，並選擇數量加入購物車，頁面下方有相同類別之產品供消費者參考
 
-![image alt](https://media.giphy.com/media/dRJfbB3GaGBmCZfiLj/giphy.gif)
+![image alt](https://media.giphy.com/media/d3Q8kt3wjqv1ShFqTa/giphy.gif)
 
 ### 結帳流程頁面 : 
 
 查看購物車內容、套用優惠券、填寫訂購人資訊(含表單驗證功能)
 
-![image alt](https://media.giphy.com/media/WEd7Gi89NnezrNYGD5/giphy.gif)
+![image alt](https://media.giphy.com/media/HLMKXTJiDOVGqH1Wl7/giphy.gif)
 
 
 ## 後台導覽
