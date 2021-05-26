@@ -10,9 +10,9 @@ export default {
     cartData: JSON.parse(localStorage.getItem('cart')) || [],
   },
   actions: {
-    addToCart(context, { item, num }) {
+    addToCart({ commit, state }, { item, num }) {
       const cacheCartID = [];
-      context.state.cartData.forEach((cartItem) => {
+      state.cartData.forEach((cartItem) => {
         cacheCartID.push(cartItem.product_id);
       });
       if (cacheCartID.indexOf(item.id) === -1) {
@@ -26,11 +26,11 @@ export default {
           imageUrl: item.imageUrl,
         };
         cartContent.total = item.price * cartContent.qty;
-        context.commit('CARTPUSH', cartContent);
-        localStorage.setItem('cart', JSON.stringify(context.state.cartData));
+        commit('CART_PUSH', cartContent);
+        localStorage.setItem('cart', JSON.stringify(state.cartData));
       } else {
         let cache = {};
-        context.state.cartData.forEach((cartItem, keys) => {
+        state.cartData.forEach((cartItem, keys) => {
           if (cartItem.product_id === item.id) {
             let { qty } = cartItem;
             cache = {
@@ -44,13 +44,13 @@ export default {
             };
             cache.total = item.price * cache.qty;
             // 移除現有 localStorage 購物車的資料，否則 localStorage 會重複加入
-            context.commit('SPLICECART', keys);
+            commit('SPLICE_CART', keys);
           }
         });
         // 將數量已經增加的資料推回陣列中
-        context.commit('CARTPUSH', cache);
+        commit('CART_PUSH', cache);
         // 重新寫入 localStorage
-        localStorage.setItem('cart', JSON.stringify(context.state.cartData));
+        localStorage.setItem('cart', JSON.stringify(state.cartData));
       }
     },
     removeCart(context, item) {
@@ -64,7 +64,7 @@ export default {
           Vue.swal('刪除成功', '', 'success');
           context.state.cartData.forEach((cartItem, index) => {
             if (item.product_id === cartItem.product_id) {
-              context.commit('SPLICECART', index);
+              context.commit('SPLICE_CART', index);
             }
           });
           localStorage.setItem('cart', JSON.stringify(context.state.cartData));
@@ -74,7 +74,7 @@ export default {
     plusItem(context, item) {
       context.state.cartData.forEach((cartItem) => {
         if (item.product_id === cartItem.product_id) {
-          context.commit('PLUSITEM', cartItem);
+          context.commit('PLUS_ITEM', cartItem);
         }
       });
       localStorage.setItem('cart', JSON.stringify(context.state.cartData));
@@ -83,7 +83,7 @@ export default {
       context.state.cartData.forEach((cartItem) => {
         if (item.product_id === cartItem.product_id) {
           if (cartItem.qty > 1) {
-            context.commit('MINUSITEM', cartItem);
+            context.commit('MINUS_ITEM', cartItem);
           }
         }
       });
@@ -110,17 +110,17 @@ export default {
     },
   },
   mutations: {
-    CARTPUSH(state, payload) {
+    CART_PUSH(state, payload) {
       state.cartData.push(payload);
     },
-    SPLICECART(state, payload) {
+    SPLICE_CART(state, payload) {
       state.cartData.splice(payload, 1);
     },
-    PLUSITEM(state, payload) {
+    PLUS_ITEM(state, payload) {
       payload.qty += 1;
       payload.total = payload.price * payload.qty;
     },
-    MINUSITEM(state, payload) {
+    MINUS_ITEM(state, payload) {
       payload.qty -= 1;
       payload.total = payload.price * payload.qty;
     },

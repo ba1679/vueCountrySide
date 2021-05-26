@@ -8,13 +8,13 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
       context.commit('LOADING', true);
       axios.get(api).then((res) => {
-        context.commit('SETALLPRODUCT', res.data.products);
+        context.commit('SET_ALL_PRODUCT', res.data.products);
         context.commit('LOADING', false);
       });
     },
   },
   mutations: {
-    SETALLPRODUCT(state, payload) {
+    SET_ALL_PRODUCT(state, payload) {
       state.products = payload;
     },
   },
