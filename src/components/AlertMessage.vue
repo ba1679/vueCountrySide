@@ -22,50 +22,50 @@
 <script>
 export default {
   name: 'AlertMsg',
-  data() {
+  data () {
     return {
-      messages: [],
-    };
+      messages: []
+    }
   },
   methods: {
-    updateMessage(message, status) {
-      const timestamp = Math.floor(new Date() / 1000);
+    updateMessage (message, status) {
+      const timestamp = Math.floor(new Date() / 1000)
       this.messages.push({
         message, // 錯誤訊息內容
         status, // 綁定bs4 的class用
-        timestamp,
-      });
-      this.removeMessageWithTiming(timestamp);
+        timestamp
+      })
+      this.removeMessageWithTiming(timestamp)
     },
-    removeMessage(num) {
-      this.messages.splice(num, 1);
+    removeMessage (num) {
+      this.messages.splice(num, 1)
     },
     // 5秒後移除訊息
-    removeMessageWithTiming(timestamp) {
-      const vm = this;
+    removeMessageWithTiming (timestamp) {
+      const vm = this
       setTimeout(() => {
         vm.messages.forEach((item, i) => {
           if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1);
+            vm.messages.splice(i, 1)
           }
-        });
-      }, 5000);
-    },
+        })
+      }, 5000)
+    }
   },
-  created() {
-    const vm = this;
+  created () {
+    const vm = this
     // 自定義名稱 'messagePush'
     // message: 傳入參數
     // status: 樣式，預設值為 warning
     vm.$bus.$on('messagePush', (message, status = 'warning') => {
-      vm.updateMessage(message, status);
-    });
+      vm.updateMessage(message, status)
+    })
   },
   // 在組件銷毀前取消監聽，才不會導致一些錯誤
-  beforeDestroy() {
-    this.$bus.$off('messagePush');
-  },
-};
+  beforeDestroy () {
+    this.$bus.$off('messagePush')
+  }
+}
 </script>
 
 <style scope>

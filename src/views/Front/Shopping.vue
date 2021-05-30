@@ -83,15 +83,14 @@
         </ul>
         <div class="row mb-3" :id="category">
           <div
-            class="col-lg-3 col-md-6 mb-3"
+            class="col-lg-3 col-md-6 mb-5"
             v-for="item in productFilter[currentPage]"
             :key="item.id"
             data-aos="fade-up"
             data-aos-duration="1000"
             data-aos-once="true"
           >
-            <a href="#" class="d-block detail-href h-100">
-              <div class="card h-100">
+              <div class="card detail-href h-100" @click="moreDetail(item)">
                 <div class="category-tag">
                   {{ item.category }}
                 </div>
@@ -100,15 +99,15 @@
                     href="#"
                     class="btn btn-primary"
                     :class="{ disabled: !item.is_enabled }"
-                    @click.prevent="moreDetail(item.id)"
+                    @click.prevent="moreDetail(item)"
                     >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
                   >
                 </div>
                 <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
                 <div class="card-body">
-                  <a href="#" class="h5" @click.prevent="moreDetail(item.id)">
+                  <p class="h5">
                     {{ item.title }}
-                  </a>
+                  </p>
                   <div class="d-flex justify-content-end mt-3">
                     <del class="mr-auto">
                       {{ item.origin_price | currency }}
@@ -121,15 +120,14 @@
                     </span>
                   </div>
                 </div>
-                <a
-                  href="#"
-                  class="btn btn-primary cart-btn w-100"
-                  :class="{ disabled: !item.is_enabled }"
-                  @click.prevent="addToCart(item)"
-                  >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
-                >
               </div>
-            </a>
+            <a
+              href="#"
+              class="btn btn-primary cart-btn w-100"
+              :class="{ disabled: !item.is_enabled }"
+              @click.prevent="addToCart(item)"
+              >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
+            >
           </div>
         </div>
       </div>
@@ -177,9 +175,9 @@
         </ul>
       </nav>
     </div>
-    <a href="#" class="cart-icon d-lg-none">
+    <div class="cart-icon d-lg-none">
       <Cart />
-    </a>
+    </div>
     <a
       href="#"
       class="text-warning back-to-top d-none"
@@ -261,104 +259,106 @@
   </div>
 </template>
 <script>
-import $ from 'jquery';
-import Cart from '@/components/front/Cart.vue';
-import { mapGetters, mapActions } from 'vuex';
+import $ from 'jquery'
+import Cart from '@/components/front/Cart.vue'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Shopping',
   data: function () {
     return {
       category: '全部商品',
       currentPage: 0,
-      filtedProducts: [],
-    };
+      filtedProducts: []
+    }
   },
   components: {
-    Cart,
+    Cart
   },
   watch: {
-    currentPage() {
-      $('html,body').scrollTop(0);
-    },
+    currentPage () {
+      $('html,body').scrollTop(0)
+    }
   },
   computed: {
-    productFilter() {
-      const vm = this;
-      let tempData = [];
+    productFilter () {
+      const vm = this
+      let tempData = []
       // 確保每次都回歸初始值
-      vm.currentPage = 0;
-      vm.filtedProducts = [];
+      vm.currentPage = 0
+      vm.filtedProducts = []
       tempData = vm.products.filter((item) => {
         if (vm.category === '全部商品') {
-          return vm.products;
+          return vm.products
         } else {
-          return item.category === vm.category;
+          return item.category === vm.category
         }
-      });
+      })
       tempData.forEach((item, index) => {
         if (index % 8 === 0) {
-          vm.filtedProducts.push([]);
+          vm.filtedProducts.push([])
         }
-        const pagenum = parseInt(index / 8);
-        vm.filtedProducts[pagenum].push(item);
-      });
-      return vm.filtedProducts;
+        const pagenum = parseInt(index / 8)
+        vm.filtedProducts[pagenum].push(item)
+      })
+      return vm.filtedProducts
     },
-    ...mapGetters(['products', 'carts']),
+    ...mapGetters(['products', 'carts'])
   },
   methods: {
-    moreDetail(id) {
-      this.$router.push(`/productInfo/${id}`);
+    moreDetail (item) {
+      if (item.is_enabled) {
+        this.$router.push(`/productInfo/${item.id}`)
+      }
     },
-    addToCart(item, num = 1) {
-      this.$store.dispatch('addToCart', { item, num });
-      $('.alert').addClass('show');
+    addToCart (item, num = 1) {
+      this.$store.dispatch('addToCart', { item, num })
+      $('.alert-primary').addClass('show')
       setTimeout(() => {
-        $('.alert').removeClass('show');
-      }, 3000);
+        $('.alert-primary').removeClass('show')
+      }, 3000)
     },
-    removeCart(item) {
-      this.$store.dispatch('removeCart', item);
+    removeCart (item) {
+      this.$store.dispatch('removeCart', item)
     },
     // 回到最上方
-    backToTop() {
+    backToTop () {
       $('html,body').animate(
         {
-          scrollTop: 0,
+          scrollTop: 0
         },
         1000
-      );
+      )
     },
     // 換頁行為
-    prev() {
-      const vm = this;
+    prev () {
+      const vm = this
       if (vm.currentPage === 0) {
-        vm.currentPage = 0;
+        vm.currentPage = 0
       } else {
-        vm.currentPage--;
+        vm.currentPage--
       }
     },
-    next() {
-      const vm = this;
+    next () {
+      const vm = this
       if (vm.currentPage === vm.filtedProducts.length - 1) {
-        vm.currentPage = vm.filtedProducts.length - 1;
+        vm.currentPage = vm.filtedProducts.length - 1
       } else {
-        vm.currentPage++;
+        vm.currentPage++
       }
     },
-    ...mapActions(['getAllProduct']),
+    ...mapActions(['getAllProduct'])
   },
-  mounted() {
-    this.getAllProduct();
+  mounted () {
+    this.getAllProduct()
     $(window).scroll(function () {
       if ($(this).scrollTop() > 300) {
-        $('.back-to-top').addClass('d-block');
+        $('.back-to-top').addClass('d-block')
       } else {
-        $('.back-to-top').removeClass('d-block');
+        $('.back-to-top').removeClass('d-block')
       }
-    });
-  },
-};
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -396,8 +396,9 @@ export default {
     background-color: rgba(0, 0, 0, 0.35);
     position: absolute;
     width: 100%;
-    height: calc(100% - 42px);
+    height: 100%;
     transition: opacity 0.3s;
+    cursor: pointer;
     .btn {
       position: absolute;
       top: 50%;

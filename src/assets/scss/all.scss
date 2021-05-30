@@ -6,3 +6,25 @@
 @import '~rfs/scss';
 // dashboard樣式
 @import './dashboard';
+
+// 自訂樣式
+body {
+  background-color: #e3f2fd;
+}
+.list-style-none {
+  list-style-type: none;
+}
+.web-bg-color {
+  background-color: #e3f2fd;
+}
+.bg-cover {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.text-indent {
+  text-indent: 2em;
+}
+.not-allow {
+  cursor: not-allowed;
+}

@@ -10,7 +10,7 @@
             <div class="h5">結帳完成，感謝購買</div>
           </div>
           <router-link
-            :to="{ name: 'Home' }"
+            :to="{ name: 'Index' }"
             class="btn btn-outline-primary mr-1"
             >回首頁</router-link
           >
@@ -177,6 +177,9 @@
                 <td class="text-right text-success" v-if="item.coupon">
                   已套用優惠券
                 </td>
+                <td class="text-right" v-else>
+                  未套用優惠券
+                </td>
               </tr>
               <tr>
                 <td colspan="6" class="text-right">處理費</td>
@@ -263,78 +266,81 @@
   </div>
 </template>
 <script>
-import $ from 'jquery';
-import { mapActions } from 'vuex';
+import $ from 'jquery'
+import { mapActions } from 'vuex'
 export default {
   name: 'ConfirmOrder',
-  data() {
+  data () {
     return {
       orderId: '',
       order: {
         coupon: '',
         products: [],
-        user: {},
+        user: {}
       },
       payMethod: '信用卡',
-      handleFee: 80,
-    };
+      handleFee: 80
+    }
   },
   computed: {
-    timeTransform() {
-      const date = new Date(this.order.create_at * 1000).toLocaleDateString();
-      return date;
-    },
+    timeTransform () {
+      const date = new Date(this.order.create_at * 1000).toLocaleDateString()
+      return date
+    }
   },
   methods: {
-    getOrderList(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${id}`;
+    getOrderList (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${id}`
       vm.$http
         .get(api)
         .then((res) => {
-          vm.order = res.data.order;
+          vm.order = res.data.order
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {
+          this.$store.dispatch('catchErr', true)
+        })
     },
-    confirmAlert() {
-      const vm = this;
+    confirmAlert () {
+      const vm = this
       vm.$swal({
         title: '確定取消購買?',
         showCancelButton: true,
         cancelButtonText: '取消',
-        confirmButtonText: '確定',
+        confirmButtonText: '確定'
       }).then((result) => {
         if (result.isConfirmed) {
-          vm.cleanCart();
-          this.$router.push('/shopping');
+          vm.cleanCart()
+          vm.$router.push('/shopping')
         }
-      });
+      }).catch(() => {
+        this.$store.dispatch('catchErr', true)
+      })
     },
-    payOrder() {
-      const vm = this;
-      const id = vm.orderId;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${id}`;
+    payOrder () {
+      const vm = this
+      const id = vm.orderId
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${id}`
       vm.$http
         .post(api)
         .then((res) => {
-          vm.getOrderList(id);
-          vm.$swal('付款成功，感謝購買!', '', 'success');
-          $('html,body').scrollTop(0);
-          localStorage.removeItem('cart');
+          vm.getOrderList(id)
+          vm.$swal('付款成功，感謝購買!', '', 'success')
+          $('html,body').scrollTop(0)
+          vm.cleanCart()
+          vm.cleanAllCart()
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {
+          this.$store.dispatch('catchErr', true)
+        })
     },
-    ...mapActions(['cleanCart']),
+    ...mapActions(['cleanCart', 'cleanAllCart'])
   },
-  mounted() {
-    this.orderId = this.$route.params.orderId;
-    this.getOrderList(this.orderId);
-  },
-};
+  mounted () {
+    this.orderId = this.$route.params.orderId
+    this.getOrderList(this.orderId)
+  }
+}
 </script>
 <style scoped>
 .alert-rounded {

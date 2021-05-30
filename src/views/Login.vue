@@ -37,36 +37,36 @@
 <script>
 export default {
   name: 'Login',
-  data() {
+  data () {
     return {
       user: {
         username: '',
-        password: '',
+        password: ''
       },
-      isLoading: false,
-    };
+      isLoading: false
+    }
   },
   methods: {
-    signin() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
-      vm.isLoading = true;
-      this.$http.post(api, vm.user).then((response) => {
+    signin () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
+      vm.isLoading = true
+      vm.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
           // 先把cookie存起來，才能正確傳到後端
-          const token = response.data.token;
-          const expired = response.data.expired;
+          const token = response.data.token
+          const expired = response.data.expired
           // 寫入cookie語法，必須寫在轉址之前
-          document.cookie = `hsinToken=${token};expires=${new Date(expired)};`;
-          vm.$router.push('/admin/products');
+          document.cookie = `hsinToken=${token};expires=${new Date(expired)};`
+          vm.$router.push('/admin/products')
         } else {
-          vm.isLoading = false;
-          vm.$swal('帳號或密碼錯誤');
+          vm.isLoading = false
+          vm.$swal('帳號或密碼錯誤')
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>

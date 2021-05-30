@@ -32,32 +32,45 @@
 <script>
 export default {
   name: 'Navbar',
-  data() {
-    return {
-      isLoading: false,
-    };
+  data () {
+    return {}
   },
   methods: {
-    logOut() {
-      const vm = this;
-      vm.isLoading = true;
-      const api = `${process.env.VUE_APP_APIPATH}/logout`;
+    logOut () {
+      const vm = this
+      vm.$store.dispatch('updateLoading', true)
+      const api = `${process.env.VUE_APP_APIPATH}/logout`
       vm.$http.post(api).then((response) => {
         if (response.data.success) {
-          vm.$router.push('/login');
+          vm.$router.push('/login')
+          vm.$store.dispatch('updateLoading', false)
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .logo {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background-image: url(../../assets/images/logo.jpg);
+  background-image: url(~@/assets/images/country_logo.png);
   background-size: cover;
+  &::after{
+    content:'上田園農產';
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    z-index: 100;
+    color: #081B53;
+    background-color: #FAE6AB;
+    border-radius: 10px;
+    padding: 1px;
+    font-size: 12px;
+    transform: rotate(-15deg);
+  }
 }
 .icon-transition {
   transition: all 0.3s;

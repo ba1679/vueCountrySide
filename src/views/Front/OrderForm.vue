@@ -308,10 +308,10 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from 'vuex'
 export default {
   name: 'CheckOut',
-  data() {
+  data () {
     return {
       couponCode: '',
       couponMsg: '',
@@ -319,108 +319,114 @@ export default {
       carts: [],
       form: {
         user: {
-          address: '',
+          address: ''
         },
-        message: '',
+        message: ''
       },
       status: {
-        loading: false,
-      },
-    };
+        loading: false
+      }
+    }
   },
   methods: {
-    getCartList() {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      const vm = this;
-      this.$http.get(api).then((res) => {
-        vm.carts = res.data.data;
-      });
+    getCartList () {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
+      const vm = this
+      vm.$http.get(api).then((res) => {
+        vm.carts = res.data.data
+      }).catch(() => {
+        this.$store.dispatch('catchErr', true)
+      })
     },
-    removeAlert(id) {
+    removeAlert (id) {
       this.$swal({
         title: '確定要從購物車移除此商品?',
         showCancelButton: true,
         cancelButtonText: '取消',
-        confirmButtonText: '確定',
+        confirmButtonText: '確定'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$swal('刪除成功', '', 'success');
-          this.removeCart(id);
+          this.$swal('刪除成功', '', 'success')
+          this.removeCart(id)
         }
-      });
+      }).catch(() => {
+        this.$store.dispatch('catchErr', true)
+      })
     },
-    removeCart(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`;
+    removeCart (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
       vm.$http
         .delete(api)
         .then((res) => {
-          vm.getCartList();
+          vm.getCartList()
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {
+          this.$store.dispatch('catchErr', true)
+        })
     },
-    showAlert() {
+    showAlert () {
       this.$swal({
         title: '確定取消購買?',
         showCancelButton: true,
         cancelButtonText: '取消',
-        confirmButtonText: '確定',
+        confirmButtonText: '確定'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.cleanCart();
-          this.$router.push('/shopping');
+          this.cleanCart()
+          this.$router.push('/shopping')
         }
-      });
+      }).catch(() => {
+        this.$store.dispatch('catchErr', true)
+      })
     },
-    useCoupon() {
-      const vm = this;
-      vm.status.loading = true;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
+    useCoupon () {
+      const vm = this
+      vm.status.loading = true
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`
       const couponCode = {
-        code: vm.couponCode,
-      };
+        code: vm.couponCode
+      }
       vm.$http
         .post(api, { data: couponCode })
         .then((res) => {
-          vm.couponCode = '';
+          vm.couponCode = ''
           if (res.data.success) {
-            vm.couponMsg = res.data.message;
-            vm.getCartList();
-            vm.status.loading = false;
+            vm.couponMsg = res.data.message
+            vm.getCartList()
+            vm.status.loading = false
           } else {
-            vm.$swal('找不到此優惠券');
-            vm.status.loading = false;
+            vm.$swal('找不到此優惠券')
+            vm.status.loading = false
           }
         })
         .catch(() => {
-          vm.$swal('找不到此優惠券');
-        });
+          this.$store.dispatch('catchErr', true)
+        })
     },
-    sendOrder() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`;
+    sendOrder () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order`
       vm.$http
         .post(api, { data: vm.form })
         .then((res) => {
           if (res.data.success) {
-            const orderId = res.data.orderId;
-            vm.$router.push(`/confirmOrder/${orderId}`);
+            const orderId = res.data.orderId
+            vm.$router.push(`/confirmOrder/${orderId}`)
           } else {
-            vm.$swal('購物車沒有東西');
+            vm.$swal('購物車沒有東西')
           }
         })
         .catch(() => {
-          vm.$swal('送出失敗');
-        });
+          this.$store.dispatch('catchErr', true)
+        })
     },
-    ...mapActions(['cleanCart']),
+    ...mapActions(['cleanCart'])
   },
-  mounted() {
-    this.getCartList();
-  },
-};
+  mounted () {
+    this.getCartList()
+  }
+}
 </script>
 <style scoped>
 .alert-rounded {
@@ -429,7 +435,5 @@ export default {
 .cart-title {
   min-width: 100px;
 }
-.not-allow {
-  cursor: not-allowed;
-}
+
 </style>

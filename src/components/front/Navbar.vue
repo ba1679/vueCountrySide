@@ -43,39 +43,54 @@
   </div>
 </template>
 <script>
-import Cart from '../../components/front/Cart.vue';
+import Cart from '@/components/front/Cart.vue'
 export default {
   name: 'Navbar',
-  data() {
+  data () {
     return {
-      isToggled: false,
-    };
+      isToggled: false
+    }
   },
   components: {
-    Cart,
+    Cart
   },
   methods: {
-    changeToggle() {
-      this.isToggled = !this.isToggled;
-    },
+    changeToggle () {
+      this.isToggled = !this.isToggled
+    }
   },
   watch: {
-    $route() {
-      this.isToggled = false;
-    },
-  },
-};
+    $route () {
+      this.isToggled = false
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .logo {
+  position: relative;
   width: 85px;
   height: 85px;
   overflow: hidden;
   white-space: nowrap;
   color: transparent;
   border-radius: 50%;
-  background-image: url(../../assets/images/logo.jpg);
+  background-image: url(~@/assets/images/country_logo.png);
   background-size: cover;
+  &::after{
+    content:'上田園農產';
+    display: block;
+    position: absolute;
+    bottom: 10px;
+    right: 5px;
+    z-index: 100;
+    color: #081B53;
+    background-color: #FAE6AB;
+    border-radius: 10px;
+    padding: 1px;
+    font-size: 12px;
+    transform: rotate(-15deg);
+  }
 }
 .icon-transition {
   transition: all 0.3s;

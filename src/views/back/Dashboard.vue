@@ -14,24 +14,24 @@
 </template>
 
 <script>
-import Sidebar from '@/components/back/Sidebar.vue';
-import Navbar from '@/components/back/Navbar.vue';
-import Alert from '@/components/AlertMessage.vue';
+import Sidebar from '@/components/back/Sidebar.vue'
+import Navbar from '@/components/back/Navbar.vue'
+import Alert from '@/components/AlertMessage.vue'
 
 export default {
   components: {
     Sidebar,
     Navbar,
-    Alert,
+    Alert
   },
-  created() {
+  created () {
     // 讀取cookie語法
     const tokenCookie = document.cookie.replace(
       /(?:(?:^|.*;\s*)hsinToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1'
-    );
+    )
     // axios語法，將cookie往後端發送
-    this.$http.defaults.headers.common.Authorization = tokenCookie;
-  },
-};
+    this.$http.defaults.headers.common.Authorization = tokenCookie
+  }
+}
 </script>

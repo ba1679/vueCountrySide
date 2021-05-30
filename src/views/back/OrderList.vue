@@ -324,12 +324,12 @@
   </div>
 </template>
 <script>
-import $ from 'jquery';
-import Pagination from '@/components/Pagination.vue';
+import $ from 'jquery'
+import Pagination from '@/components/Pagination.vue'
 
 export default {
   name: 'OrderList',
-  data() {
+  data () {
     return {
       orderList: [
         {
@@ -338,75 +338,75 @@ export default {
           is_paid: false,
           num: 1,
           products: {
-            product: [],
+            product: []
           },
           total: 0,
-          user: {},
-        },
+          user: {}
+        }
       ],
       products: [],
       cacheOrder: {
         final_total: '',
         coupon: {
-          code: '',
+          code: ''
         },
         products: [],
-        user: {},
+        user: {}
       },
-      pagination: {},
-    };
+      pagination: {}
+    }
   },
   components: {
-    Pagination,
+    Pagination
   },
   methods: {
-    getOrderList(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      vm.$store.dispatch('updateLoading', true);
+    getOrderList (page = 1) {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((response) => {
-        vm.orderList = response.data.orders;
-        vm.pagination = response.data.pagination;
-        vm.$store.dispatch('updateLoading', false);
-      });
+        vm.orderList = response.data.orders
+        vm.pagination = response.data.pagination
+        vm.$store.dispatch('updateLoading', false)
+      })
     },
-    getAllProducts() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`;
+    getAllProducts () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`
       vm.$http.get(api).then((res) => {
-        vm.products = res.data.products;
-      });
+        vm.products = res.data.products
+      })
     },
-    openModal(item) {
-      this.cacheOrder = { ...item };
-      $('#orderModal').modal('show');
+    openModal (item) {
+      this.cacheOrder = { ...item }
+      $('#orderModal').modal('show')
     },
-    openProductModal(item) {
-      this.cacheOrder = { ...item };
-      $('#orderProductsModal').modal('show');
+    openProductModal (item) {
+      this.cacheOrder = { ...item }
+      $('#orderProductsModal').modal('show')
     },
     // 新增&編輯優惠券
-    updateOrder(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${id}`;
+    updateOrder (id) {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${id}`
       vm.$http
         .put(api, { data: vm.cacheOrder })
         .then((response) => {
           if (response.data.success) {
-            $('#orderModal').modal('hide');
-            alert('成功修改');
-            vm.getOrderList();
+            $('#orderModal').modal('hide')
+            alert('成功修改')
+            vm.getOrderList()
           }
         })
         .catch((err) => {
-          alert('修改失敗');
-          console.log(err);
-        });
-    },
+          alert('修改失敗')
+          console.log(err)
+        })
+    }
   },
-  mounted() {
-    this.getOrderList();
-    this.getAllProducts();
-  },
-};
+  mounted () {
+    this.getOrderList()
+    this.getAllProducts()
+  }
+}
 </script>

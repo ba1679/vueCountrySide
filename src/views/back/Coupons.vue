@@ -1,8 +1,13 @@
 <template>
   <div>
     <div class="message-alert">
-      <div class="alert alert-success alert-dismissible fade" role="alert">
-        <strong>更新優惠券成功</strong>
+      <div
+        class="alert alert-success alert-dismissible fade"
+        :class="{ 'alert-danger': !success }"
+        role="alert"
+      >
+        <strong v-if="success">更新優惠券成功</strong>
+        <strong v-else>操作失敗，請再試一次</strong>
         <button
           type="button"
           class="close"
@@ -220,12 +225,12 @@
   </div>
 </template>
 <script>
-import $ from 'jquery';
-import Pagination from '@/components/Pagination.vue';
+import $ from 'jquery'
+import Pagination from '@/components/Pagination.vue'
 
 export default {
   name: 'Coupons',
-  data() {
+  data () {
     return {
       couponList: [] || JSON.parse(localStorage.getItem('coupons')),
       pagination: {},
@@ -233,105 +238,107 @@ export default {
       isNew: false,
       couponId: '',
       todayDate: '',
-    };
+      success: true
+    }
   },
   components: {
-    Pagination,
+    Pagination
   },
   methods: {
-    getCouponList(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`;
-      vm.$store.dispatch('updateLoading', true);
+    getCouponList (page = 1) {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons?page=${page}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((response) => {
-        vm.couponList = response.data.coupons;
-        vm.pagination = response.data.pagination;
-        vm.$store.dispatch('updateLoading', false);
-        localStorage.setItem('coupons', JSON.stringify(vm.couponList));
-        vm.checkDate();
-      });
+        vm.couponList = response.data.coupons
+        vm.pagination = response.data.pagination
+        vm.$store.dispatch('updateLoading', false)
+        localStorage.setItem('coupons', JSON.stringify(vm.couponList))
+        vm.checkDate()
+      })
     },
-    openModal(isNewParam, item) {
+    openModal (isNewParam, item) {
       if (!isNewParam) {
-        this.newCoupon = { ...item };
-        this.isNew = false;
+        this.newCoupon = { ...item }
+        this.isNew = false
       } else {
-        this.newCoupon = {};
-        this.isNew = true;
+        this.newCoupon = {}
+        this.isNew = true
       }
-      $('#couponModal').modal('show');
+      $('#couponModal').modal('show')
     },
-    checkCoupon(code) {
-      const filterCoupon = this.couponList.filter((item) => item.code === code);
+    checkCoupon (code) {
+      const filterCoupon = this.couponList.filter((item) => item.code === code)
       if (filterCoupon.length !== 0 && this.isNew) {
-        this.$swal('此優惠碼已存在，請更換');
-        return;
+        this.$swal('此優惠碼已存在，請更換')
+        return
       }
-      this.updateCoupon();
+      this.updateCoupon()
     },
     // 新增&編輯優惠券
-    updateCoupon() {
-      const vm = this;
-      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
-      let httpMethod = 'post';
+    updateCoupon () {
+      const vm = this
+      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`
+      let httpMethod = 'post'
       if (!vm.isNew) {
-        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.newCoupon.id}`;
-        httpMethod = 'put';
+        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.newCoupon.id}`
+        httpMethod = 'put'
       }
       vm.$http[httpMethod](api, { data: vm.newCoupon })
         .then((response) => {
           if (response.data.success) {
-            $('#couponModal').modal('hide');
-            $('.alert').addClass('show');
+            vm.success = true
+            $('#couponModal').modal('hide')
+            $('.alert').addClass('show')
             setTimeout(() => {
-              $('.alert').removeClass('show');
-            }, 3000);
-            vm.getCouponList();
+              $('.alert').removeClass('show')
+            }, 3000)
+            vm.getCouponList()
           }
         })
-        .catch((err) => {
-          alert('新增失敗');
-          console.log(err);
-        });
+        .catch(() => {
+          vm.success = false
+          $('.alert').addClass('show')
+        })
     },
-    checkDate() {
-      const vm = this;
+    checkDate () {
+      const vm = this
       vm.couponList.forEach(function (item) {
-        const dueDate = Date.parse(item.due_date.replace(/-/g, '/'));
-        const couponTitle = item.title;
+        const dueDate = Date.parse(item.due_date.replace(/-/g, '/'))
+        const couponTitle = item.title
         if (vm.todayDate > dueDate && item.is_enabled === 1) {
-          vm.$swal(`${couponTitle}的優惠日期已到，請取消啟用!`);
+          vm.$swal(`${couponTitle}的優惠日期已到，請取消啟用!`)
         }
-      });
+      })
     },
-    deleteModal(couponId) {
-      this.couponId = couponId;
-      $('#deleteModal').modal('show');
+    deleteModal (couponId) {
+      this.couponId = couponId
+      $('#deleteModal').modal('show')
     },
-    deleteCoupon() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${this.couponId}`;
-      vm.$store.dispatch('updateLoading', true);
+    deleteCoupon () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.couponId}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.delete(api).then((response) => {
         if (response.data.success) {
-          vm.$store.dispatch('updateLoading', false);
-          $('#deleteModal').modal('hide');
-          $('.alert').addClass('show');
+          vm.$store.dispatch('updateLoading', false)
+          $('#deleteModal').modal('hide')
+          $('.alert').addClass('show')
           setTimeout(() => {
-            $('.alert').removeClass('show');
-          }, 3000);
+            $('.alert').removeClass('show')
+          }, 3000)
         } else {
-          alert('刪除失敗');
+          alert('刪除失敗')
         }
-        vm.getCouponList(vm.pagination.current_page);
-      });
-    },
+        vm.getCouponList(vm.pagination.current_page)
+      })
+    }
   },
-  mounted() {
-    this.getCouponList();
-    this.todayDate = Date.parse(new Date().toDateString());
-  },
-};
+  mounted () {
+    this.getCouponList()
+    this.todayDate = Date.parse(new Date().toDateString())
+  }
+}
 </script>
 <style scoped>
 .message-alert {

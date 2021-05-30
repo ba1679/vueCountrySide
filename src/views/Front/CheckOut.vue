@@ -165,58 +165,60 @@
   </div>
 </template>
 <script>
-import $ from 'jquery';
-import { mapGetters, mapActions } from 'vuex';
+import $ from 'jquery'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'CheckOut',
-  data() {
+  data () {
     return {
-      handleFee: 80,
-    };
+      handleFee: 80
+    }
   },
   computed: {
-    cartTotalPrice() {
-      let total = 0;
+    cartTotalPrice () {
+      let total = 0
       this.carts.forEach((item) => {
-        total += item.total;
-      });
-      return total;
+        total += item.total
+      })
+      return total
     },
-    ...mapGetters(['carts']),
+    ...mapGetters(['carts'])
   },
   methods: {
-    plusItem(item) {
-      this.$store.dispatch('plusItem', item);
+    plusItem (item) {
+      this.$store.dispatch('plusItem', item)
     },
-    minusItem(item) {
-      this.$store.dispatch('minusItem', item);
+    minusItem (item) {
+      this.$store.dispatch('minusItem', item)
     },
-    removeCart(item) {
-      this.$store.dispatch('removeCart', item);
+    removeCart (item) {
+      this.$store.dispatch('removeCart', item)
     },
-    confirmCart() {
-      const vm = this;
-      vm.$store.dispatch('updateLoading', true);
-      this.carts.forEach((cartItem) => {
+    confirmCart () {
+      const vm = this
+      vm.$store.dispatch('updateLoading', true)
+      vm.carts.forEach((cartItem) => {
         const cache = {
           product_id: cartItem.product_id,
-          qty: cartItem.qty,
-        };
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
+          qty: cartItem.qty
+        }
+        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
         vm.$http.post(api, { data: cache }).then(() => {
-          vm.$store.dispatch('updateLoading', false);
-          vm.$router.push('/orderForm');
-        });
-      });
+          vm.$store.dispatch('updateLoading', false)
+          vm.$router.push('/orderForm')
+        }).catch(() => {
+          this.$store.dispatch('catchErr', true)
+        })
+      })
     },
-    ...mapActions(['cleanCart']),
+    ...mapActions(['cleanCart'])
   },
-  mounted() {
-    $('.modal-backdrop').remove();
-    $('body').removeClass('modal-open');
-    this.cleanCart();
-  },
-};
+  mounted () {
+    $('.modal-backdrop').remove()
+    $('body').removeClass('modal-open')
+    this.cleanCart()
+  }
+}
 </script>
 <style scoped>
 .alert-rounded {

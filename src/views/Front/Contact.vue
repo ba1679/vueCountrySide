@@ -149,22 +149,22 @@
 <script>
 export default {
   name: 'Contact',
-  data() {
+  data () {
     return {
       form: {
         name: '',
         tel: '',
         email: '',
-        contact: '',
-      },
-    };
+        contact: ''
+      }
+    }
   },
   methods: {
-    sendInfo() {
-      this.$swal('成功送出');
-    },
-  },
-};
+    sendInfo () {
+      this.$swal('成功送出')
+    }
+  }
+}
 </script>
 <style scoped>
 .not-allow {

@@ -29,12 +29,14 @@
           </td>
           <td class="d-flex">
             <button
+              type="button"
               class="btn btn-outline-primary btn-sm mr-1"
               @click="openModal(false, item)"
             >
               編輯
             </button>
             <button
+              type="button"
               class="btn btn-outline-danger btn-sm"
               @click="deleteModal(item.id)"
             >
@@ -278,11 +280,11 @@
 </template>
 
 <script>
-import $ from 'jquery';
-import Pagination from '@/components/Pagination.vue';
+import $ from 'jquery'
+import Pagination from '@/components/Pagination.vue'
 
 export default {
-  data() {
+  data () {
     return {
       products: [],
       pagination: {},
@@ -291,104 +293,104 @@ export default {
       productId: '',
       isNew: false,
       status: {
-        fileUploading: false,
-      },
-    };
+        fileUploading: false
+      }
+    }
   },
   components: {
-    Pagination,
+    Pagination
   },
   methods: {
-    getProductList(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
-      vm.$store.dispatch('updateLoading', true);
+    getProductList (page = 1) {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.get(api).then((response) => {
-        vm.$store.dispatch('updateLoading', false);
-        vm.products = response.data.products;
-        vm.pagination = response.data.pagination;
-      });
+        vm.$store.dispatch('updateLoading', false)
+        vm.products = response.data.products
+        vm.pagination = response.data.pagination
+      })
     },
-    openModal(isNewParam, item) {
+    openModal (isNewParam, item) {
       if (!isNewParam) {
-        this.cacheProduct = { ...item };
-        this.isNew = false;
+        this.cacheProduct = { ...item }
+        this.isNew = false
       } else {
-        this.cacheProduct = {};
-        this.isNew = true;
+        this.cacheProduct = {}
+        this.isNew = true
       }
-      $('#productModal').modal('show');
+      $('#productModal').modal('show')
     },
     // 新增&編輯產品
-    updateProduct() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`;
-      let httpMethod = 'post';
+    updateProduct () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
+      let httpMethod = 'post'
       if (!vm.isNew) {
         // eslint-disable-next-line no-const-assign
-        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.cacheProduct.id}`;
-        httpMethod = 'put';
+        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.cacheProduct.id}`
+        httpMethod = 'put'
       }
       vm.$http[httpMethod](api, { data: vm.cacheProduct })
         .then((response) => {
           if (response.data.success) {
-            $('#productModal').modal('hide');
-            vm.getProductList();
+            $('#productModal').modal('hide')
+            vm.getProductList()
           }
         })
         .catch((err) => {
-          alert('新增失敗');
-          console.log(err);
-        });
+          alert('新增失敗')
+          console.log(err)
+        })
     },
-    uploadFile() {
-      const vm = this;
-      const uploadedFile = this.$refs.files.files[0];
-      const fileId = this.$refs.files.id;
-      vm.status.fileUploading = true;
-      const formData = new FormData();
-      formData.append('file-to-upload', uploadedFile);
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
+    uploadFile () {
+      const vm = this
+      const uploadedFile = vm.$refs.files.files[0]
+      const fileId = vm.$refs.files.id
+      vm.status.fileUploading = true
+      const formData = new FormData()
+      formData.append('file-to-upload', uploadedFile)
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`
       vm.$http
         .post(api, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+            'Content-Type': 'multipart/form-data'
+          }
         })
         .then((response) => {
           if (response.data.success) {
-            vm.status.fileUploading = false;
-            vm.$set(vm.cacheProduct, 'imageUrl', response.data.imageUrl);
-            document.getElementById(fileId).value = '';
+            vm.status.fileUploading = false
+            vm.$set(vm.cacheProduct, 'imageUrl', response.data.imageUrl)
+            document.getElementById(fileId).value = ''
           } else {
             // ? 內層$emit觸發 ('註冊的方法','註冊時預設要帶的參數')
-            vm.$bus.$emit('messagePush', response.data.message, 'danger');
+            vm.$bus.$emit('messagePush', response.data.message, 'danger')
           }
-        });
+        })
     },
     // 刪除特定產品確認Modal
-    deleteModal(productId) {
-      this.productId = productId;
-      $('#delProductModal').modal('show');
+    deleteModal (productId) {
+      this.productId = productId
+      $('#delProductModal').modal('show')
     },
-    deleteProduct() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${this.productId}`;
-      vm.$store.dispatch('updateLoading', true);
+    deleteProduct () {
+      const vm = this
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.productId}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.delete(api).then((response) => {
         if (response.data.success) {
-          vm.$store.dispatch('updateLoading', false);
-          $('#delProductModal').modal('hide');
-          alert('成功刪除產品');
+          vm.$store.dispatch('updateLoading', false)
+          $('#delProductModal').modal('hide')
+          alert('成功刪除產品')
         } else {
-          alert('刪除失敗');
+          alert('刪除失敗')
         }
-        vm.getProductList(vm.pagination.current_page);
-      });
-    },
+        vm.getProductList(vm.pagination.current_page)
+      })
+    }
   },
-  mounted() {
-    this.getProductList();
-  },
-};
+  mounted () {
+    this.getProductList()
+  }
+}
 </script>

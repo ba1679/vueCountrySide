@@ -58,37 +58,37 @@
 </template>
 
 <script>
-import $ from 'jquery';
-import { mapGetters } from 'vuex';
+import $ from 'jquery'
+import { mapGetters } from 'vuex'
 export default {
   name: 'CartInfo',
-  data() {
-    return {};
+  data () {
+    return {}
   },
   computed: {
-    ...mapGetters(['carts']),
+    ...mapGetters(['carts'])
   },
   methods: {
-    cartDetailOpen() {
+    cartDetailOpen () {
       if ($(window).outerWidth() > 768) {
-        $('.dropdown-menu').dropdown();
+        $('.dropdown-menu').dropdown()
       } else {
-        $('#cartModal').modal('show');
+        $('#cartModal').modal('show')
       }
     },
-    removeCart(item) {
-      this.$store.dispatch('removeCart', item);
+    removeCart (item) {
+      this.$store.dispatch('removeCart', item)
     },
-    mobileHandler() {
+    mobileHandler () {
       if ($(window).outerWidth() < 768) {
-        $('.dropdown-btn').removeAttr('data-toggle');
+        $('.dropdown-btn').removeAttr('data-toggle')
       }
-    },
+    }
   },
-  mounted() {
-    this.mobileHandler();
-  },
-};
+  mounted () {
+    this.mobileHandler()
+  }
+}
 </script>
 
 <style lang="scss">

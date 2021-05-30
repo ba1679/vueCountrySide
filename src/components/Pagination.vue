@@ -44,9 +44,9 @@ export default {
   name: 'Pagination',
   props: ['pages'],
   methods: {
-    getProductPages(pages) {
-      this.$emit('emitProductPage', pages);
-    },
-  },
-};
+    getProductPages (pages) {
+      this.$emit('emitProductPage', pages)
+    }
+  }
+}
 </script>

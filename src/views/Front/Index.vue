@@ -217,7 +217,7 @@
 <script>
 export default {
   name: 'Index',
-  data() {
+  data () {
     return {
       notNextTick: true,
       swiperOptions: {
@@ -227,20 +227,20 @@ export default {
         loop: true,
         autoplay: {
           delay: 3000,
-          disableOnInteraction: false,
+          disableOnInteraction: false
         },
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          clickable: true
         },
         navigation: {
           nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-      },
-    };
-  },
-};
+          prevEl: '.swiper-button-prev'
+        }
+      }
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 .slide {
@@ -251,7 +251,7 @@ export default {
   border-radius: 10px;
 }
 .carousel-honey {
-  background-image: url(../../assets/images/banner1.jpg);
+  background-image: url(~@/assets/images/banner1.jpg);
 }
 .carousel-rice {
   background-image: url('https://p6-tt.byteimg.com/origin/pgc-image/4f4f8dab782f4e03b42738c87d6c1ee6?from=pc');
@@ -305,16 +305,16 @@ export default {
   text-align: center;
 }
 .hen-product {
-  background-image: url(../../assets/images/S__24330252.jpg);
+  background-image: url(~@/assets/images/S__24330252.jpg);
 }
 .tea-product {
-  background-image: url(../../assets/images/tea.jpg);
+  background-image: url(~@/assets/images/tea.jpg);
 }
 .rice-product {
-  background-image: url(../../assets/images/S__24330255.jpg);
+  background-image: url(~@/assets/images/S__24330255.jpg);
 }
 .honey-product {
-  background-image: url(../../assets/images/intro.jpg);
+  background-image: url(~@/assets/images/intro.jpg);
 }
 .countrySide-img {
   width: 200px;
@@ -326,7 +326,7 @@ export default {
   justify-content: center;
 }
 .promise-bg {
-  background-image: url(../../assets/images/小農堅持.jpg);
+  background-image: url(~@/assets/images/小農堅持.jpg);
   color: #e3f2fd;
 }
 .bg-filter {
