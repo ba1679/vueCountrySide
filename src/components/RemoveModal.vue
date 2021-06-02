@@ -1,11 +1,17 @@
 <template>
-    <div id="remove-Modal" class="modal fade" tabindex="-1" role="dialog">
+    <div
+      id="remove-Modal"
+      class="modal fade"
+      role="dialog"
+      data-backdrop="static"
+      data-keyboard="false"
+    >
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
+        <div class="modal-content border-0">
+          <div class="modal-header bg-warning">
             <h5 class="modal-title">注意!
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="resetCancel">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -14,7 +20,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="resetCancel">按錯了</button>
-            <button type="button" class="btn btn-primary" @click="confirmRemove">確認刪除</button>
+            <button type="button" class="btn btn-warning" @click="confirmRemove">確認刪除</button>
           </div>
         </div>
       </div>
