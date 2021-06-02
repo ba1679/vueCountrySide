@@ -85,7 +85,7 @@ export default {
     right: 5px;
     z-index: 100;
     color: #081B53;
-    background-color: #FAE6AB;
+    background-color:#FAE6AB;
     border-radius: 10px;
     padding: 1px;
     font-size: 12px;

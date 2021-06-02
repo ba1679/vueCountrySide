@@ -1,15 +1,21 @@
-import Vue from 'vue'
+/** @format */
+
 import axios from 'axios'
-import VueSweetalert2 from 'vue-sweetalert2'
-const options = {
-  confirmButtonColor: '#0077b6'
-}
-Vue.use(VueSweetalert2, options)
 export default {
   state: {
-    cartData: JSON.parse(localStorage.getItem('cart')) || []
+    cartData: JSON.parse(localStorage.getItem('cart')) || [],
+    cartApiList: [],
+    cacheId: ''
   },
   actions: {
+    getCartList (context) {
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
+      axios.get(api).then((res) => {
+        context.commit('GET_CART', res.data.data)
+      }).catch(() => {
+        context.dispatch('catchErr', true)
+      })
+    },
     addToCart ({ commit, state }, { item, num }) {
       const cacheCartID = []
       state.cartData.forEach((cartItem) => {
@@ -54,22 +60,25 @@ export default {
       }
     },
     removeCart (context, item) {
-      Vue.swal({
-        title: '確定要從購物車移除此商品?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Vue.swal('刪除成功', '', 'success')
-          context.state.cartData.forEach((cartItem, index) => {
-            if (item.product_id === cartItem.product_id) {
-              context.commit('SPLICE_CART', index)
-            }
-          })
-          localStorage.setItem('cart', JSON.stringify(context.state.cartData))
+      context.state.cartData.forEach((cartItem, index) => {
+        if (item.product_id === cartItem.product_id) {
+          context.commit('SPLICE_CART', index)
         }
       })
+      localStorage.setItem('cart', JSON.stringify(context.state.cartData))
+    },
+    removeItemApi (context) {
+      context.commit('LOADING', true)
+      const id = context.state.cacheId
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
+      axios
+        .delete(api).then(() => {
+          context.dispatch('getCartList')
+          context.commit('LOADING', false)
+        })
+        .catch(() => {
+          context.dispatch('catchErr', true)
+        })
     },
     plusItem (context, item) {
       context.state.cartData.forEach((cartItem) => {
@@ -111,9 +120,15 @@ export default {
     cleanAllCart ({ commit, state }) {
       commit('SPLICE_ALL_CART')
       localStorage.setItem('cart', JSON.stringify(state.cartData))
+    },
+    saveCacheId ({ commit }, id) {
+      commit('CACHE_ID', id)
     }
   },
   mutations: {
+    GET_CART (state, payload) {
+      state.cartApiList = payload
+    },
     CART_PUSH (state, payload) {
       state.cartData.push(payload)
     },
@@ -130,9 +145,13 @@ export default {
     MINUS_ITEM (state, payload) {
       payload.qty -= 1
       payload.total = payload.price * payload.qty
+    },
+    CACHE_ID (state, payload) {
+      state.cacheId = payload
     }
   },
   getters: {
-    carts: (state) => state.cartData
+    carts: (state) => state.cartData,
+    cartApi: (state) => state.cartApiList
   }
 }

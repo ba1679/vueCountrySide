@@ -174,6 +174,13 @@ export default {
       handleFee: 80
     }
   },
+  watch: {
+    carts () {
+      if (!this.carts.length) {
+        this.$router.push('/shopping')
+      }
+    }
+  },
   computed: {
     cartTotalPrice () {
       let total = 0
@@ -207,7 +214,7 @@ export default {
           vm.$store.dispatch('updateLoading', false)
           vm.$router.push('/orderForm')
         }).catch(() => {
-          this.$store.dispatch('catchErr', true)
+          vm.$store.dispatch('catchErr', true)
         })
       })
     },

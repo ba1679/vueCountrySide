@@ -1,3 +1,5 @@
+<!-- @format -->
+
 <template>
   <div>
     <div class="message-alert">
@@ -68,38 +70,38 @@
       <hr />
       <div class="row same-category pb-5">
         <div class="col-md-3" v-for="item in categoryFilter" :key="item.id">
-            <div class="card detail-href h-100" @click="moreDetail(item)">
-              <div class="detail-bg">
-                <a
-                  href="#"
-                  class="btn btn-primary"
-                  :class="{ disabled: !item.is_enabled }"
-                  @click.prevent="moreDetail(item)"
-                  >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
+          <div class="card detail-href h-100" @click="moreDetail(item)">
+            <div class="detail-bg">
+              <a
+                href="#"
+                class="btn btn-primary"
+                :class="{ disabled: !item.is_enabled }"
+                @click.prevent="moreDetail(item)"
+                >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
+              >
+            </div>
+            <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
+            <div class="card-body h-100">
+              <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{
+                item.title
+              }}</a>
+              <div class="d-flex justify-content-end mt-3">
+                <del class="mr-auto">{{ item.origin_price | currency }}</del>
+                <span class="text-warning"
+                  >特價<strong class="h6">{{
+                    item.price | currency
+                  }}</strong></span
                 >
               </div>
-              <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
-              <div class="card-body h-100">
-                <a href="#" class="h5" @click.prevent="moreDetail(item.id)">{{
-                  item.title
-                }}</a>
-                <div class="d-flex justify-content-end mt-3">
-                  <del class="mr-auto">{{ item.origin_price | currency }}</del>
-                  <span class="text-warning"
-                    >特價<strong class="h6">{{
-                      item.price | currency
-                    }}</strong></span
-                  >
-                </div>
-              </div>
             </div>
-             <a
-                href="#"
-                class="btn btn-primary cart-btn w-100"
-                :class="{ disabled: !item.is_enabled}"
-                @click.prevent="addToCart(item, cartSelect)"
-                >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
-              >
+          </div>
+          <a
+            href="#"
+            class="btn btn-primary cart-btn w-100"
+            :class="{ disabled: !item.is_enabled }"
+            @click.prevent="addToCart(item, cartSelect)"
+            >{{ item.is_enabled === 1 ? '加入購物車' : '缺貨中' }}</a
+          >
         </div>
       </div>
     </div>
@@ -131,12 +133,15 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`
       vm.$store.dispatch('updateLoading', true)
-      vm.$http.get(api).then((res) => {
-        vm.productDetail = res.data.product
-        vm.$store.dispatch('updateLoading', false)
-      }).catch(() => {
-        this.$store.dispatch('catchErr', true)
-      })
+      vm.$http
+        .get(api)
+        .then((res) => {
+          vm.productDetail = res.data.product
+          vm.$store.dispatch('updateLoading', false)
+        })
+        .catch(() => {
+          this.$store.dispatch('catchErr', true)
+        })
     },
     addToCart (item, num) {
       this.$store.dispatch('addToCart', { item, num })

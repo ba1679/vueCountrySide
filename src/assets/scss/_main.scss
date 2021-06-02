@@ -1,0 +1,20 @@
+body {
+  background-color: $countryLight;
+}
+.list-style-none {
+  list-style-type: none;
+}
+.web-bg-color {
+  background-color: $countryLight;
+}
+.bg-cover {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.text-indent {
+  text-indent: 2em;
+}
+.not-allow {
+  cursor: not-allowed;
+}

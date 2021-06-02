@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" loader="dots"></loading>
     <form class="form-signin" @submit.prevent="signin">
       <h1 class="h3 mb-3 font-weight-normal">請輸入帳號及密碼登入</h1>
       <label for="inputEmail" class="sr-only">帳號</label>
@@ -23,6 +22,7 @@
         required
       />
       <div class="checkbox mb-3">
+        <p class="text-danger" v-if="wrongPassword">帳號密碼錯誤，請再輸入一次</p>
         <label> <input type="checkbox" value="remember-me" /> 記住我 </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -43,14 +43,14 @@ export default {
         username: '',
         password: ''
       },
-      isLoading: false
+      wrongPassword: false
     }
   },
   methods: {
     signin () {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`
-      vm.isLoading = true
+      vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
           // 先把cookie存起來，才能正確傳到後端
@@ -60,8 +60,10 @@ export default {
           document.cookie = `hsinToken=${token};expires=${new Date(expired)};`
           vm.$router.push('/admin/products')
         } else {
-          vm.isLoading = false
-          vm.$swal('帳號或密碼錯誤')
+          vm.$store.dispatch('updateLoading', false)
+          vm.user.username = ''
+          vm.user.password = ''
+          vm.wrongPassword = true
         }
       })
     }

@@ -368,6 +368,8 @@ export default {
         vm.orderList = response.data.orders
         vm.pagination = response.data.pagination
         vm.$store.dispatch('updateLoading', false)
+      }).catch(() => {
+        vm.$store.dispatch('catchErr', true)
       })
     },
     getAllProducts () {
@@ -375,6 +377,8 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products/all`
       vm.$http.get(api).then((res) => {
         vm.products = res.data.products
+      }).catch(() => {
+        vm.$store.dispatch('catchErr', true)
       })
     },
     openModal (item) {
@@ -398,9 +402,8 @@ export default {
             vm.getOrderList()
           }
         })
-        .catch((err) => {
-          alert('修改失敗')
-          console.log(err)
+        .catch(() => {
+          vm.$store.dispatch('catchErr', true)
         })
     }
   },

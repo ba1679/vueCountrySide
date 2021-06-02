@@ -109,6 +109,8 @@ export default {
         vm.renderCategoryChart()
         vm.renderProductChart()
         vm.$store.dispatch('updateLoading', false)
+      }).catch(() => {
+        vm.$store.dispatch('catchErr', true)
       })
     },
     renderCategoryChart () {

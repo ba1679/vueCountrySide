@@ -19,6 +19,7 @@
       </div>
     </div>
     <!-- 渲染優惠券列表 -->
+    <div class="h4 text-danger text-center mt-2"><strong v-if="expired.status">{{expired.title}}的優惠日期已到，請取消啟用!</strong></div>
     <div class="text-right mt-4">
       <button type="button" class="btn btn-primary" @click="openModal(true)">
         新增優惠券
@@ -72,10 +73,7 @@
     <div
       class="modal fade"
       id="couponModal"
-      tabindex="-1"
       role="dialog"
-      aria-labelledby="couponModal"
-      aria-hidden="true"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0">
@@ -182,10 +180,7 @@
     <div
       class="modal fade"
       id="deleteModal"
-      tabindex="-1"
       role="dialog"
-      aria-labelledby="deleteModal"
-      aria-hidden="true"
     >
       <div class="modal-dialog" role="document">
         <div class="modal-content border-0">
@@ -232,12 +227,16 @@ export default {
   name: 'Coupons',
   data () {
     return {
-      couponList: [] || JSON.parse(localStorage.getItem('coupons')),
+      couponList: [],
       pagination: {},
       newCoupon: {},
       isNew: false,
       couponId: '',
       todayDate: '',
+      expired: {
+        status: false,
+        title: ''
+      },
       success: true
     }
   },
@@ -253,8 +252,9 @@ export default {
         vm.couponList = response.data.coupons
         vm.pagination = response.data.pagination
         vm.$store.dispatch('updateLoading', false)
-        localStorage.setItem('coupons', JSON.stringify(vm.couponList))
         vm.checkDate()
+      }).catch(() => {
+        vm.$store.dispatch('catchErr', true)
       })
     },
     openModal (isNewParam, item) {
@@ -288,17 +288,18 @@ export default {
         .then((response) => {
           if (response.data.success) {
             vm.success = true
+            vm.expired.status = false
             $('#couponModal').modal('hide')
-            $('.alert').addClass('show')
+            $('.alert-success').addClass('show')
             setTimeout(() => {
-              $('.alert').removeClass('show')
+              $('.alert-success').removeClass('show')
             }, 3000)
             vm.getCouponList()
           }
         })
         .catch(() => {
           vm.success = false
-          $('.alert').addClass('show')
+          $('.alert-danger').addClass('show')
         })
     },
     checkDate () {
@@ -307,7 +308,8 @@ export default {
         const dueDate = Date.parse(item.due_date.replace(/-/g, '/'))
         const couponTitle = item.title
         if (vm.todayDate > dueDate && item.is_enabled === 1) {
-          vm.$swal(`${couponTitle}的優惠日期已到，請取消啟用!`)
+          vm.expired.status = true
+          vm.expired.title = couponTitle
         }
       })
     },
@@ -328,7 +330,7 @@ export default {
             $('.alert').removeClass('show')
           }, 3000)
         } else {
-          alert('刪除失敗')
+          vm.$store.dispatch('catchErr', true)
         }
         vm.getCouponList(vm.pagination.current_page)
       })

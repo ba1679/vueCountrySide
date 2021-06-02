@@ -77,7 +77,7 @@
               >
                 購物車明細
               </a>
-              <strong>{{ (carts.total + handleFee) | currency }}</strong>
+              <strong>{{ (cartApi.total + handleFee) | currency }}</strong>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@
                 <th class="text-right">單價</th>
                 <th class="text-right">小計</th>
               </thead>
-              <tr v-for="item in carts.carts" :key="item.id">
+              <tr v-for="item in cartApi.carts" :key="item.id">
                 <td>
                   <a
                     href="#"
@@ -123,22 +123,29 @@
               <tr>
                 <td class="text-right" colspan="6">總計</td>
                 <td class="text-right">
-                  {{ (carts.total + handleFee) | currency }}
+                  {{ (cartApi.total + handleFee) | currency }}
                 </td>
               </tr>
               <tr>
                 <td
                   class="text-right text-success"
                   colspan="6"
-                  v-if="carts.total !== carts.final_total"
+                  v-if="cartApi.total !== cartApi.final_total"
                 >
                   折扣價
                 </td>
                 <td
                   class="text-right text-success"
-                  v-if="carts.total !== carts.final_total"
+                  v-if="cartApi.total !== cartApi.final_total"
                 >
-                  {{ (carts.final_total + handleFee) | currency }}
+                  {{ (cartApi.final_total + handleFee) | currency }}
+                </td>
+                <td
+                  colspan="7"
+                  class="text-right text-danger"
+                  v-if="status.err"
+                >
+                  無此折價券
                 </td>
               </tr>
             </table>
@@ -308,7 +315,7 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'CheckOut',
   data () {
@@ -316,7 +323,6 @@ export default {
       couponCode: '',
       couponMsg: '',
       handleFee: 80,
-      carts: [],
       form: {
         user: {
           address: ''
@@ -324,61 +330,28 @@ export default {
         message: ''
       },
       status: {
-        loading: false
+        loading: false,
+        err: false
       }
     }
   },
+  watch: {
+    cartApi () {
+      if (!this.cartApi.carts.length) {
+        this.$router.push('/shopping')
+      }
+    }
+  },
+  computed: {
+    ...mapGetters(['cartApi'])
+  },
   methods: {
-    getCartList () {
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      const vm = this
-      vm.$http.get(api).then((res) => {
-        vm.carts = res.data.data
-      }).catch(() => {
-        this.$store.dispatch('catchErr', true)
-      })
-    },
     removeAlert (id) {
-      this.$swal({
-        title: '確定要從購物車移除此商品?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$swal('刪除成功', '', 'success')
-          this.removeCart(id)
-        }
-      }).catch(() => {
-        this.$store.dispatch('catchErr', true)
-      })
-    },
-    removeCart (id) {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
-      vm.$http
-        .delete(api)
-        .then((res) => {
-          vm.getCartList()
-        })
-        .catch(() => {
-          this.$store.dispatch('catchErr', true)
-        })
+      this.$store.dispatch('openModal', true)
+      this.$store.dispatch('saveCacheId', id)
     },
     showAlert () {
-      this.$swal({
-        title: '確定取消購買?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.cleanCart()
-          this.$router.push('/shopping')
-        }
-      }).catch(() => {
-        this.$store.dispatch('catchErr', true)
-      })
+      this.$store.dispatch('openCancelModal', true)
     },
     useCoupon () {
       const vm = this
@@ -395,13 +368,14 @@ export default {
             vm.couponMsg = res.data.message
             vm.getCartList()
             vm.status.loading = false
+            vm.status.err = false
           } else {
-            vm.$swal('找不到此優惠券')
+            vm.status.err = true
             vm.status.loading = false
           }
         })
         .catch(() => {
-          this.$store.dispatch('catchErr', true)
+          vm.$store.dispatch('catchErr', true)
         })
     },
     sendOrder () {
@@ -414,14 +388,14 @@ export default {
             const orderId = res.data.orderId
             vm.$router.push(`/confirmOrder/${orderId}`)
           } else {
-            vm.$swal('購物車沒有東西')
+            this.$store.dispatch('catchErr', true)
           }
         })
         .catch(() => {
-          this.$store.dispatch('catchErr', true)
+          vm.$store.dispatch('catchErr', true)
         })
     },
-    ...mapActions(['cleanCart'])
+    ...mapActions(['getCartList'])
   },
   mounted () {
     this.getCartList()

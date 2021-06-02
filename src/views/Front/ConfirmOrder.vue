@@ -298,40 +298,28 @@ export default {
           vm.order = res.data.order
         })
         .catch(() => {
-          this.$store.dispatch('catchErr', true)
+          vm.$store.dispatch('catchErr', true)
         })
     },
     confirmAlert () {
-      const vm = this
-      vm.$swal({
-        title: '確定取消購買?',
-        showCancelButton: true,
-        cancelButtonText: '取消',
-        confirmButtonText: '確定'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          vm.cleanCart()
-          vm.$router.push('/shopping')
-        }
-      }).catch(() => {
-        this.$store.dispatch('catchErr', true)
-      })
+      this.$store.dispatch('openCancelModal', true)
     },
     payOrder () {
       const vm = this
       const id = vm.orderId
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${id}`
+      vm.$store.dispatch('updateLoading', true)
       vm.$http
         .post(api)
-        .then((res) => {
+        .then(() => {
           vm.getOrderList(id)
-          vm.$swal('付款成功，感謝購買!', '', 'success')
           $('html,body').scrollTop(0)
           vm.cleanCart()
           vm.cleanAllCart()
+          vm.$store.dispatch('updateLoading', false)
         })
         .catch(() => {
-          this.$store.dispatch('catchErr', true)
+          vm.$store.dispatch('catchErr', true)
         })
     },
     ...mapActions(['cleanCart', 'cleanAllCart'])

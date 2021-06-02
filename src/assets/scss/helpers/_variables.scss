@@ -69,6 +69,7 @@ $warning: $yellow !default;
 $danger: $red !default;
 $light: $gray-100 !default;
 $dark: $gray-800 !default;
+$countryLight: #e3f2fd;
 
 $theme-colors: () !default;
 $theme-colors: map-merge(
@@ -81,7 +82,7 @@ $theme-colors: map-merge(
     'danger': $danger,
     'light': $light,
     'dark': $dark,
-    'countryLight': #e3f2fd
+    'countryLight': $countryLight
   ),
   $theme-colors
 );

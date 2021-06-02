@@ -1,6 +1,5 @@
 <template>
   <div>
-    <loading :active.sync="isLoading" loader="dots"></loading>
     <nav class="navbar navbar-expand-lg navbar-light bg-primary sticky-top">
       <div class="d-flex justify-content-between back-logo">
         <div class="d-flex align-items-center">
@@ -52,8 +51,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .logo {
-  width: 70px;
-  height: 70px;
+  position: relative;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   background-image: url(~@/assets/images/country_logo.png);
   background-size: cover;
@@ -61,13 +61,12 @@ export default {
     content:'上田園農產';
     display: block;
     position: absolute;
-    bottom: 10px;
-    right: 5px;
+    bottom: 7px;
+    right: 2px;
     z-index: 100;
     color: #081B53;
     background-color: #FAE6AB;
     border-radius: 10px;
-    padding: 1px;
     font-size: 12px;
     transform: rotate(-15deg);
   }

@@ -1,5 +1,7 @@
 module.exports = {
   singleQuote: true,
   semi: false,
-  endOfLine: 'auto'
+  endOfLine: true,
+  bracketSpacing: true,
+  spaceBeforeParen: true
 }

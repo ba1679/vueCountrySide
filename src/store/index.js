@@ -2,19 +2,28 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import productModule from './products'
 import cartModule from './cart'
+import backModule from './back'
 Vue.use(Vuex)
 export default new Vuex.Store({
   strict: true,
   state: {
     isLoading: false,
-    err: false
+    err: false,
+    confirmCancel: false,
+    removeCancel: false
   },
   actions: {
-    updateLoading (context, status) {
-      context.commit('LOADING', status)
+    updateLoading ({ commit }, status) {
+      commit('LOADING', status)
     },
     catchErr ({ commit }, status) {
       commit('ERR_SHOW', status)
+    },
+    openModal ({ commit }, status) {
+      commit('REMOVE_MODAL_SHOW', status)
+    },
+    openCancelModal ({ commit }, status) {
+      commit('CANCEL_MODAL_SHOW', status)
     }
   },
   mutations: {
@@ -23,13 +32,23 @@ export default new Vuex.Store({
     },
     ERR_SHOW (state, status) {
       state.err = status
+    },
+    REMOVE_MODAL_SHOW (state, status) {
+      state.confirmCancel = status
+    },
+    CANCEL_MODAL_SHOW (state, status) {
+      state.removeCancel = status
     }
   },
   getters: {
-    err: (state) => state.err
+    err: (state) => state.err,
+    isLoading: (state) => state.isLoading,
+    confirmCancel: (state) => state.confirmCancel,
+    removeCancel: (state) => state.removeCancel
   },
   modules: {
     productModule,
-    cartModule
+    cartModule,
+    backModule
   }
 })

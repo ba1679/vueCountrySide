@@ -18,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in products" :key="item.id">
+        <tr v-for="item in backProducts" :key="item.id">
           <td>{{ item.category }}</td>
           <td>{{ item.title }}</td>
           <td class="text-right">{{ item.origin_price | currency }}</td>
@@ -38,7 +38,7 @@
             <button
               type="button"
               class="btn btn-outline-danger btn-sm"
-              @click="deleteModal(item.id)"
+              @click="deleteModal(item)"
             >
               刪除
             </button>
@@ -54,24 +54,22 @@
     <div
       class="modal fade"
       id="productModal"
-      tabindex="-1"
       role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
+      data-backdrop="static"
+      data-keyboard="false"
     >
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content border-0">
-          <div class="modal-header bg-dark text-white">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <span>新增產品</span>
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">
+              {{ isNew ? '新增產品' : '編輯產品'}}
             </h5>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
-              aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span>&times;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -233,64 +231,19 @@
         </div>
       </div>
     </div>
-    <div
-      class="modal fade"
-      id="delProductModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content border-0">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <span>刪除產品</span>
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            是否刪除
-            <strong class="text-danger"></strong>
-            商品(刪除後將無法恢復)。
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-dismiss="modal"
-            >
-              取消
-            </button>
-            <button type="button" class="btn btn-danger" @click="deleteProduct">
-              確認刪除
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
 import Pagination from '@/components/Pagination.vue'
-
+import { mapGetters } from 'vuex'
 export default {
+  name: 'Products',
   data () {
     return {
-      products: [],
-      pagination: {},
       cacheProduct: {},
       category: ['台灣好米', '台灣好茶', '黃金畜牧', '國產蜂蜜'],
-      productId: '',
       isNew: false,
       status: {
         fileUploading: false
@@ -300,16 +253,12 @@ export default {
   components: {
     Pagination
   },
+  computed: {
+    ...mapGetters(['productItem', 'backProducts', 'pagination'])
+  },
   methods: {
     getProductList (page = 1) {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.get(api).then((response) => {
-        vm.$store.dispatch('updateLoading', false)
-        vm.products = response.data.products
-        vm.pagination = response.data.pagination
-      })
+      this.$store.dispatch('getProductList', page)
     },
     openModal (isNewParam, item) {
       if (!isNewParam) {
@@ -324,7 +273,7 @@ export default {
     // 新增&編輯產品
     updateProduct () {
       const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
+      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
       let httpMethod = 'post'
       if (!vm.isNew) {
         // eslint-disable-next-line no-const-assign
@@ -338,9 +287,8 @@ export default {
             vm.getProductList()
           }
         })
-        .catch((err) => {
-          alert('新增失敗')
-          console.log(err)
+        .catch(() => {
+          vm.$store.dispatch('catchErr', true)
         })
     },
     uploadFile () {
@@ -366,27 +314,14 @@ export default {
             // ? 內層$emit觸發 ('註冊的方法','註冊時預設要帶的參數')
             vm.$bus.$emit('messagePush', response.data.message, 'danger')
           }
+        }).catch(() => {
+          vm.$store.dispatch('catchErr', true)
         })
     },
     // 刪除特定產品確認Modal
-    deleteModal (productId) {
-      this.productId = productId
-      $('#delProductModal').modal('show')
-    },
-    deleteProduct () {
-      const vm = this
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.productId}`
-      vm.$store.dispatch('updateLoading', true)
-      vm.$http.delete(api).then((response) => {
-        if (response.data.success) {
-          vm.$store.dispatch('updateLoading', false)
-          $('#delProductModal').modal('hide')
-          alert('成功刪除產品')
-        } else {
-          alert('刪除失敗')
-        }
-        vm.getProductList(vm.pagination.current_page)
-      })
+    deleteModal (productItem) {
+      this.$store.dispatch('getItem', productItem)
+      this.$store.dispatch('backRemoveModal', true)
     }
   },
   mounted () {
