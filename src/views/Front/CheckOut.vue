@@ -85,17 +85,15 @@
                     <img :src="item.imageUrl" alt="商品圖" class="cart-img" />
                   </td>
                   <td class="d-flex align-items-center">
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" @click="minusItem(item)">
                       <i
                         class="fas fa-minus text-primary"
-                        @click="minusItem(item)"
                       ></i>
                     </button>
                     {{ item.qty }}
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" @click="plusItem(item)">
                       <i
                         class="fas fa-plus text-primary"
-                        @click="plusItem(item)"
                       ></i>
                     </button>
                   </td>

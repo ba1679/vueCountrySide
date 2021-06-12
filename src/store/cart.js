@@ -16,7 +16,7 @@ export default {
         context.dispatch('catchErr', true)
       })
     },
-    addToCart ({ commit, state }, { item, num }) {
+    addToCart ({ commit, state }, { item, num = 1 }) {
       const cacheCartID = []
       state.cartData.forEach((cartItem) => {
         cacheCartID.push(cartItem.product_id)
@@ -24,7 +24,7 @@ export default {
       if (cacheCartID.indexOf(item.id) === -1) {
         const cartContent = {
           product_id: item.id,
-          qty: 1,
+          qty: num,
           title: item.title,
           origin_price: item.origin_price,
           price: item.price,

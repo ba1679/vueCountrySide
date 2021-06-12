@@ -148,7 +148,6 @@
               <a
                 class="btn btn-link btn-block text-left"
                 href="#"
-                type="button"
                 data-toggle="collapse"
                 data-target="#collapseOne"
               >
@@ -254,7 +253,7 @@
                 >
                   取消
                 </button>
-                <button type="button" class="btn btn-primary" @click="payOrder">
+                <button type="submit" class="btn btn-primary" @click="payOrder">
                   確認付款
                 </button>
               </div>
