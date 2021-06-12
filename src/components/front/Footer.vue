@@ -35,9 +35,12 @@
         </li>
 
         <li class="mr-2">
-          <a href="#" class="text-countryLight"
-            ><i class="fab fa-instagram fa-2x"></i
-          ></a>
+          <a
+            href="https://www.instagram.com/countryside8985/" class="text-countryLight"
+            target="_blank"
+            >
+            <i class="fab fa-instagram fa-2x"></i>
+          </a>
         </li>
         <li>
           <a href="#" class="text-countryLight"

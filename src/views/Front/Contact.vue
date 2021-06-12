@@ -10,19 +10,21 @@
           <li>電話：04-2699-8985/0983-931-197</li>
         </ul>
         <ul class="d-flex list-style-none mt-2 justify-content-center p-0">
-          <li class="mr-1">
+          <li class="mr-3">
             <a href="#" class="text-primary"
               ><i class="fab fa-facebook-square fa-2x"></i
             ></a>
           </li>
-          <li class="mr-1">
+          <li class="mr-3">
             <a
               href="https://www.instagram.com/countryside8985/"
               class="text-primary"
-              ><i class="fab fa-instagram fa-2x"></i
-            ></a>
+              target="_blank"
+              >
+              <i class="fab fa-instagram fa-2x"></i>
+            </a>
           </li>
-          <li class="mr-1">
+          <li class="mr-3">
             <a href="#" class="text-primary"
               ><i class="fab fa-line fa-2x"></i
             ></a>
