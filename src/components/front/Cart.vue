@@ -19,12 +19,12 @@
           <h6 v-else>購物車沒有東西喔</h6>
           <div class="table-responsive">
             <table class="table">
-              <tr v-for="item in carts" :key="item.id">
+              <tr v-for="item in carts" :key="item.product_id">
                 <td>
                   <a
                     href="#"
                     class="far fa-trash-alt text-danger"
-                    @click.prevent="removeCart(item)"
+                    @click.prevent="toRemoveCart(item)"
                   ></a>
                 </td>
                 <td class="title-width">{{ item.title }}</td>
@@ -54,6 +54,12 @@
         </div>
       </div>
     </div>
+    <modal
+      :modalShow="modalShow"
+      :text="forModalData.title"
+      @ok="removeCart"
+      @cancel="modalCancel"
+    ></modal>
   </div>
 </template>
 
@@ -61,9 +67,12 @@
 import $ from 'jquery'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'CartInfo',
+  name: 'Cart',
   data () {
-    return {}
+    return {
+      modalShow: false,
+      forModalData: {}
+    }
   },
   computed: {
     ...mapGetters(['carts'])
@@ -76,8 +85,17 @@ export default {
         $('#cartModal').modal('show')
       }
     },
-    removeCart (item) {
-      this.$store.dispatch('removeCart', item)
+    toRemoveCart (item) {
+      this.modalShow = true
+      this.forModalData = item
+    },
+    removeCart () {
+      this.$store.dispatch('removeCart', { item: this.forModalData })
+      this.modalShow = false
+    },
+    modalCancel () {
+      this.modalShow = false
+      this.forModalData = {}
     },
     mobileHandler () {
       if ($(window).outerWidth() < 768) {

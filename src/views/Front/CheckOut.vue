@@ -77,7 +77,7 @@
                     <a
                       href="#"
                       class="far fa-trash-alt text-danger"
-                      @click.prevent="removeCart(item)"
+                      @click.prevent="toRemoveCart(item)"
                     ></a>
                   </td>
                   <td class="cart-title">{{ item.title }}</td>
@@ -86,15 +86,11 @@
                   </td>
                   <td class="d-flex align-items-center">
                     <button type="button" class="btn" @click="minusItem(item)">
-                      <i
-                        class="fas fa-minus text-primary"
-                      ></i>
+                      <i class="fas fa-minus text-primary"></i>
                     </button>
                     {{ item.qty }}
                     <button type="button" class="btn" @click="plusItem(item)">
-                      <i
-                        class="fas fa-plus text-primary"
-                      ></i>
+                      <i class="fas fa-plus text-primary"></i>
                     </button>
                   </td>
                   <td>{{ item.unit }}</td>
@@ -160,16 +156,25 @@
         </div>
       </div>
     </section>
+    <modal
+      :modalShow="modalShow"
+      :text="forModalData.title"
+      @ok="removeCheckoutItem"
+      @cancel="removeCacel"
+    />
   </div>
 </template>
 <script>
-import $ from 'jquery'
+// import $ from 'jquery'
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'CheckOut',
   data () {
     return {
-      handleFee: 80
+      handleFee: 80,
+      modalShow: false,
+      forModalData: {}
     }
   },
   watch: {
@@ -196,8 +201,18 @@ export default {
     minusItem (item) {
       this.$store.dispatch('minusItem', item)
     },
-    removeCart (item) {
-      this.$store.dispatch('removeCart', item)
+    removeCacel () {
+      console.log('cancel')
+      this.modalShow = false
+    },
+    toRemoveCart (item) {
+      this.modalShow = true
+      this.forModalData = item
+    },
+    removeCheckoutItem () {
+      console.log('ok')
+      this.$store.dispatch('removeCart', { item: this.forModalData })
+      this.modalShow = false
     },
     confirmCart () {
       const vm = this
@@ -208,19 +223,22 @@ export default {
           qty: cartItem.qty
         }
         const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-        vm.$http.post(api, { data: cache }).then(() => {
-          vm.$store.dispatch('updateLoading', false)
-          vm.$router.push('/orderForm')
-        }).catch(() => {
-          vm.$store.dispatch('catchErr', true)
-        })
+        vm.$http
+          .post(api, { data: cache })
+          .then(() => {
+            vm.$store.dispatch('updateLoading', false)
+            vm.$router.push('/orderForm')
+          })
+          .catch(() => {
+            vm.$store.dispatch('catchErr', true)
+          })
       })
     },
     ...mapActions(['cleanCart'])
   },
   mounted () {
-    $('.modal-backdrop').remove()
-    $('body').removeClass('modal-open')
+    // $('.modal-backdrop').remove()
+    // $('body').removeClass('modal-open')
     this.cleanCart()
   }
 }

@@ -1,5 +1,3 @@
-/** @format */
-
 import axios from 'axios'
 export default {
   state: {
@@ -8,13 +6,16 @@ export default {
     cacheId: ''
   },
   actions: {
-    getCartList (context) {
+    getCartList (commit, dispatch) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      axios.get(api).then((res) => {
-        context.commit('GET_CART', res.data.data)
-      }).catch(() => {
-        context.dispatch('catchErr', true)
-      })
+      axios
+        .get(api)
+        .then((res) => {
+          commit('GET_CART', res.data.data)
+        })
+        .catch(() => {
+          dispatch('catchErr', true)
+        })
     },
     addToCart ({ commit, state }, { item, num = 1 }) {
       const cacheCartID = []
@@ -59,44 +60,45 @@ export default {
         localStorage.setItem('cart', JSON.stringify(state.cartData))
       }
     },
-    removeCart (context, item) {
-      context.state.cartData.forEach((cartItem, index) => {
+    removeCart ({ state, commit }, { item }) {
+      state.cartData.forEach((cartItem, index) => {
         if (item.product_id === cartItem.product_id) {
-          context.commit('SPLICE_CART', index)
+          commit('SPLICE_CART', index)
         }
       })
-      localStorage.setItem('cart', JSON.stringify(context.state.cartData))
+      localStorage.setItem('cart', JSON.stringify(state.cartData))
     },
-    removeItemApi (context) {
-      context.commit('LOADING', true)
-      const id = context.state.cacheId
+    removeItemApi (commit, state, dispatch) {
+      commit('LOADING', true)
+      const id = state.cacheId
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
       axios
-        .delete(api).then(() => {
-          context.dispatch('getCartList')
-          context.commit('LOADING', false)
+        .delete(api)
+        .then(() => {
+          dispatch('getCartList')
+          commit('LOADING', false)
         })
         .catch(() => {
-          context.dispatch('catchErr', true)
+          dispatch('catchErr', true)
         })
     },
-    plusItem (context, item) {
-      context.state.cartData.forEach((cartItem) => {
+    plusItem (state, commit, item) {
+      state.cartData.forEach((cartItem) => {
         if (item.product_id === cartItem.product_id) {
-          context.commit('PLUS_ITEM', cartItem)
+          commit('PLUS_ITEM', cartItem)
         }
       })
-      localStorage.setItem('cart', JSON.stringify(context.state.cartData))
+      localStorage.setItem('cart', JSON.stringify(state.cartData))
     },
-    minusItem (context, item) {
-      context.state.cartData.forEach((cartItem) => {
+    minusItem (state, commit, item) {
+      state.cartData.forEach((cartItem) => {
         if (item.product_id === cartItem.product_id) {
           if (cartItem.qty > 1) {
-            context.commit('MINUS_ITEM', cartItem)
+            commit('MINUS_ITEM', cartItem)
           }
         }
       })
-      localStorage.setItem('cart', JSON.stringify(context.state.cartData))
+      localStorage.setItem('cart', JSON.stringify(state.cartData))
     },
     cleanCart () {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`

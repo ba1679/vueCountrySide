@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="message-alert">
+    <!-- <div class="message-alert">
       <div class="alert alert-primary alert-dismissible fade" role="alert">
         <strong>加入購物車成功</strong>
         <button
@@ -12,7 +12,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-    </div>
+    </div> -->
     <div class="jumbotron jumbotron-fluid jumbotron-bg bg-cover pt-3">
       <div class="text-center">
         <div class="h3 mb-4 text-primary">上田園農產 - 線上商城</div>
@@ -90,37 +90,37 @@
             data-aos-duration="1000"
             data-aos-once="true"
           >
-              <div class="card detail-href h-100" @click="moreDetail(item)">
-                <div class="category-tag">
-                  {{ item.category }}
-                </div>
-                <div class="detail-bg">
-                  <a
-                    href="#"
-                    class="btn btn-primary"
-                    :class="{ disabled: !item.is_enabled }"
-                    @click.prevent="moreDetail(item)"
-                    >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
-                  >
-                </div>
-                <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
-                <div class="card-body">
-                  <p class="h5">
-                    {{ item.title }}
-                  </p>
-                  <div class="d-flex justify-content-end mt-3">
-                    <del class="mr-auto">
-                      {{ item.origin_price | currency }}
-                    </del>
-                    <span class="text-warning">
-                      特價
-                      <strong class="h6">
-                        {{ item.price | currency }}
-                      </strong>
-                    </span>
-                  </div>
+            <div class="card detail-href h-100" @click="moreDetail(item)">
+              <div class="category-tag">
+                {{ item.category }}
+              </div>
+              <div class="detail-bg">
+                <a
+                  href="#"
+                  class="btn btn-primary"
+                  :class="{ disabled: !item.is_enabled }"
+                  @click.prevent="moreDetail(item)"
+                  >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
+                >
+              </div>
+              <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
+              <div class="card-body">
+                <p class="h5">
+                  {{ item.title }}
+                </p>
+                <div class="d-flex justify-content-end mt-3">
+                  <del class="mr-auto">
+                    {{ item.origin_price | currency }}
+                  </del>
+                  <span class="text-warning">
+                    特價
+                    <strong class="h6">
+                      {{ item.price | currency }}
+                    </strong>
+                  </span>
                 </div>
               </div>
+            </div>
             <a
               href="#"
               class="btn btn-primary cart-btn w-100"
@@ -256,19 +256,31 @@
         </div>
       </div>
     </div>
+    <alert :customAlert="customAlert">
+      <template v-slot:title>
+        <p class="mb-0">加入購物車成功</p>
+      </template>
+    </alert>
   </div>
 </template>
 <script>
 import $ from 'jquery'
 import Cart from '@/components/front/Cart.vue'
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'Shopping',
   data: function () {
     return {
       category: '全部商品',
       currentPage: 0,
-      filtedProducts: []
+      filtedProducts: [],
+      customAlert: {
+        show: false,
+        'alert-dismissible': true,
+        'alert-success': false,
+        'alert-danger': false
+      }
     }
   },
   components: {
@@ -312,13 +324,15 @@ export default {
     },
     addToCart (item, num = 1) {
       this.$store.dispatch('addToCart', { item, num })
-      $('.alert-primary').addClass('show')
+      this.customAlert.show = true
+      this.customAlert['alert-success'] = true
       setTimeout(() => {
-        $('.alert-primary').removeClass('show')
+        this.customAlert.show = false
       }, 3000)
     },
     removeCart (item) {
-      this.$store.dispatch('removeCart', item)
+      console.log(item)
+      // this.$store.dispatch('removeCart', item)
     },
     // 回到最上方
     backToTop () {
