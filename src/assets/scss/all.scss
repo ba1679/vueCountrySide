@@ -1,11 +1,6 @@
-// '~'代表node_modules路徑 最後的bootstrap.scss 附檔名可省略
-// 順序不可更動，bootstrap規定，需先載入functions 才可使用其樣式
 @import '~bootstrap/scss/functions';
 @import './helpers/_variables';
 @import '~bootstrap/scss/bootstrap';
 @import '~rfs/scss';
-// dashboard樣式
 @import './dashboard';
-
-// 自訂樣式
 @import './main'
