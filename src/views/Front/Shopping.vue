@@ -90,37 +90,39 @@
             data-aos-duration="1000"
             data-aos-once="true"
           >
-              <div class="card detail-href h-100" @click="moreDetail(item)">
-                <div class="category-tag">
-                  {{ item.category }}
-                </div>
-                <div class="detail-bg">
-                  <a
-                    href="#"
-                    class="btn btn-primary"
-                    :class="{ disabled: !item.is_enabled }"
-                    @click.prevent="moreDetail(item)"
-                    >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
-                  >
-                </div>
+            <div class="card detail-href h-100" @click="moreDetail(item)">
+              <div class="category-tag">
+                {{ item.category }}
+              </div>
+              <div class="detail-bg">
+                <a
+                  href="#"
+                  class="btn btn-primary"
+                  :class="{ disabled: !item.is_enabled }"
+                  @click.prevent="moreDetail(item)"
+                  >{{ item.is_enabled ? '查看更多' : '缺貨中' }}</a
+                >
+              </div>
+              <div class="item-card-img">
                 <img :src="item.imageUrl" alt="產品圖片" class="card-img-top" />
-                <div class="card-body">
-                  <p class="h5">
-                    {{ item.title }}
-                  </p>
-                  <div class="d-flex justify-content-end mt-3">
-                    <del class="mr-auto">
-                      {{ item.origin_price | currency }}
-                    </del>
-                    <span class="text-warning">
-                      特價
-                      <strong class="h6">
-                        {{ item.price | currency }}
-                      </strong>
-                    </span>
-                  </div>
+              </div>
+              <div class="card-body">
+                <p class="h5">
+                  {{ item.title }}
+                </p>
+                <div class="d-flex justify-content-end mt-3">
+                  <del class="mr-auto">
+                    {{ item.origin_price | currency }}
+                  </del>
+                  <span class="text-warning">
+                    特價
+                    <strong class="h6">
+                      {{ item.price | currency }}
+                    </strong>
+                  </span>
                 </div>
               </div>
+            </div>
             <a
               href="#"
               class="btn btn-primary cart-btn w-100"
