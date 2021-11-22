@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 <template>
   <div>
     <section class="containter">
@@ -77,14 +76,13 @@ export default {
     }
   },
   computed: {
-    // 計算總收益
     totalPaid () {
       if (this.orderList.length !== 0) {
         const paidOrder = this.orderList.filter((item) => {
           return item.is_paid
         })
-        const totalAry = paidOrder.map((el) => el.total) // 將物件內的金額轉為一個陣列
-        return totalAry.reduce((a, b) => a + b) // 加總起來
+        const totalAry = paidOrder.map((el) => el.total)
+        return totalAry.reduce((a, b) => a + b)
       } else {
         return '目前無訂單'
       }
@@ -104,14 +102,17 @@ export default {
       const vm = this
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`
       vm.$store.dispatch('updateLoading', true)
-      vm.$http.get(api).then((response) => {
-        vm.orderList = response.data.orders
-        vm.renderCategoryChart()
-        vm.renderProductChart()
-        vm.$store.dispatch('updateLoading', false)
-      }).catch(() => {
-        vm.$store.dispatch('catchErr', true)
-      })
+      vm.$http
+        .get(api)
+        .then((response) => {
+          vm.orderList = response.data.orders
+          vm.renderCategoryChart()
+          vm.renderProductChart()
+          vm.$store.dispatch('updateLoading', false)
+        })
+        .catch(() => {
+          vm.$store.dispatch('catchErr', true)
+        })
     },
     renderCategoryChart () {
       const vm = this

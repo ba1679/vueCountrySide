@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
+    "prettier-eslint": "^13.0.0",
     "rfs": "^9.0.3",
     "swiper": "^6.6.2",
     "vee-validate": "^3.4.5",

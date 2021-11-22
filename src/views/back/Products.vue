@@ -62,13 +62,9 @@
         <div class="modal-content border-0">
           <div class="modal-header bg-primary text-white">
             <h5 class="modal-title">
-              {{ isNew ? '新增產品' : '編輯產品'}}
+              {{ isNew ? '新增產品' : '編輯產品' }}
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-            >
+            <button type="button" class="close" data-dismiss="modal">
               <span>&times;</span>
             </button>
           </div>
@@ -276,7 +272,6 @@ export default {
       let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`
       let httpMethod = 'post'
       if (!vm.isNew) {
-        // eslint-disable-next-line no-const-assign
         api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.cacheProduct.id}`
         httpMethod = 'put'
       }
@@ -311,10 +306,10 @@ export default {
             vm.$set(vm.cacheProduct, 'imageUrl', response.data.imageUrl)
             document.getElementById(fileId).value = ''
           } else {
-            // ? 內層$emit觸發 ('註冊的方法','註冊時預設要帶的參數')
             vm.$bus.$emit('messagePush', response.data.message, 'danger')
           }
-        }).catch(() => {
+        })
+        .catch(() => {
           vm.$store.dispatch('catchErr', true)
         })
     },

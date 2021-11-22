@@ -20,7 +20,7 @@
               href="https://www.instagram.com/countryside8985/"
               class="text-primary"
               target="_blank"
-              >
+            >
               <i class="fab fa-instagram fa-2x"></i>
             </a>
           </li>
@@ -163,7 +163,7 @@ export default {
   },
   methods: {
     sendInfo () {
-      this.$swal('成功送出')
+      alert('成功送出')
     }
   }
 }

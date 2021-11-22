@@ -22,7 +22,9 @@
         required
       />
       <div class="checkbox mb-3">
-        <p class="text-danger" v-if="wrongPassword">帳號密碼錯誤，請再輸入一次</p>
+        <p class="text-danger" v-if="wrongPassword">
+          帳號密碼錯誤，請再輸入一次
+        </p>
         <label> <input type="checkbox" value="remember-me" /> 記住我 </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -53,10 +55,8 @@ export default {
       vm.$store.dispatch('updateLoading', true)
       vm.$http.post(api, vm.user).then((response) => {
         if (response.data.success) {
-          // 先把cookie存起來，才能正確傳到後端
           const token = response.data.token
           const expired = response.data.expired
-          // 寫入cookie語法，必須寫在轉址之前
           document.cookie = `hsinToken=${token};expires=${new Date(expired)};`
           vm.$router.push('/admin/products')
         } else {
