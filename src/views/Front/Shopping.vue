@@ -322,7 +322,6 @@ export default {
     removeCart (item) {
       this.$store.dispatch('removeCart', item)
     },
-    // 回到最上方
     backToTop () {
       $('html,body').animate(
         {
@@ -331,7 +330,6 @@ export default {
         1000
       )
     },
-    // 換頁行為
     prev () {
       const vm = this
       if (vm.currentPage === 0) {

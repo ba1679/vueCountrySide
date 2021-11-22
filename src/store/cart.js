@@ -1,5 +1,3 @@
-/** @format */
-
 import axios from 'axios'
 export default {
   state: {
@@ -10,11 +8,14 @@ export default {
   actions: {
     getCartList (context) {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`
-      axios.get(api).then((res) => {
-        context.commit('GET_CART', res.data.data)
-      }).catch(() => {
-        context.dispatch('catchErr', true)
-      })
+      axios
+        .get(api)
+        .then((res) => {
+          context.commit('GET_CART', res.data.data)
+        })
+        .catch(() => {
+          context.dispatch('catchErr', true)
+        })
     },
     addToCart ({ commit, state }, { item, num = 1 }) {
       const cacheCartID = []
@@ -49,13 +50,10 @@ export default {
               imageUrl: item.imageUrl
             }
             cache.total = item.price * cache.qty
-            // 移除現有 localStorage 購物車的資料，否則 localStorage 會重複加入
             commit('SPLICE_CART', keys)
           }
         })
-        // 將數量已經增加的資料推回陣列中
         commit('CART_PUSH', cache)
-        // 重新寫入 localStorage
         localStorage.setItem('cart', JSON.stringify(state.cartData))
       }
     },
@@ -72,7 +70,8 @@ export default {
       const id = context.state.cacheId
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`
       axios
-        .delete(api).then(() => {
+        .delete(api)
+        .then(() => {
           context.dispatch('getCartList')
           context.commit('LOADING', false)
         })

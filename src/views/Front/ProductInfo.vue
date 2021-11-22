@@ -1,5 +1,3 @@
-<!-- @format -->
-
 <template>
   <div>
     <div class="message-alert">
@@ -156,7 +154,7 @@ export default {
     moreDetail (item) {
       if (item.is_enabled) {
         this.$router.push(`/productInfo/${item.id}`)
-        this.getProductDetail(item.id) // 點擊同類型產品能馬上切換頁面
+        this.getProductDetail(item.id)
       }
     }
   },
